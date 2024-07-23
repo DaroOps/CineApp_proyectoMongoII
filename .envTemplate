@@ -1,0 +1,8 @@
+MONGO_PROT="mongodb://"
+MONGOHOST=somename.proxy.rlwy
+MONGOPORT=<port>
+
+DB_NAME=nameDB
+
+ADMIN_USER=
+ADMIN_PWD=
