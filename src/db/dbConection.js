@@ -4,6 +4,13 @@ class DbService {
     this.db = null;
   }
 
+  /**
+   * Connects to the MongoDB database using the provided client.
+   * If the database is already connected, this function does nothing.
+   *
+   * @returns {Promise<import('mongodb').Db>} The connected MongoDB database.
+   * @throws {Error} If the connection fails.
+   */
   async connect() {
     if (!this.db) {
       try {
@@ -18,6 +25,13 @@ class DbService {
     return this.db;
   }
 
+  /**
+   * Retrieves the connected MongoDB database.
+   * If the database is not yet connected, this function throws an error.
+   *
+   * @returns {import('mongodb').Db} The connected MongoDB database.
+   * @throws {Error} If the database is not connected.
+   */
   getDb() {
     if (!this.db) {
       throw new Error('Database not connected. Call connect() first.');
@@ -25,6 +39,12 @@ class DbService {
     return this.db;
   }
 
+  /**
+   * Closes the MongoDB connection.
+   * If the connection is already closed, this function does nothing.
+   *
+   * @returns {Promise<void>} A promise that resolves when the connection is closed.
+   */
   async close() {
     if (this.client) {
       await this.client.close();
