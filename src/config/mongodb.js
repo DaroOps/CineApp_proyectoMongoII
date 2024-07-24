@@ -3,7 +3,7 @@ import { MongoClient } from 'mongodb';
 class Client{
   constructor(user, pwd){
     this.uri = `${process.env.MONGO_PROT}${user}:${pwd}@${process.env.MONGO_HOST}:${process.env.MONGO_PORT}/${process.env.DB_NAME}`
-    console.log(this.uri);
+    // console.log(this.uri);
   }
 
   /**
