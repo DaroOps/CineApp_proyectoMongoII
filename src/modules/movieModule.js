@@ -1,3 +1,4 @@
+import { ObjectId } from 'mongodb';
 import DbService from '../db/dbConection.js';
 
 export default class Movie {
@@ -16,7 +17,7 @@ export default class Movie {
     async getMovieDetails(movieId) {
         try {
             const db = await this.dbService.connect();
-            const movie = await db.collection('movies').findOne({ _id: movieId });
+            const movie = await db.collection('movies').findOne({ _id: new ObjectId(movieId)});
             return movie;
         } catch (error) {
             console.error('Error getting movie details:', error);
