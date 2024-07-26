@@ -3,7 +3,7 @@ import DbService from '../db/dbConection.js';
 
 export default class Movie {
     static instanceMovie
-    adminClient;
+    client;
     dbService;
     constructor(client = null) {
         if (Movie.instanceMovie) {
