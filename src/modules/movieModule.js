@@ -1,5 +1,5 @@
 import { ObjectId } from 'mongodb';
-import DbService from '../db/dbConection.js';
+import DbService from '../db/dbConnection.js';
 
 export default class Movie {
     static instanceMovie
@@ -33,7 +33,7 @@ export default class Movie {
     async getMovieDetails(movieId) {
         try {
             const db = await this.dbService.connect();
-            const movie = await db.collection('movies').findOne({ _id: new ObjectId(movieId)});
+            const movie = await db.collection('screenings').findOne({ movie_id: new ObjectId(movieId)});
             return movie;
         } catch (error) {
             console.error('Error getting movie details:', error);

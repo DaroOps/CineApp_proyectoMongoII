@@ -7,7 +7,9 @@
   "scripts": {
     "test": "jest",
     "dev": "node --env-file .env ./src/services/testConnectionService.js",
-    "main": "node --env-file .env ./main.js"
+    "main": "node --env-file .env ./main.js",
+    "rs": "run-rs -v 4.0.0 --shell",
+    "rebuild": "node --env-file .env ./src/utils/rebuild.js"
   },
   "keywords": [],
   "author": "",
