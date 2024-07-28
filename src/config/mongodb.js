@@ -2,8 +2,9 @@ import { MongoClient } from 'mongodb';
 
 class Client{
   constructor(user, pwd){
-    this.uri = `${process.env.MONGO_PROT}${user}:${pwd}@${process.env.MONGO_HOST}:${process.env.MONGO_PORT}/${process.env.DB_NAME}`
-    // console.log(this.uri);
+    this.uri = `${process.env.MONGO_PROTOCOL}://${encodeURIComponent(user)}:${encodeURIComponent(pwd)}@${process.env.MONGO_HOST}:${process.env.MONGO_PORT}/${process.env.DB_NAME}?replicaSet=${process.env.REPLICA_SET_NAME}`;
+    // this.uri = `${process.env.MONGO_PROT}${user}:${pwd}@${process.env.MONGO_HOST}:${process.env.MONGO_PORT}/${process.env.DB_NAME}?replicaSet=rs`
+    console.log(this.uri);
   }
 
   /**
