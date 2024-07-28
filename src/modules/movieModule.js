@@ -1,5 +1,5 @@
 import { ObjectId } from 'mongodb';
-import DbService from '../db/dbConection.js';
+import DbService from '../db/dbConnection.js';
 
 export default class Movie {
     static instanceMovie
