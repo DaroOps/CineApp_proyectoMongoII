@@ -36,7 +36,7 @@ export default class User {
             const usersInfo = await db.command({ usersInfo:{ user: userData.name, db: db.databaseName }});
     
             if (usersInfo.users.length > 0) {
-                throw new Error('The user already exist in the database');
+                throw new Error('The user already exists in the database');
             }
             
             await session.withTransaction(async () => {
@@ -45,10 +45,16 @@ export default class User {
                     email: userData.email,
                     password: hashedPassword,
                     role:{
-                        type:role,  // 'standard', 'VIP', or 'admin'
+                        type: role,
                         assignment_date: new Date()
-                    }
+                    },
+                    purchase_history: []
                 };
+
+                if (role === 'VIP') {
+                    userDoc.vip_card = this.generateVIPCard();
+                }
+
                 console.log(userDoc);
                 const result = await db.collection('users').insertOne(userDoc, { session });
                 return result.insertedId;
@@ -60,7 +66,7 @@ export default class User {
                 roles: [{ role: role, db: db.databaseName }]
             });
 
-           return `created user ${userData.name} whit role ${role}`; 
+           return `Created user ${userData.name} with role ${role}`; 
         } catch (error) {
             console.error('Error creating user:', error);
             throw error;
@@ -112,20 +118,37 @@ export default class User {
     async updateUserRole(userId, newRole) {
         try {
             const db = await this.dbService.connect();
-            const result = await db.collection('users').updateOne(
-                { _id: new ObjectId(userId) },
-                { $set: 
-                    { 
-                        "role": {"type":`${newRole}`, 
-                        "assignment_date": new Date()} 
+            const user = await db.collection('users').findOne({ _id: new ObjectId(userId) });
+
+            if (!user) {
+                return false;
+            }
+
+            const updateDoc = {
+                $set: { 
+                    "role": {
+                        "type": newRole, 
+                        "assignment_date": new Date()
                     } 
                 }
+            };
+
+            if (newRole === 'VIP' && (!user.vip_card || user.vip_card.expiration_date < new Date())) {
+                updateDoc.$set.vip_card = this.generateVIPCard();
+            } else if (newRole !== 'VIP' && user.vip_card) {
+                updateDoc.$unset = { vip_card: "" };
+            }
+
+            const result = await db.collection('users').updateOne(
+                { _id: new ObjectId(userId) },
+                updateDoc
             );
+
             return result.modifiedCount > 0;
         } catch (error) {
             console.error('Error updating user role:', error);
             throw error;
-        }finally{
+        } finally {
             await this.dbService.close();
         }
     }
@@ -156,5 +179,18 @@ export default class User {
         }finally{
             await this.dbService.close();
         }
+    }
+
+    generateVIPCard() {
+        const cardNumber = Math.random().toString(36).substr(2, 8).toUpperCase();
+        const issueDate = new Date();
+        const expirationDate = new Date();
+        expirationDate.setFullYear(expirationDate.getFullYear() + 1);
+
+        return {
+            card_number: cardNumber,
+            issue_date: issueDate,
+            expiration_date: expirationDate
+        };
     }
 }
