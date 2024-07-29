@@ -141,34 +141,40 @@ db.runCommand({
 
 db.runCommand({
    collMod: "tickets",
-   validator: {
-  $jsonSchema: {
-    bsonType: 'object',
-    required: [
-      'name',
-      'capacity',
-      'seats'
-    ],
-    properties: {
-      name: {
-        bsonType: 'string',
-        description: 'Must be a string and is required'
-      },
-      capacity: {
-        bsonType: 'int',
-        minimum: 1,
-        description: 'Must be an integer greater than 0 and is required'
-      },
-      seats: {
-        bsonType: 'array',
-        items: {
+   validator: 
+   {
+    $jsonSchema: {
+      bsonType: 'object',
+      required: [
+        'screening_id',
+        'user_id',
+        'seat',
+        'base_price',
+        'final_price',
+        'status',
+        'purchase_date'
+      ],
+      properties: {
+        screening_id: {
+          bsonType: 'objectId',
+          description: 'Must be an ObjectId and is required'
+        },
+        user_id: {
+          bsonType: 'objectId',
+          description: 'Must be an ObjectId and is required'
+        },
+        seat: {
           bsonType: 'object',
           required: [
+            'theater_id',
             'number',
-            'row',
-            'type'
+            'row'
           ],
           properties: {
+            theater_id: {
+              bsonType: 'objectId',
+              description: 'Must be an ObjectId'
+            },
             number: {
               bsonType: 'int',
               minimum: 1,
@@ -177,20 +183,57 @@ db.runCommand({
             row: {
               bsonType: 'string',
               description: 'Must be a string'
-            },
-            type: {
-              'enum': [
-                'standard',
-                'VIP'
-              ],
-              description: 'Must be either \'standard\' or \'vip\''
             }
           }
+        },
+        base_price: {
+          bsonType: 'number',
+          minimum: 0,
+          description: 'Must be a non-negative number and is required'
+        },
+        discount_applied: {
+          bsonType: 'object',
+          required: [
+            'type',
+            'percentage'
+          ],
+          properties: {
+            type: {
+              bsonType: 'string',
+              description: 'Must be a string'
+            },
+            percentage: {
+              bsonType: 'number',
+              minimum: 0,
+              maximum: 100,
+              description: 'Must be a number between 0 and 100'
+            }
+          }
+        },
+        final_price: {
+          bsonType: 'number',
+          minimum: 0,
+          description: 'Must be a non-negative number and is required'
+        },
+        status: {
+          'enum': [
+            'reserved',
+            'paid',
+            'cancelled'
+          ],
+          description: 'Must be one of the defined statuses and is required'
+        },
+        purchase_date: {
+          bsonType: 'date',
+          description: 'Must be a date and is required'
+        },
+        qr_code: {
+          bsonType: 'string',
+          description: 'Must be a string'
         }
       }
     }
   }
-}		
 })
 
 db.runCommand({
@@ -672,30 +715,12 @@ db.screenings.insertMany([
     occupied_seats: []
   },
   {
-    _id: ObjectId("66a1295d41165c14ebdd4f73"),
-    movie_id: ObjectId("66a1293e41165c14ebdd4f6e"),
-    theater_id: ObjectId("66a1294d41165c14ebdd4f71"),
-    date_time: ISODate("2024-08-01T19:30:00.000Z"),
-    base_price: 18,
-    available_seats: 50,
-    occupied_seats: []
-  },
-  {
     _id: ObjectId("66a1295d41165c14ebdd4f74"),
     movie_id: ObjectId("66a1293e41165c14ebdd4f6f"),
     theater_id: ObjectId("66a1294d41165c14ebdd4f70"),
     date_time: ISODate("2024-08-01T20:00:00.000Z"),
     base_price: 12.5,
     available_seats: 200,
-    occupied_seats: []
-  },
-  {
-    _id: ObjectId("66a12c0441165c14ebdd4f81"),
-    movie_id: ObjectId("66a12bf041165c14ebdd4f7f"),
-    theater_id: ObjectId("66a12bf741165c14ebdd4f80"),
-    date_time: ISODate("2024-09-15T19:00:00.000Z"),
-    base_price: 15,
-    available_seats: 150,
     occupied_seats: []
   }
 ])
