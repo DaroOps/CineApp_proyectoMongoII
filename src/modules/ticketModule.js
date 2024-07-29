@@ -25,42 +25,52 @@ export default class Ticket {
           { session }
         );
         if (!screening) throw new Error('Screening not found');
+
         if (!this.isSeatAvailable(screening, seatInfo)) {
           throw new Error('Seat not available');
         }
 
-        const finduser = await db.collection('users').find({
-          _id: new ObjectId(userId),
-          "role.type": "VIP"
-      }, { session }).toArray();
-      
-      const vipSeat = await db.collection('theaters').find({
-          "_id": new ObjectId(seatInfo.theater_id),
-          "seats": {
-              "$elemMatch": {
-                  "number": seatInfo.number,
-                  "row": seatInfo.row,
-                  "type": "VIP"
+        // Validar si la silla existe
+        const theater = await db.collection('theaters').findOne(
+          {
+            _id: new ObjectId(screening.theater_id),
+            seats: {
+              $elemMatch: {
+                number: parseInt(seatInfo.number),
+                row: seatInfo.row
               }
-          }
-      }).toArray();
-      
-      if (vipSeat.length > 0 && finduser.length === 0) {
-          throw new Error(`User is not VIP and cannot reserve the VIP seat`);
-      }
-      
-        const fixSeat = {
-            seat: {
-            theater_id: new ObjectId(seatInfo.theater_id),
-            number: seatInfo.number,
-            row: seatInfo.row
-          }
+            }
+          },
+          { session }
+        );
+
+        if (!theater) {
+          throw new Error(`Invalid seat: Row ${seatInfo.row}, Number ${seatInfo.number} does not exist in the theater`);
+        }
+
+        const user = await db.collection('users').findOne(
+          { _id: new ObjectId(userId) },
+          { session }
+        );
+
+        if (!user) {
+          throw new Error('User not found');
+        }
+
+        const selectedSeat = theater.seats.find(seat => seat.number === parseInt(seatInfo.number) && seat.row === seatInfo.row);
+
+        if (selectedSeat.type === 'VIP' && user.role.type !== 'VIP') {
+          throw new Error('User is not VIP and cannot reserve the VIP seat');
         }
 
         const ticket = {
           screening_id: new ObjectId(screeningId),
           user_id: new ObjectId(userId),
-          seat: fixSeat.seat,
+          seat: {
+            theater_id: theater._id,
+            number: parseInt(seatInfo.number),
+            row: seatInfo.row
+          },
           base_price: screening.base_price,
           final_price: screening.base_price,
           status: 'reserved',
@@ -68,7 +78,7 @@ export default class Ticket {
           qr_code: "SOME_QRCODE"
         };
 
-        await this.reserveSeat(screeningId, fixSeat.seat, session);
+        await this.reserveSeat(screeningId, ticket.seat, session);
         const result = await db.collection('tickets').insertOne(ticket, { session });
         return result.insertedId;
       });
