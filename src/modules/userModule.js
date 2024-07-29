@@ -44,9 +44,12 @@ export default class User {
                     name: userData.name,
                     email: userData.email,
                     password: hashedPassword,
-                    role: role,  // 'standard', 'VIP', or 'admin'
-                    createdAt: new Date()
+                    role:{
+                        type:role,  // 'standard', 'VIP', or 'admin'
+                        assignment_date: new Date()
+                    }
                 };
+                console.log(userDoc);
                 const result = await db.collection('users').insertOne(userDoc, { session });
                 return result.insertedId;
             });

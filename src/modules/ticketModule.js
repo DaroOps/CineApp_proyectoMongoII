@@ -28,7 +28,27 @@ export default class Ticket {
         if (!this.isSeatAvailable(screening, seatInfo)) {
           throw new Error('Seat not available');
         }
-        
+
+        const finduser = await db.collection('users').find({
+          _id: new ObjectId(userId),
+          "role.type": "VIP"
+      }, { session }).toArray();
+      
+      const vipSeat = await db.collection('theaters').find({
+          "_id": new ObjectId(seatInfo.theater_id),
+          "seats": {
+              "$elemMatch": {
+                  "number": seatInfo.number,
+                  "row": seatInfo.row,
+                  "type": "VIP"
+              }
+          }
+      }).toArray();
+      
+      if (vipSeat.length > 0 && finduser.length === 0) {
+          throw new Error(`User is not VIP and cannot reserve the VIP seat`);
+      }
+      
         const fixSeat = {
             seat: {
             theater_id: new ObjectId(seatInfo.theater_id),
