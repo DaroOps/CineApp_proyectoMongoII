@@ -1,8 +1,17 @@
-MONGO_PROT="mongodb://"
-MONGOHOST=somename.proxy.rlwy
-MONGOPORT=<port>
+MONGO_PROTOCOL="mongodb"
+MONGO_HOST="localhost"
+MONGO_PORT="27017,27018,27019"
+REPLICA_SET_NAME="rs"
+DB_NAME="dbName"
 
-DB_NAME=nameDB
+ADMIN_USER=""
+ADMIN_PWD=""
 
-ADMIN_USER=
-ADMIN_PWD=
+DB_ADMIN_USER="someUser"
+DB_ADMIN_PWD="somePasword"
+
+VIP_USER="someUser"
+VIP_PWD="somePasword"
+
+STAN_USER="someUser"
+STAN_PWD="somePasword"
