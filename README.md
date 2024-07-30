@@ -212,3 +212,270 @@ Para más detalles sobre las funcionalidades específicas, consulta la documenta
 
 # Documentacion de clases y módulos
 
+# Payment Class Documentation
+
+## Overview
+
+The `Payment` class handles payment processing, discount application, and VIP card verification for a ticket booking system. It uses MongoDB for data storage and implements the Singleton pattern.
+
+## Constructor
+
+### `constructor()`
+
+Initializes the Payment class instance and sets up the database connection.
+
+- Returns: The singleton instance of the Payment class.
+
+## Methods
+
+### `processPayment(ticketId, paymentInfo)`
+
+Processes a payment for a given ticket and updates the ticket status to 'paid'.
+
+- Parameters:
+  - `ticketId` (string): The unique identifier of the ticket for which the payment is being processed.
+  - `paymentInfo` (object): The payment information provided by the user.
+- Returns: A Promise that resolves to the payment object if the payment is successful.
+- Throws: An error if the ticket is not found or if the ticket is already paid.
+
+### `confirmPurchase(ticketId)` (Deprecated)
+
+Confirms the purchase of a ticket by checking its existence in the database.
+
+- Parameters:
+  - `ticketId` (string): The unique identifier of the ticket to be confirmed.
+- Returns: A Promise that resolves to true if the ticket is found.
+- Throws: An error if the ticket is not found.
+- Note: This function is deprecated and doesn't perform any operations in the database.
+
+### `applyDiscount(ticketId, discountType)`
+
+Applies a discount to a ticket based on the provided discount type.
+
+- Parameters:
+  - `ticketId` (string): The unique identifier of the ticket to apply the discount to.
+  - `discountType` (string): The type of discount to apply.
+- Returns: A Promise that resolves to true if the discount is successfully applied.
+- Throws: An error if there's an issue with database operations or if the discount is not found.
+
+### `verifyVIPCardAndApplyDiscount(userId, ticketId)`
+
+Verifies if a user has a valid VIP card and applies a VIP discount to the ticket if applicable.
+
+- Parameters:
+  - `userId` (string): The unique identifier of the user.
+  - `ticketId` (string): The unique identifier of the ticket to apply the discount to.
+- Returns: A Promise that resolves to true if the VIP discount is successfully applied, false otherwise.
+- Throws: An error if there's an issue with database operations or if the VIP discount is not found.
+
+# User Class Documentation
+
+## Overview
+
+The `User` class manages user-related operations in the database, including user creation, retrieval, role updates, and VIP card generation. It implements the Singleton pattern for database connection management.
+
+## Constructor
+
+### `constructor(client = null)`
+
+Creates a new User instance or returns the existing instance (Singleton pattern).
+
+- Parameters:
+  - `client` (Object): The database client object.
+- Returns: The User instance.
+
+## Methods
+
+### `createUser(userData, role)`
+
+Creates a new user in the database.
+
+- Parameters:
+  - `userData` (Object): The user's information.
+    - `name` (string): The user's name.
+    - `email` (string): The user's email.
+    - `password` (string): The user's password.
+  - `role` (string): The user's role ('standard', 'VIP', or 'admin').
+- Returns: A Promise that resolves with a success message if the user is created.
+- Throws: An error if the user already exists in the database.
+
+### `getUserDetails(userId)`
+
+Retrieves user details from the database.
+
+- Parameters:
+  - `userId` (string): The unique identifier of the user.
+- Returns: A Promise that resolves with the user's details if found, or null if not found.
+- Throws: An error if there is a problem connecting to the database or executing the query.
+
+### `updateUserRole(userId, newRole)`
+
+Updates the role of a user in the database.
+
+- Parameters:
+  - `userId` (string): The unique identifier of the user.
+  - `newRole` (string): The new role to assign to the user.
+- Returns: A Promise that resolves with true if the user's role is updated successfully, or false if the user is not found.
+- Throws: An error if there is a problem connecting to the database or executing the query.
+
+### `listUsers(role = null)`
+
+Retrieves a list of users from the database based on the specified role.
+
+- Parameters:
+  - `role` (string, optional): The role to filter users by. If not provided, all users will be returned.
+- Returns: A Promise that resolves with an array of user objects.
+- Throws: An error if there is a problem connecting to the database or executing the query.
+
+### `generateVIPCard()`
+
+Generates a VIP card object with a unique card number, issue date, and expiration date.
+
+- Returns: An object containing:
+  - `card_number` (string): The unique card number.
+  - `issue_date` (Date): The date the VIP card was issued.
+  - `expiration_date` (Date): The date the VIP card expires.
+
+# Ticket Class Documentation
+
+## Overview
+
+The `Ticket` class manages ticket-related operations in the database, including ticket purchases, seat availability checks, seat reservations, and cancellations. It implements the Singleton pattern for database connection management.
+
+## Constructor
+
+### `constructor(client = null)`
+
+Creates a new Ticket instance or returns the existing instance (Singleton pattern).
+
+- Parameters:
+  - `client` (Object): The database client object.
+- Returns: The Ticket instance.
+
+## Methods
+
+### `buyTicket(screeningId, userId, seatInfo)`
+
+Buys a ticket for a specific screening and reserves the selected seat.
+
+- Parameters:
+  - `screeningId` (string): The ID of the screening for which the ticket is being purchased.
+  - `userId` (string): The ID of the user purchasing the ticket.
+  - `seatInfo` (object): The seat information containing the row and number of the selected seat.
+    - `row` (string): The row of the selected seat.
+    - `number` (number): The number of the selected seat.
+- Returns: A Promise that resolves to the ID of the newly created ticket document in the database.
+- Throws: An error if the screening, seat, user, or VIP status is invalid.
+
+### `checkSeatAvailability(screeningId)`
+
+Checks the availability of seats for a specific screening.
+
+- Parameters:
+  - `screeningId` (string): The ID of the screening for which the seat availability is being checked.
+- Returns: A Promise that resolves to an object containing:
+  - `availableSeats` (number): The number of available seats for the screening.
+  - `occupiedSeats` (array): An array of objects representing the occupied seats.
+- Throws: An error if the screening is not found.
+
+### `isSeatAvailable(screening, seatInfo)`
+
+Checks if a seat is available for a specific screening.
+
+- Parameters:
+  - `screening` (object): The screening object containing the occupied seats.
+  - `seatInfo` (object): The seat information containing the row and number of the selected seat.
+    - `row` (string): The row of the selected seat.
+    - `number` (number): The number of the selected seat.
+- Returns: A boolean indicating if the seat is available.
+
+### `reserveSeat(screeningId, seatInfo, session)`
+
+Reserves a seat for a specific screening.
+
+- Parameters:
+  - `screeningId` (string): The ID of the screening for which the seat is being reserved.
+  - `seatInfo` (object): The seat information containing the row and number of the selected seat.
+    - `row` (string): The row of the selected seat.
+    - `number` (number): The number of the selected seat.
+  - `session` (object): The MongoDB session for transactional operations.
+- Returns: A Promise that resolves to true if the seat reservation is successful, false otherwise.
+- Throws: An error if the database connection fails or if the update operation fails.
+
+### `cancelSeatReservation(screeningId, seatInfo)`
+
+Cancels a seat reservation for a specific screening.
+
+- Parameters:
+  - `screeningId` (string): The ID of the screening for which the seat reservation is being canceled.
+  - `seatInfo` (object): The seat information containing the row and number of the selected seat.
+    - `row` (string): The row of the selected seat.
+    - `number` (number): The number of the selected seat.
+- Returns: A Promise that resolves to true if the seat cancellation is successful, false otherwise.
+- Throws: An error if the database connection fails or if the update operation fails.
+
+# Movie Class Documentation
+
+## Overview
+
+The `Movie` class provides functionality to interact with movie-related data in a MongoDB database. It follows the Singleton pattern to ensure only one instance of the class is created.
+
+## Constructor
+
+### `constructor(client = null)`
+
+Creates a new Movie instance or returns the existing instance.
+
+- **Parameters:**
+  - `client` (Object): The database client object.
+- **Returns:** The Movie instance.
+
+## Methods
+
+### `async getMovieDetails(movieId)`
+
+Retrieves the details of a movie from the database.
+
+- **Parameters:**
+  - `movieId` (string): The unique identifier of the movie.
+- **Returns:** A Promise that resolves to a movie object with the following properties:
+  - `_id`: The unique identifier of the movie.
+  - `movie_id`: The unique identifier of the movie.
+  - `theater_id`: The unique identifier of the theater.
+  - `date_time`: The date and time of the screening.
+  - `base_price`: The base price of the ticket.
+  - `available_seats`: The number of available seats.
+  - `occupied_seats`: An array of occupied seat numbers.
+- **Throws:** Error if an error occurs while retrieving the movie details.
+
+### `async listMovies()`
+
+Retrieves a list of all movies from the database.
+
+- **Returns:** A Promise that resolves to an array of movie objects. Each movie object contains the following properties:
+  - `_id`: The unique identifier of the movie.
+  - `title`: The title of the movie.
+  - `genre`: The genre of the movie.
+  - `duration`: The duration of the movie in minutes.
+  - `synopsis`: The synopsis of the movie.
+  - `screening_times`: An array of screening times for the movie.
+- **Throws:** Error if an error occurs while retrieving the movies.
+
+## Dependencies
+
+- `mongodb`: Used for MongoDB operations.
+- `DbService`: A custom service for database connections.
+
+## Usage Example
+
+```javascript
+const client = new Client("user", "somepassword"); // Assume this is your database client
+const movieInstance = new Movie(client);
+
+// Get movie details
+const movieDetails = await movieInstance.getMovieDetails('someMovieId');
+
+// List all movies
+const allMovies = await movieInstance.listMovies();
+```
+> Note: This class uses a Singleton pattern, ensuring that only one instance of the Movie class is created and used throughout the application.
