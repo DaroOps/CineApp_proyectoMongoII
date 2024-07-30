@@ -1,7 +1,7 @@
-import DbService from '../db/dbConection.js';
+import DbService from '../db/dbConnection.js';
 import Client from '../config/mongodb.js';
 
-const adminClient = new Client(process.env.ADMIN_USER, process.env.ADMIN_PWD).getClient();
+const adminClient = new Client(process.env.DB_ADMIN_USER, process.env.DB_ADMIN_PWD).getClient();
 const adminDbService = new DbService(adminClient);
 
 /**
