@@ -5,6 +5,12 @@ import bcrypt from 'bcrypt';
 export default class User {
     static instanceUser;
     dbService;
+    /**
+     * Creates a new User instance or returns the existing instance (Singleton pattern).
+     * 
+     * @param {Object} client - The database client object.
+     * @returns {User} The User instance.
+     */
     constructor(client = null) {
         if (User.instanceUser) {
             return User.instanceUser;
@@ -101,20 +107,20 @@ export default class User {
     }
 
     /**
-     * Updates the role of a user in the database.
-     *
-     * @param {string} userId - The unique identifier of the user.
-     * @param {string} newRole - The new role to assign to the user.
-     *
-     * @returns {Promise<boolean>} - A promise that resolves with true if the user's role is successfully updated,
-     * or false if no user is found with the given userId.
-     *
-     * @throws {Error} - If there is a problem connecting to the database or executing the query.
-     *
-     * @example
-     * const isUpdated = await user.updateUserRole('123', 'VIP');
-     * console.log(isUpdated); // true
-     */
+    * Updates the role of a user in the database.
+    *
+    * @param {string} userId - The unique identifier of the user.
+    * @param {string} newRole - The new role to assign to the user.
+    *
+    * @returns {Promise<boolean>} - A promise that resolves with true if the user's role is updated successfully,
+    * or false if the user is not found.
+    *
+    * @throws {Error} - If there is a problem connecting to the database or executing the query.
+    *
+    * @example
+    * const isUpdated = await user.updateUserRole('123', 'VIP');
+    * console.log(isUpdated); // true
+    */
     async updateUserRole(userId, newRole) {
         try {
             const db = await this.dbService.connect();
@@ -152,20 +158,25 @@ export default class User {
             await this.dbService.close();
         }
     }
-
-   /**
+  
+    /**
      * Retrieves a list of users from the database based on the specified role.
+     * If no role is provided, all users will be returned.
      *
-     * @param {string} [role=null] - The role to filter users by. If not provided, all users will be returned.
+     * @param {string} [role=null] - The role to filter users by.
      *
      * @returns {Promise<Array>} - A promise that resolves with an array of user objects.
-     * If no users are found, the promise resolves with an empty array.
+     * If no users are found, the array will be empty.
      *
      * @throws {Error} - If there is a problem connecting to the database or executing the query.
      *
      * @example
-     * const userList = await user.listUsers('VIP');
-     * console.log(userList); // [{ _id: new ObjectId('123'), name: 'John Doe', role: 'standard', ... }, ...]
+     * const users = await user.listUsers('VIP');
+     * console.log(users); // [{ _id: '123', name: 'John Doe', role: { type: 'VIP', ... } }, ...]
+     *
+     * @example
+     * const allUsers = await user.listUsers();
+     * console.log(allUsers); // [{ _id: '456', name: 'Jane Smith', role: { type: 'standard', ... } }, ...]
      */
     async listUsers(role = null) {
         try {
@@ -180,7 +191,15 @@ export default class User {
             await this.dbService.close();
         }
     }
-
+    
+    /**
+     * Generates a VIP card object with a unique card number, issue date, and expiration date.
+     *
+     * @returns {Object} - A VIP card object with the following properties:
+     * @returns {string} card_number - The unique card number.
+     * @returns {Date} issue_date - The date the VIP card was issued.
+     * @returns {Date} expiration_date - The date the VIP card expires.
+     */
     generateVIPCard() {
         const cardNumber = Math.random().toString(36).substr(2, 8).toUpperCase();
         const issueDate = new Date();

@@ -5,7 +5,12 @@ export default class Ticket {
   static instanceTicket;
   client;
   dbService;
-
+  /**
+   * Creates a new Ticket instance or returns the existing instance (Singleton pattern).
+   * 
+   * @param {Object} client - The database client object.
+   * @returns {Ticket} The Ticket instance.
+   */
   constructor(client = null) {
     if (Ticket.instanceTicket) {
       return Ticket.instanceTicket;
@@ -15,6 +20,21 @@ export default class Ticket {
     Ticket.instanceTicket = this;
   }
 
+  /**
+   * Buys a ticket for a specific screening and reserves the selected seat.
+   *
+   * @param {string} screeningId - The ID of the screening for which the ticket is being purchased.
+   * @param {string} userId - The ID of the user purchasing the ticket.
+   * @param {object} seatInfo - The seat information containing the row and number of the selected seat.
+   * @param {string} seatInfo.row - The row of the selected seat.
+   * @param {number} seatInfo.number - The number of the selected seat.
+   *
+   * @returns {Promise<ObjectId>} - The ID of the newly created ticket document in the database.
+   *
+   * @throws {Error} - Throws an error if the screening, seat, user, or VIP status is invalid.
+   *
+   * @async
+   */
   async buyTicket(screeningId, userId, seatInfo) {
     const db = await this.dbService.connect();
     const session = await db.client.startSession();
@@ -30,7 +50,6 @@ export default class Ticket {
           throw new Error('Seat not available');
         }
 
-        // Validar si la silla existe
         const theater = await db.collection('theaters').findOne(
           {
             _id: new ObjectId(screening.theater_id),
@@ -91,6 +110,19 @@ export default class Ticket {
     }
   }
 
+  /**
+  * Checks the availability of seats for a specific screening.
+  *
+  * @param {string} screeningId - The ID of the screening for which the seat availability is being checked.
+  *
+  * @returns {Promise<object>} - A promise that resolves to an object containing the number of available seats and the list of occupied seats.
+  * - availableSeats: The number of available seats for the screening.
+  * - occupiedSeats: An array of objects representing the occupied seats. Each object contains the row and number of the seat.
+  *
+  * @throws {Error} - Throws an error if the screening is not found.
+  *
+  * @async
+  */
   async checkSeatAvailability(screeningId) {
     const db = await this.dbService.connect();
     try {
@@ -113,12 +145,37 @@ export default class Ticket {
     }
   }
 
+  /**
+   * Checks if a seat is available for a specific screening.
+   *
+   * @param {object} screening - The screening object containing the occupied seats.
+   * @param {object} seatInfo - The seat information containing the row and number of the selected seat.
+   * @param {string} seatInfo.row - The row of the selected seat.
+   * @param {number} seatInfo.number - The number of the selected seat.
+   *
+   * @returns {boolean} - Returns true if the seat is available, false otherwise.
+   */
   isSeatAvailable(screening, seatInfo) {
     return !screening.occupied_seats.some(
       seat => seat.row === seatInfo.row && seat.number === seatInfo.number
     );
   }
 
+  /**
+   * Reserves a seat for a specific screening.
+   *
+   * @param {string} screeningId - The ID of the screening for which the seat is being reserved.
+   * @param {object} seatInfo - The seat information containing the row and number of the selected seat.
+   * @param {string} seatInfo.row - The row of the selected seat.
+   * @param {number} seatInfo.number - The number of the selected seat.
+   * @param {object} session - The MongoDB session for transactional operations.
+   *
+   * @returns {Promise<boolean>} - A promise that resolves to true if the seat reservation is successful, false otherwise.
+   *
+   * @throws {Error} - Throws an error if the database connection fails or if the update operation fails.
+   *
+   * @async
+   */ 
   async reserveSeat(screeningId, seatInfo, session) {
     const db = await this.dbService.connect();
     const result = await db.collection('screenings').updateOne(
@@ -132,6 +189,20 @@ export default class Ticket {
     return result.modifiedCount > 0;
   }
 
+  /**
+  * Cancels a seat reservation for a specific screening.
+  *
+  * @param {string} screeningId - The ID of the screening for which the seat reservation is being canceled.
+  * @param {object} seatInfo - The seat information containing the row and number of the selected seat.
+  * @param {string} seatInfo.row - The row of the selected seat.
+  * @param {number} seatInfo.number - The number of the selected seat.
+  *
+  * @returns {Promise<boolean>} - A promise that resolves to true if the seat cancellation is successful, false otherwise.
+  *
+  * @throws {Error} - Throws an error if the database connection fails or if the update operation fails.
+  *
+  * @async
+  */
   async cancelSeatReservation(screeningId, seatInfo) {
     const db = await this.dbService.connect();
     try {
