@@ -212,270 +212,290 @@ Para más detalles sobre las funcionalidades específicas, consulta la documenta
 
 # Documentacion de clases y módulos
 
-# Payment Class Documentation
+Claro, aquí tienes un apartado genérico para la clase `Client` que puedes insertar en la documentación de cada clase:
 
-## Overview
+## Client Class
 
-The `Payment` class handles payment processing, discount application, and VIP card verification for a ticket booking system. It uses MongoDB for data storage and implements the Singleton pattern.
+La clase `Client` se utiliza para gestionar las conexiones a la base de datos MongoDB. Proporciona un método para crear una nueva instancia de `MongoClient` con la URI y las opciones de conexión configuradas.
+
+
+### Descripción del Constructor
+
+- **Constructor:**
+  - `constructor(user = null, pwd = null)`
+    - **Parámetros:**
+      - `user` (string, opcional): El nombre de usuario para autenticar con MongoDB.
+      - `pwd` (string, opcional): La contraseña para autenticar con MongoDB.
+    - **Devuelve:** Una instancia de la clase Client.
+
+- **Métodos:**
+  - `getClient()`
+    - **Descripción:** Crea una nueva instancia de MongoClient con la URI y las opciones de conexión configuradas.
+    - **Devuelve:** Una nueva instancia de MongoClient.
+    - **Lanza:** Un error si no se puede crear la instancia de MongoClient.
+
+---
+
+Puedes insertar esta sección antes del constructor de cada clase (`User`, `Ticket`, `Movie`) para proporcionar una descripción general del `Client` utilizado en tu aplicación.
+
+# Documentación de la Clase Payment
+
+## Visión General
+
+La clase `Payment` maneja el procesamiento de pagos, la aplicación de descuentos y la verificación de tarjetas VIP para un sistema de reservas de entradas. Utiliza MongoDB para el almacenamiento de datos e implementa el patrón Singleton.
 
 ## Constructor
 
 ### `constructor()`
 
-Initializes the Payment class instance and sets up the database connection.
+Inicializa la instancia de la clase Payment y configura la conexión a la base de datos.
 
-- Returns: The singleton instance of the Payment class.
+- Devuelve: La instancia única de la clase Payment.
 
-## Methods
+## Métodos
 
 ### `processPayment(ticketId, paymentInfo)`
 
-Processes a payment for a given ticket and updates the ticket status to 'paid'.
+Procesa un pago para un boleto específico y actualiza el estado del boleto a 'paid' (pagado).
 
-- Parameters:
-  - `ticketId` (string): The unique identifier of the ticket for which the payment is being processed.
-  - `paymentInfo` (object): The payment information provided by the user.
-- Returns: A Promise that resolves to the payment object if the payment is successful.
-- Throws: An error if the ticket is not found or if the ticket is already paid.
+- Parámetros:
+  - `ticketId` (string): El identificador único del boleto para el que se está procesando el pago.
+  - `paymentInfo` (object): La información de pago proporcionada por el usuario.
+- Devuelve: Una Promesa que se resuelve en el objeto de pago si el pago es exitoso.
+- Lanza: Un error si no se encuentra el boleto o si el boleto ya está pagado.
 
-### `confirmPurchase(ticketId)` (Deprecated)
+### `confirmPurchase(ticketId)` (Desaprobado)
 
-Confirms the purchase of a ticket by checking its existence in the database.
+Confirma la compra de un boleto verificando su existencia en la base de datos.
 
-- Parameters:
-  - `ticketId` (string): The unique identifier of the ticket to be confirmed.
-- Returns: A Promise that resolves to true if the ticket is found.
-- Throws: An error if the ticket is not found.
-- Note: This function is deprecated and doesn't perform any operations in the database.
+- Parámetros:
+  - `ticketId` (string): El identificador único del boleto a confirmar.
+- Devuelve: Una Promesa que se resuelve en true si se encuentra el boleto.
+- Lanza: Un error si no se encuentra el boleto.
+- Nota: Esta función está desaprobada y no realiza operaciones en la base de datos.
 
 ### `applyDiscount(ticketId, discountType)`
 
-Applies a discount to a ticket based on the provided discount type.
+Aplica un descuento a un boleto basado en el tipo de descuento proporcionado.
 
-- Parameters:
-  - `ticketId` (string): The unique identifier of the ticket to apply the discount to.
-  - `discountType` (string): The type of discount to apply.
-- Returns: A Promise that resolves to true if the discount is successfully applied.
-- Throws: An error if there's an issue with database operations or if the discount is not found.
+- Parámetros:
+  - `ticketId` (string): El identificador único del boleto al que se aplica el descuento.
+  - `discountType` (string): El tipo de descuento a aplicar.
+- Devuelve: Una Promesa que se resuelve en true si el descuento se aplica con éxito.
+- Lanza: Un error si hay un problema con las operaciones de la base de datos o si no se encuentra el descuento.
 
 ### `verifyVIPCardAndApplyDiscount(userId, ticketId)`
 
-Verifies if a user has a valid VIP card and applies a VIP discount to the ticket if applicable.
+Verifica si un usuario tiene una tarjeta VIP válida y aplica un descuento VIP al boleto si es aplicable.
 
-- Parameters:
-  - `userId` (string): The unique identifier of the user.
-  - `ticketId` (string): The unique identifier of the ticket to apply the discount to.
-- Returns: A Promise that resolves to true if the VIP discount is successfully applied, false otherwise.
-- Throws: An error if there's an issue with database operations or if the VIP discount is not found.
+- Parámetros:
+  - `userId` (string): El identificador único del usuario.
+  - `ticketId` (string): El identificador único del boleto al que se aplica el descuento.
+- Devuelve: Una Promesa que se resuelve en true si el descuento VIP se aplica con éxito, false de lo contrario.
+-
 
-# User Class Documentation
+ Lanza: Un error si hay un problema con las operaciones de la base de datos o si no se encuentra la tarjeta VIP.
 
-## Overview
 
-The `User` class manages user-related operations in the database, including user creation, retrieval, role updates, and VIP card generation. It implements the Singleton pattern for database connection management.
+> Esta clase proporciona una gestión completa de pagos y descuentos para un sistema de reservas de entradas, integrando funcionalidades críticas como la verificación de tarjetas VIP
+
+# Documentación de la Clase User
+
+## Descripción General
+
+La clase `User` gestiona las operaciones relacionadas con los usuarios en la base de datos, incluyendo la creación, recuperación, actualización de roles y generación de tarjetas VIP. Implementa el patrón Singleton para la gestión de la conexión a la base de datos.
 
 ## Constructor
 
 ### `constructor(client = null)`
 
-Creates a new User instance or returns the existing instance (Singleton pattern).
+Crea una nueva instancia de User o devuelve la instancia existente (patrón Singleton).
 
-- Parameters:
-  - `client` (Object): The database client object.
-- Returns: The User instance.
+- Parámetros:
+  - `client` (Objeto): El objeto cliente de la base de datos.
+- Devuelve: La instancia de User.
 
-## Methods
+## Métodos
 
 ### `createUser(userData, role)`
 
-Creates a new user in the database.
+Crea un nuevo usuario en la base de datos.
 
-- Parameters:
-  - `userData` (Object): The user's information.
-    - `name` (string): The user's name.
-    - `email` (string): The user's email.
-    - `password` (string): The user's password.
-  - `role` (string): The user's role ('standard', 'VIP', or 'admin').
-- Returns: A Promise that resolves with a success message if the user is created.
-- Throws: An error if the user already exists in the database.
+- Parámetros:
+  - `userData` (Objeto): La información del usuario.
+    - `name` (string): El nombre del usuario.
+    - `email` (string): El correo electrónico del usuario.
+    - `password` (string): La contraseña del usuario.
+  - `role` (string): El rol del usuario ('standard', 'VIP' o 'admin').
+- Devuelve: Una Promesa que se resuelve con un mensaje de éxito si el usuario es creado.
+- Lanza: Un error si el usuario ya existe en la base de datos.
 
 ### `getUserDetails(userId)`
 
-Retrieves user details from the database.
+Recupera los detalles de un usuario de la base de datos.
 
-- Parameters:
-  - `userId` (string): The unique identifier of the user.
-- Returns: A Promise that resolves with the user's details if found, or null if not found.
-- Throws: An error if there is a problem connecting to the database or executing the query.
+- Parámetros:
+  - `userId` (string): El identificador único del usuario.
+- Devuelve: Una Promesa que se resuelve con los detalles del usuario si se encuentra, o null si no se encuentra.
+- Lanza: Un error si hay un problema al conectar con la base de datos o al ejecutar la consulta.
 
 ### `updateUserRole(userId, newRole)`
 
-Updates the role of a user in the database.
+Actualiza el rol de un usuario en la base de datos.
 
-- Parameters:
-  - `userId` (string): The unique identifier of the user.
-  - `newRole` (string): The new role to assign to the user.
-- Returns: A Promise that resolves with true if the user's role is updated successfully, or false if the user is not found.
-- Throws: An error if there is a problem connecting to the database or executing the query.
+- Parámetros:
+  - `userId` (string): El identificador único del usuario.
+  - `newRole` (string): El nuevo rol para asignar al usuario.
+- Devuelve: Una Promesa que se resuelve con true si el rol del usuario se actualiza correctamente, o false si no se encuentra el usuario.
+- Lanza: Un error si hay un problema al conectar con la base de datos o al ejecutar la consulta.
 
 ### `listUsers(role = null)`
 
-Retrieves a list of users from the database based on the specified role.
+Recupera una lista de usuarios de la base de datos según el rol especificado.
 
-- Parameters:
-  - `role` (string, optional): The role to filter users by. If not provided, all users will be returned.
-- Returns: A Promise that resolves with an array of user objects.
-- Throws: An error if there is a problem connecting to the database or executing the query.
+- Parámetros:
+  - `role` (string, opcional): El rol por el que filtrar los usuarios. Si no se proporciona, se devolverán todos los usuarios.
+- Devuelve: Una Promesa que se resuelve con un array de objetos de usuario.
+- Lanza: Un error si hay un problema al conectar con la base de datos o al ejecutar la consulta.
 
 ### `generateVIPCard()`
 
-Generates a VIP card object with a unique card number, issue date, and expiration date.
+Genera un objeto de tarjeta VIP con un número de tarjeta único, fecha de emisión y fecha de expiración.
 
-- Returns: An object containing:
-  - `card_number` (string): The unique card number.
-  - `issue_date` (Date): The date the VIP card was issued.
-  - `expiration_date` (Date): The date the VIP card expires.
+- Devuelve: Un objeto que contiene:
+  - `card_number` (string): El número único de la tarjeta.
+  - `issue_date` (Date): La fecha en que se emitió la tarjeta VIP.
+  - `expiration_date` (Date): La fecha en que expira la tarjeta VIP.
 
-# Ticket Class Documentation
+# Documentación de la Clase Ticket
 
-## Overview
+## Descripción General
 
-The `Ticket` class manages ticket-related operations in the database, including ticket purchases, seat availability checks, seat reservations, and cancellations. It implements the Singleton pattern for database connection management.
+La clase `Ticket` gestiona las operaciones relacionadas con los boletos en la base de datos, incluyendo la compra de boletos, verificación de disponibilidad de asientos, reservación de asientos y cancelaciones. Implementa el patrón Singleton para la gestión de la conexión a la base de datos.
 
 ## Constructor
 
 ### `constructor(client = null)`
 
-Creates a new Ticket instance or returns the existing instance (Singleton pattern).
+Crea una nueva instancia de Ticket o devuelve la instancia existente (patrón Singleton).
 
-- Parameters:
-  - `client` (Object): The database client object.
-- Returns: The Ticket instance.
+- Parámetros:
+  - `client` (Objeto): El objeto cliente de la base de datos.
+- Devuelve: La instancia de Ticket.
 
-## Methods
+## Métodos
 
 ### `buyTicket(screeningId, userId, seatInfo)`
 
-Buys a ticket for a specific screening and reserves the selected seat.
+Compra un boleto para una proyección específica y reserva el asiento seleccionado.
 
-- Parameters:
-  - `screeningId` (string): The ID of the screening for which the ticket is being purchased.
-  - `userId` (string): The ID of the user purchasing the ticket.
-  - `seatInfo` (object): The seat information containing the row and number of the selected seat.
-    - `row` (string): The row of the selected seat.
-    - `number` (number): The number of the selected seat.
-- Returns: A Promise that resolves to the ID of the newly created ticket document in the database.
-- Throws: An error if the screening, seat, user, or VIP status is invalid.
+- Parámetros:
+  - `screeningId` (string): El ID de la proyección para la cual se está comprando el boleto.
+  - `userId` (string): El ID del usuario que compra el boleto.
+  - `seatInfo` (objeto): La información del asiento que contiene la fila y el número del asiento seleccionado.
+    - `row` (string): La fila del asiento seleccionado.
+    - `number` (número): El número del asiento seleccionado.
+- Devuelve: Una Promesa que se resuelve con el ID del documento del boleto recién creado en la base de datos.
+- Lanza: Un error si la proyección, asiento, usuario o estado VIP no es válido.
 
 ### `checkSeatAvailability(screeningId)`
 
-Checks the availability of seats for a specific screening.
+Verifica la disponibilidad de asientos para una proyección específica.
 
-- Parameters:
-  - `screeningId` (string): The ID of the screening for which the seat availability is being checked.
-- Returns: A Promise that resolves to an object containing:
-  - `availableSeats` (number): The number of available seats for the screening.
-  - `occupiedSeats` (array): An array of objects representing the occupied seats.
-- Throws: An error if the screening is not found.
+- Parámetros:
+  - `screeningId` (string): El ID de la proyección para la cual se está verificando la disponibilidad de asientos.
+- Devuelve: Una Promesa que se resuelve con un objeto que contiene:
+  - `availableSeats` (número): El número de asientos disponibles para la proyección.
+  - `occupiedSeats` (array): Un array de objetos que representan los asientos ocupados.
+- Lanza: Un error si no se encuentra la proyección.
 
 ### `isSeatAvailable(screening, seatInfo)`
 
-Checks if a seat is available for a specific screening.
+Verifica si un asiento está disponible para una proyección específica.
 
-- Parameters:
-  - `screening` (object): The screening object containing the occupied seats.
-  - `seatInfo` (object): The seat information containing the row and number of the selected seat.
-    - `row` (string): The row of the selected seat.
-    - `number` (number): The number of the selected seat.
-- Returns: A boolean indicating if the seat is available.
+- Parámetros:
+  - `screening` (objeto): El objeto de la proyección que contiene los asientos ocupados.
+  - `seatInfo` (objeto): La información del asiento que contiene la fila y el número del asiento seleccionado.
+    - `row` (string): La fila del asiento seleccionado.
+    - `number` (número): El número del asiento seleccionado.
+- Devuelve: Un booleano que indica si el asiento está disponible.
 
 ### `reserveSeat(screeningId, seatInfo, session)`
 
-Reserves a seat for a specific screening.
+Reserva un asiento para una proyección específica.
 
-- Parameters:
-  - `screeningId` (string): The ID of the screening for which the seat is being reserved.
-  - `seatInfo` (object): The seat information containing the row and number of the selected seat.
-    - `row` (string): The row of the selected seat.
-    - `number` (number): The number of the selected seat.
-  - `session` (object): The MongoDB session for transactional operations.
-- Returns: A Promise that resolves to true if the seat reservation is successful, false otherwise.
-- Throws: An error if the database connection fails or if the update operation fails.
+- Parámetros:
+  - `screeningId` (string): El ID de la proyección para la cual se está reservando el asiento.
+  - `seatInfo` (objeto): La información del asiento que contiene la fila y el número del asiento seleccionado.
+    - `row` (string): La fila del asiento seleccionado.
+    - `number` (número): El número del asiento seleccionado.
+  - `session` (objeto): La sesión de MongoDB para operaciones transaccionales.
+- Devuelve: Una Promesa que se resuelve con true si la reservación del asiento es exitosa, false de lo contrario.
+- Lanza: Un error si la conexión a la base de datos falla o si la operación de actualización falla.
 
 ### `cancelSeatReservation(screeningId, seatInfo)`
 
-Cancels a seat reservation for a specific screening.
+Cancela una reservación de asiento para una proyección específica.
 
-- Parameters:
-  - `screeningId` (string): The ID of the screening for which the seat reservation is being canceled.
-  - `seatInfo` (object): The seat information containing the row and number of the selected seat.
-    - `row` (string): The row of the selected seat.
-    - `number` (number): The number of the selected seat.
-- Returns: A Promise that resolves to true if the seat cancellation is successful, false otherwise.
-- Throws: An error if the database connection fails or if the update operation fails.
+- Parámetros:
+  - `screeningId` (string): El ID de la proyección para la cual se está cancelando la reservación del asiento.
+  - `seatInfo` (objeto): La información del asiento que contiene la fila y el número del asiento seleccionado.
+    - `row` (string): La fila del asiento seleccionado.
+    - `number` (número): El número del asiento seleccionado.
+- Devuelve: Una Promesa que se resuelve con true si la cancelación de la reservación del asiento es exitosa, false de lo contrario.
+- Lanza: Un error si la conexión a la base de datos falla o si la operación de actualización falla.
 
-# Movie Class Documentation
+# Documentación de la Clase Movie
 
-## Overview
+## Descripción General
 
-The `Movie` class provides functionality to interact with movie-related data in a MongoDB database. It follows the Singleton pattern to ensure only one instance of the class is created.
+La clase `Movie` proporciona funcionalidad para interactuar con los datos relacionados con las películas en una base de datos MongoDB. Sigue el patrón Singleton para asegurar que solo se cree una instancia de la clase.
 
 ## Constructor
 
 ### `constructor(client = null)`
 
-Creates a new Movie instance or returns the existing instance.
+Crea una nueva instancia de Movie o devuelve la instancia existente.
 
-- **Parameters:**
-  - `client` (Object): The database client object.
-- **Returns:** The Movie instance.
+- **Parámetros:**
+  - `client` (Objeto): El objeto cliente de la base de datos.
 
-## Methods
+- **Devuelve:** La instancia de Movie.
+
+## Métodos
 
 ### `async getMovieDetails(movieId)`
 
-Retrieves the details of a movie from the database.
+Recupera los detalles de una película de la base de datos.
 
-- **Parameters:**
-  - `movieId` (string): The unique identifier of the movie.
-- **Returns:** A Promise that resolves to a movie object with the following properties:
-  - `_id`: The unique identifier of the movie.
-  - `movie_id`: The unique identifier of the movie.
-  - `theater_id`: The unique identifier of the theater.
-  - `date_time`: The date and time of the screening.
-  - `base_price`: The base price of the ticket.
-  - `available_seats`: The number of available seats.
-  - `occupied_seats`: An array of occupied seat numbers.
-- **Throws:** Error if an error occurs while retrieving the movie details.
+- **Parámetros:**
+  - `movieId` (string): El identificador único de la película.
+- **Devuelve:** Una Promesa que se resuelve a un objeto película con las siguientes propiedades:
+  - `_id`: El identificador único de la película.
+  - `movie_id`: El identificador único de la película.
+  - `theater_id`: El identificador único del teatro.
+  - `date_time`: La fecha y hora de la proyección.
+  - `base_price`: El precio base del boleto.
+  - `available_seats`: El número de asientos disponibles.
+  - `occupied_seats`: Un array de números de asientos ocupados.
+- **Lanza:** Un error si ocurre un error al recuperar los detalles de la película.
 
 ### `async listMovies()`
 
-Retrieves a list of all movies from the database.
+Recupera una lista de todas las películas de la base de datos.
 
-- **Returns:** A Promise that resolves to an array of movie objects. Each movie object contains the following properties:
-  - `_id`: The unique identifier of the movie.
-  - `title`: The title of the movie.
-  - `genre`: The genre of the movie.
-  - `duration`: The duration of the movie in minutes.
-  - `synopsis`: The synopsis of the movie.
-  - `screening_times`: An array of screening times for the movie.
-- **Throws:** Error if an error occurs while retrieving the movies.
+- **Devuelve:** Una Promesa que se resuelve a un array de objetos película. Cada objeto película contiene las siguientes propiedades:
+  - `_id`: El identificador único de la película.
+  - `title`: El título de la película.
+  - `genre`: El género de la película.
+  - `duration`: La duración de la película en minutos.
+  - `synopsis`: La sinopsis de la película.
+  - `screening_times`: Un array de horarios de proyección para la película.
+- **Lanza:** Un error si ocurre un error al recuperar las películas.
 
-## Dependencies
+## Dependencias
 
-- `mongodb`: Used for MongoDB operations.
-- `DbService`: A custom service for database connections.
+- `mongodb`: Utilizado para operaciones con MongoDB.
+- `DbService`: Un servicio personalizado para conexiones a la base de datos.
 
-## Usage Example
-
-```javascript
-const client = new Client("user", "somepassword"); // Assume this is your database client
-const movieInstance = new Movie(client);
-
-// Get movie details
-const movieDetails = await movieInstance.getMovieDetails('someMovieId');
-
-// List all movies
-const allMovies = await movieInstance.listMovies();
-```
-> Note: This class uses a Singleton pattern, ensuring that only one instance of the Movie class is created and used throughout the application.
+> Nota: Esta clase utiliza un patrón Singleton, asegurando que solo se cree y utilice una instancia de la clase Movie en toda la aplicación.
