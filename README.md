@@ -16,7 +16,9 @@ CineCampus es un sistema de gestión de cine que utiliza MongoDB para manejar us
    ```bash
    npm install
    ```
-
+    ```bash
+    npm install run-rs -g
+    ```
 3. Configurar las variables de entorno:
    Crea un archivo `.env` en la raíz del proyecto con las siguientes variables:
 
