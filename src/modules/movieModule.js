@@ -76,5 +76,65 @@ export default class Movie {
             await this.dbService.close();
         }
     }
+
+    /**
+     * Retrieves a list of available seats for a specific screening.
+     *
+     * @param {string} screeningId - The unique identifier of the screening.
+     *
+     * @returns {Promise<Array>} A promise that resolves to an array of available seat objects.
+     * Each seat object contains the following properties:
+     * - row: The row number of the seat.
+     * - number: The seat number within the row.
+     * - type: 'standard' or 'VIP'
+     *
+     * @throws {Error} If an error occurs while retrieving the available seats.
+     */
+    async listAvailableSeats(screeningId) {
+        const db = await this.dbService.connect();
+        try {
+            const screening = await db.collection('screenings').findOne(
+                { _id: new ObjectId(screeningId) }
+            );
+    
+            if (!screening) {
+                throw new Error('Screening not found');
+            }
+    
+            const theater = await db.collection('theaters').findOne(
+                { _id: new ObjectId(screening.theater_id) }
+            );
+    
+            if (!theater) {
+                throw new Error('Theater not found');
+            }
+    
+            const occupiedSeats = await db.collection('tickets').find(
+                { screening_id: new ObjectId(screeningId) },
+                { projection: { seat: 1, _id: 0 } }
+            ).toArray();
+    
+            const occupiedSeatsSet = new Set(
+                occupiedSeats.map(ticket => `${ticket.seat.row}-${ticket.seat.number}`)
+            );
+            const availableSeats = theater.seats.filter(seat => 
+                !occupiedSeatsSet.has(`${seat.row}-${seat.number}`)
+            );
+    
+            availableSeats.sort((a, b) => {
+                if (a.row !== b.row) {
+                    return a.row.localeCompare(b.row);
+                }
+                return a.number - b.number;
+            });
+    
+            return availableSeats;
+        } catch (error) {
+            console.error('Error listing available seats:', error);
+            throw error;
+        } finally {
+            await this.dbService.close();
+        }
+    }
 }
 
