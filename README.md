@@ -523,7 +523,7 @@ Array of available seat objects, sorted by row and number.
 
 - Throws if screening or theater not found.
 - Throws on database connection issues.
-```
+
 
 ## Dependencias
 
