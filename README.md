@@ -495,6 +495,36 @@ Recupera una lista de todas las películas de la base de datos.
   - `screening_times`: Un array de horarios de proyección para la película.
 - **Lanza:** Un error si ocurre un error al recuperar las películas.
 
+# 'listAvailableSeats();
+
+Lista los asintos disponibles para una funcion.
+
+## Usage
+
+```javascript
+const availableSeats = await user.listAvailableSeats('screeningId');
+```
+
+## Retorna
+
+Array of available seat objects, sorted by row and number.
+
+#### Seat Object
+
+```javascript
+{
+  number: 1,
+  row: "A",
+  type: "standard"
+}
+```
+
+## Errors
+
+- Throws if screening or theater not found.
+- Throws on database connection issues.
+```
+
 ## Dependencias
 
 - `mongodb`: Utilizado para operaciones con MongoDB.
