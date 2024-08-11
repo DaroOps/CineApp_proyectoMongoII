@@ -1,0 +1,11 @@
+:root {
+  /* Buttons */
+  --button-background: var(--primary-color);
+  --button-color: #fff;
+  --button-background-disabled: #c6cacf;
+  --button-color-disabled: #717171;
+
+  --button-border-radius: 10px;
+  --button-height: 48px;
+  --button-height-small: 34px;
+}

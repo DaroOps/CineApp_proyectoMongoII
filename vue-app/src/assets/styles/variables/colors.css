@@ -1,0 +1,25 @@
+/*
+  Colors
+*/
+:root {
+  /* General */
+  --primary-color: #FE0000;
+  --primary-color-rgb: 63 162 246;
+  --secondary-color: #00eca6;
+
+  /* States */
+  --error-color: #e25050;
+  --success-color: #1fbe96;
+  --warning-color: #fea83a;
+  
+  /* Backgrounds */
+  --background-color: #f3f4f8;
+  --background-color-rgb: 243 244 248;
+  --background-color2: #fff;
+
+  /* Text */
+  --title-color: #000000;
+  --subtitle-color: #303030;
+  --text-color: #000000;
+  --link-color: var(--primary-color);
+}

@@ -1,8 +1,43 @@
-import Movie  from "./src/modules/movieModule.js";
-import Client from "./src/config/mongodb.js";
-import Ticket from "./src/modules/ticketModule.js";
-import User from "./src/modules/userModule.js";
-import Payment from "./src/modules/paymentModule.js";
+import express from 'express';
+import cors from 'cors';
+
+import userRouter from './src/routes/api/users.js';
+import registerRouter from './src/routes/register.js';
+
+const app = express();
+const port = 3000;
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+app.use(cors({
+    origin: process.env.NODE_ENV === 'production' ? process.env.ALLOWED_ORIGINS : '*',
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'Authorization'],
+    credentials: true
+}));
+
+app.get('/', (req, res) => {
+  res.send('Healt Check: OK');
+});
+
+app.use('/api/users', userRouter);
+app.use('/register', registerRouter);
+
+// app.use('login', loginRouter);
+// app.use('register', registerRouter);
+
+
+app.listen(port, () => {
+  console.log(`Example app listening at http://localhost:${port}`);
+});
+
+
+// import Movie  from "./src/modules/movieModule.js";
+// import Client from "./src/config/mongodb.js";
+// import Ticket from "./src/modules/ticketModule.js";
+// import User from "./src/modules/userModule.js";
+// import Payment from "./src/modules/paymentModule.js";
 
 
 // #region standard flow

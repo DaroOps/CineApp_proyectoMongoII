@@ -5,7 +5,7 @@ class Client{
     user && pwd?
     this.uri = `${process.env.MONGO_PROTOCOL}://${encodeURIComponent(user)}:${encodeURIComponent(pwd)}@${process.env.MONGO_HOST}:${process.env.MONGO_PORT}/${process.env.DB_NAME}?replicaSet=${process.env.REPLICA_SET_NAME}`:
     this.uri = `${process.env.MONGO_PROTOCOL}://${process.env.MONGO_HOST}:27017/${process.env.DB_NAME}`
-    console.log(this.uri);
+    // console.log(this.uri);
   }
 
   /**

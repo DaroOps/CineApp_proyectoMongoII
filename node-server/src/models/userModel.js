@@ -1,6 +1,6 @@
 import { ObjectId } from 'mongodb';
 import DbService from '../db/dbConnection.js';
-import bcrypt from 'bcrypt';
+import { hash } from '../utils/bcrypt.js';
 
 export default class User {
     static instanceUser;
@@ -34,12 +34,12 @@ export default class User {
      *
      * @throws {Error} - If the user already exists in the database.
      */
-    async createUser(userData, role) {
+    async createUser({name, email, password, role}) {
         const db = await this.dbService.connect();
         const session = this.client.startSession();
         try {
-            const hashedPassword = await bcrypt.hash(userData.password, 10);
-            const usersInfo = await db.command({ usersInfo:{ user: userData.name, db: db.databaseName }});
+            const hashedPassword = await hash(password);
+            const usersInfo = await db.command({ usersInfo:{ user: name, db: db.databaseName }});
     
             if (usersInfo.users.length > 0) {
                 throw new Error('The user already exists in the database');
@@ -47,8 +47,8 @@ export default class User {
             
             await session.withTransaction(async () => {
                 const userDoc = {
-                    name: userData.name,
-                    email: userData.email,
+                    name: name,
+                    email: email,
                     password: hashedPassword,
                     role:{
                         type: role,
@@ -61,18 +61,18 @@ export default class User {
                     userDoc.vip_card = this.generateVIPCard();
                 }
 
-                console.log(userDoc);
+                // console.log(userDoc);
                 const result = await db.collection('users').insertOne(userDoc, { session });
                 return result.insertedId;
             });
             
             await db.command({
-                createUser: userData.name,
-                pwd: userData.password,
+                createUser: name,
+                pwd: password,
                 roles: [{ role: role, db: db.databaseName }]
             });
 
-           return `Created user ${userData.name} with role ${role}`; 
+           return `Created user ${name} with role ${role}`; 
         } catch (error) {
             console.error('Error creating user:', error);
             throw error;

@@ -2,12 +2,11 @@
   "name": "proyectomongoii",
   "version": "1.0.0",
   "description": "",
-  "main": "main.js",
+  "main": "app.js",
   "type": "module",
   "scripts": {
     "test": "jest",
-    "dev": "node --env-file .env ./src/services/testConnectionService.js",
-    "main": "node --env-file .env ./main.js",
+    "dev": "node --watch --env-file .env ./app.js",
     "rs": "run-rs -v 4.0.0 --shell",
     "rebuild": "node --env-file .env ./src/utils/rebuild.js"
   },
@@ -16,6 +15,8 @@
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.1.1",
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
     "mongodb": "^6.8.0",
     "run-rs": "^0.7.7"
   }

@@ -1,0 +1,16 @@
+/* Variables styles */
+@import './variables/colors.css';
+@import './variables/fonts.css';
+@import './variables/button.css';
+@import './variables/general.css';
+@import './variables/dark-theme.css';
+
+/* Base styles */
+@import './base/reset.css';
+@import './base/global.css';
+@import './base/scroll.css';
+
+/* Theme styles */
+@import './theme/layout.css';
+@import './theme/icomoon.css';
+@import './theme/utilities.css';
