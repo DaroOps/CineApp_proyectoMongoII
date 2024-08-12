@@ -5,7 +5,7 @@
   /* General */
   --primary-color: #FE0000;
   --primary-color-rgb: 63 162 246;
-  --secondary-color: #00eca6;
+  --secondary-color: #FE0000;
 
   /* States */
   --error-color: #e25050;
@@ -13,13 +13,13 @@
   --warning-color: #fea83a;
   
   /* Backgrounds */
-  --background-color: #f3f4f8;
+  --background-color: #121212;
   --background-color-rgb: 243 244 248;
-  --background-color2: #fff;
+  --background-color2: #272727;
 
   /* Text */
-  --title-color: #000000;
+  --title-color: #ffffff;
   --subtitle-color: #303030;
-  --text-color: #000000;
+  --text-color: #ffffff;
   --link-color: var(--primary-color);
 }

@@ -13,14 +13,7 @@ import { ref } from "vue";
 const appStore = useAppStore();
 const router = useRouter();
 
-const showInfoModal = ref(false);
 
-const openInfoModal = () => {
-  showInfoModal.value = true;
-};
-const closeInfoModal = () => {
-  showInfoModal.value = false;
-};
 const toHome = () => {
   router.push("/");
 };
@@ -44,19 +37,7 @@ const toHome = () => {
           :text="link.text"
         />
       </div>
-      <button class="button-info" type="button" @click="openInfoModal">
-        <div class="icon-info">
-          <IconInfo />
-        </div>
-      </button>
     </div>
-    <DialogBlur
-      :button-close="true"
-      :show="showInfoModal"
-      @close="closeInfoModal"
-    >
-      <InfoModal />
-    </DialogBlur>
   </nav>
 </template>
 

@@ -12,5 +12,4 @@
 
 /* Theme styles */
 @import './theme/layout.css';
-@import './theme/icomoon.css';
 @import './theme/utilities.css';
