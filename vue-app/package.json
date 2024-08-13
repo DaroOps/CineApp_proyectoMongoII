@@ -10,8 +10,10 @@
   },
   "dependencies": {
     "pinia": "^2.2.1",
+    "swiper": "^11.1.9",
     "vue": "^3.4.35",
-    "vue-router": "^4.4.3"
+    "vue-router": "^4.4.3",
+    "vue3-marquee-slider": "^1.0.5"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.1.2",

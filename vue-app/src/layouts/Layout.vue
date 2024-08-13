@@ -10,8 +10,8 @@ defineOptions({
     <div class="dashboard-layout">
         <main class="main">
             <slot />
-            <NavComponent />
         </main>
+        <NavComponent />
     </div>
 </template>
 
