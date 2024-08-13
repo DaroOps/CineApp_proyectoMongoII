@@ -1,7 +1,8 @@
-import IconGeometricFigures from '@icons/nav/IconGeometricFigures.vue';
-import IconHome from '@icons/nav/IconHome.vue';
-import IconPerson from '@icons/nav/IconPerson.vue';
-import IconEye from '@icons/form/IconEye.vue';
+import IconHome from '@icons/nav/IconHome.vue'
+import IconSearch from '@icons/nav/IconSearch.vue'
+import IconTicket from '@icons/nav/IconTicket.vue'
+import IconProfile from '@icons/nav/IconProfile.vue'
+
 
 export default [
   {
@@ -10,18 +11,18 @@ export default [
     icon: IconHome,
   },
   {
-    pageName: 'AppCategories',
-    text: 'Categorías',
-    icon: IconGeometricFigures,
+    pageName: 'AppSearch',
+    text: 'Search',
+    icon: IconSearch,
   },
   {
-    pageName: 'AppDesigns',
-    text: 'Diseños',
-    icon: IconEye,
+    pageName: 'AppTickets',
+    text: 'Tickets',
+    icon: IconTicket,
   },
   {
     pageName: 'AppProfile',
     text: 'Perfil',
-    icon: IconPerson,
-  },
+    icon: IconProfile,
+  }
 ]

@@ -1,10 +1,13 @@
 <script setup>
+import Layout from '../../layouts/Layout.vue';
 defineOptions({ name: 'AppPage' })
 </script>
 
 <template>
   <div class='app-page'>
-    <RouterView />
+    <Layout>
+      <RouterView />
+    </Layout>
   </div>
 </template>
 
