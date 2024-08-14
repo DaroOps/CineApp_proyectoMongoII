@@ -16,10 +16,12 @@
   --background-color: #121212;
   --background-color-rgb: 243 244 248;
   --background-color2: #272727;
+  --background-linear: linear-gradient(to left, #161616, #232323);
 
   /* Text */
   --title-color: #ffffff;
   --subtitle-color: #303030;
   --text-color: #ffffff;
+  --text-color-rgb: 255, 255, 255;
   --link-color: var(--primary-color);
 }
