@@ -38,7 +38,7 @@
     padding: 15px 15px 15px 40px;
     border-radius: 10px;
     border: 0;
-    outline: var(--text-color) 1px solid;
+    outline: rgba(var(--text-color-rgb), 0.7) 1px solid;
     background: var(--background-linear);
     color: var(--text-color-rgb);
     font-size: 14px;
@@ -50,7 +50,7 @@
   }
 
   .search-input:focus{
-    outline: var(--text-color) 1px solid;
+    outline: rgba(var(--text-color-rgb), 0.7) 1px solid;
    }
 
   
