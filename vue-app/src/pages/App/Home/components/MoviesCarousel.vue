@@ -1,8 +1,9 @@
-<script>
+<script s>
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import { Pagination } from 'swiper/modules';
 import { useCarouselStore } from '@stores/carousel.js';
 import { storeToRefs } from 'pinia';
+import { computed } from 'vue';
 
 import 'swiper/css';
 import 'swiper/css/pagination';
@@ -16,8 +17,12 @@ export default {
         const carouselStore = useCarouselStore();
         const { imagesArray, currentImageIndex } = storeToRefs(carouselStore);
 
+        const currentMovie = computed(() => {
+        return imagesArray.value[currentImageIndex.value] || {};
+        });
+
         const onSwiper = (swiper) => {
-            // You can do something with the swiper object here if needed
+            carouselStore.currentIndex = swiper.realIndex;
         };
 
         const onSlideChange = (swiper) => {
@@ -30,6 +35,7 @@ export default {
             currentImageIndex,
             onSwiper,
             onSlideChange,
+            currentMovie
         };
     },
 }
@@ -48,8 +54,8 @@ export default {
     </div>
     </swiper>
     <div class="movie-info">
-        <h2 class="movie-title">Harold Purple Crayon</h2>
-        <p class="movie-genre">Drama</p>
+        <h2 class="movie-title">{{ currentMovie.title }}</h2>
+        <p class="movie-genre">{{ currentMovie.genre }}</p>
     </div>
 </template>
 
@@ -71,6 +77,7 @@ export default {
     justify-content: center;
     align-items: center;
     overflow: hidden;
+    cursor: pointer;
 }
 
 .swiper-slide img {
@@ -114,6 +121,8 @@ export default {
 }
 
 .movie-genre {
+    color: rgba(var(--text-color-rgb), 0.6);
+    font-weight: 700;
     padding: 0;
     margin: 0;
 }
