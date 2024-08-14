@@ -57,7 +57,7 @@ export default {
 <style scoped>
 .swiper {
     width: 100%;
-    height: 445px;
+    min-height: 445px;
     position: relative;
     z-index: 0;
 }
@@ -100,8 +100,9 @@ export default {
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    top: -100px;
+    top: -65px;
     position: relative;
+    height: 0;
 }
 
 .movie-title {

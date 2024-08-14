@@ -3,6 +3,7 @@ import MoviesCarousel from './components/MoviesCarousel.vue'
 import SeeAll from './components/SeeAll.vue'
 import CustomInput from './components/CustomInput.vue';
 import ProfileHead from './components/ProfileHead.vue'
+import ComingSoon from './components/ComingSoon.vue';
 
 </script>
 
@@ -17,17 +18,21 @@ import ProfileHead from './components/ProfileHead.vue'
         </div>
         <MoviesCarousel />
         <div class="botom">
-            <SeeAll/>
+            <SeeAll title="Coming Soon"/>
+            <div class="coming-soon">
+                <ComingSoon/>
+                <ComingSoon/>
+                <ComingSoon/>
+            </div>
         </div>
     </div>
 </template>
 
 <style scoped>
     .home {
-        height: 100vh;
+        height: 100%;
         width: 100%;
-        display: flex;
-        flex-direction: column;
+  
     }
     .head{
         padding: 30px;
@@ -44,6 +49,15 @@ import ProfileHead from './components/ProfileHead.vue'
     }
     
     .botom{
-        padding: 30px;
+        padding: 10px 30px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .coming-soon{
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
     }
 </style>
