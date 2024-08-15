@@ -5,7 +5,7 @@ import App from '@pages/App/App.vue'
 import Home from '@pages/App/Home/Home.vue'
 // import Designs from '@pages/App/Designs/index.vue'
 // import Profile from '@pages/App/Profile/index.vue'
-
+import CinemaSelection from '@pages/App/CinemaSelection/CinemaSelection.vue'
 import Login from '@pages/Login/Login.vue'
 import Register from '@pages/Register/Register.vue'
 
@@ -33,27 +33,30 @@ const routes = [
         path: '/app/',
         name: 'AppHome',
         component: Home,
-        alias: '/app/inicio',
-        meta: { title: 'Bienvenido' }
+        meta:{ requiresNav: true }
+
       },
       {
         path: '/app/search',
         name: 'AppSearch',
         component: Home,
-        alias: '/app/busqueda',
-        meta: { title: 'Busqueda' }
+        meta:{ requiresNav: true }
       },
       {
         path: '/app/tickets',
         name: 'AppTickets',
         component: Home,
-        alias: '/app/tickets',
-        meta: { title: 'Tickets' }
+        meta:{ requiresNav: true }
       },
       { path: '/app/profile', name: 'AppProfile',
         component: Home,
-        alias: '/app/perfil', 
-        meta: { title: 'Perfil' } },
+        meta:{ requiresNav: true }
+      },
+      {
+        path: '/app/cinema-select:id',
+        component: CinemaSelection,
+        meta:{ requiresNav: false }
+      }
     ]
   },
 ]

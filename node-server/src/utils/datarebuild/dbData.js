@@ -418,7 +418,8 @@ db.runCommand({
       'title',
       'genre',
       'duration',
-      'synopsis'
+      'synopsis',
+      'image_url'
     ],
     properties: {
       title: {
@@ -444,6 +445,10 @@ db.runCommand({
           bsonType: 'date'
         },
         description: 'Must be an array of dates'
+      },
+      image_url: {
+        bsonType: 'string',
+        description: 'Must be a string and is required'
       }
     }
   }
@@ -737,7 +742,8 @@ db.movies.insertMany([
       ISODate("2024-08-01T18:00:00.000Z"),
       ISODate("2024-08-01T21:00:00.000Z"),
       ISODate("2024-08-02T18:00:00.000Z")
-    ]
+    ],
+    image_url: "https://wallpapers.com/images/featured/cool-profile-picture-87h46gcobjl5e4xu.jpg"
   },
   {
     _id: ObjectId("66a1293e41165c14ebdd4f6e"),
@@ -748,7 +754,8 @@ db.movies.insertMany([
     screening_times: [
       ISODate("2024-08-01T19:30:00.000Z"),
       ISODate("2024-08-02T19:30:00.000Z")
-    ]
+    ],
+    image_url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT4dE6QfOiD4kuoEN9fYCFNonC7xf6cekSLpw&s"
   },
   {
     _id: ObjectId("66a1293e41165c14ebdd4f6f"),
@@ -760,7 +767,8 @@ db.movies.insertMany([
       ISODate("2024-08-01T20:00:00.000Z"),
       ISODate("2024-08-02T20:00:00.000Z"),
       ISODate("2024-08-03T20:00:00.000Z")
-    ]
+    ],
+    image_url: "https://images.fandango.com/ImageRenderer/200/0/redesign/static/img/default_poster.png/0/images/masterrepository/Fandango/234549/HaroldPurpleCrayon_2024.jpg"
   },
   {
     _id: ObjectId("66a12bf041165c14ebdd4f7f"),
@@ -771,7 +779,8 @@ db.movies.insertMany([
     screening_times: [
       ISODate("2024-09-15T19:00:00.000Z"),
       ISODate("2024-09-16T20:30:00.000Z")
-    ]
+    ],
+    image_url: "https://images.fandango.com/ImageRenderer/200/0/redesign/static/img/default_poster.png/0/images/masterrepository/Fandango/234549/HaroldPurpleCrayon_2024.jpg"
   }
 ])
 
