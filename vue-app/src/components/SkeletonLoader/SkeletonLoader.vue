@@ -5,10 +5,10 @@
   
   <style lang="scss" scoped>
   .skeleton {
-    width: 204px;
-    height: 319px;
-    background-color: #e0e0e0; 
-    border-radius: 20px;
+    width: 100%;
+    height: 100%;
+    border-radius: inherit;
+    background-color: #e0e0e00e; 
     animation: pulse 1.5s infinite;
   
     @keyframes pulse {

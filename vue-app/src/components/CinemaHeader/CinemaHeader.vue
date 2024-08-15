@@ -3,18 +3,32 @@
   import IconDots from '@icons/actions/IconDots.vue';
   import IconArrow from '@icons/actions/IconArrow.vue';
 
+  import { useRouter } from 'vue-router';
 
+  const router = useRouter();
+  
   const props = defineProps({
     headerText: {
       type: String,
       required: true
-    }
-  })
+    },
+    onBackClick: {
+    type: Function,
+    default: () => {}
+  }
+  });
+
+  function handleBackClick() {
+    props.onBackClick?
+    props.onBackClick():{};
+    router.back();
+  }
+
 </script>
 
 <template>
   <div class="cinema-header">
-    <span class="back-arrow" @click="$router.back()">
+    <span class="back-arrow" @click="handleBackClick">
       <IconArrow />
     </span>
     <h1>{{ headerText }}</h1>
@@ -32,12 +46,11 @@
   justify-content: space-between;
 
   color: var(--text-color);
-  padding:  33px;
+  padding:  33px 33px 6px 33px;
 }
 
 .back-arrow {
   height: 24px;
-  margin-right: 15px;
   cursor: pointer;
 }
 

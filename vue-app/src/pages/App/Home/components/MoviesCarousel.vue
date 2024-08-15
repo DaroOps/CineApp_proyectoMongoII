@@ -1,7 +1,7 @@
 <script>
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import {  Pagination } from 'swiper/modules';
-import { useCarouselStore } from '@stores/carousel.js';
+import { useMovieStore } from '@stores/movies.js';
 import { storeToRefs } from 'pinia';
 import { computed, onMounted, ref } from 'vue';
 
@@ -15,35 +15,37 @@ export default {
         SwiperSlide,
     },
     setup() {
-        const carouselStore = useCarouselStore();
-        const { moviesArray, currentImageIndex } = storeToRefs(carouselStore);
+        const movieStore = useMovieStore();
+        const { moviesArray, currentImageIndex } = storeToRefs(movieStore);
         const router = useRouter();
         const currentMovie = computed(() => {
         return moviesArray.value[currentImageIndex.value] || {};
         });
 
         onMounted(() => {
-            carouselStore.fetchMovies();
+            movieStore.fetchMovies();
         });
 
         const onSwiper = (swiper) => {
-            carouselStore.currentIndex = swiper.realIndex;
+            movieStore.currentIndex = swiper.realIndex;
         };
 
         const onSlideChange = (swiper) => {
-            carouselStore.currentIndex = swiper.realIndex;
+            movieStore.currentIndex = swiper.realIndex;
         };
 
         const onSlideClick = (movieId) => {
-            router.push(`/app/cinema-select:${movieId}`);
+            
+            router.push(`/app/cinema-select${movieId}`);
         };
 
         return {
             modules: [Pagination],
-            data: carouselStore.movies,
+            data: movieStore.movies,
             moviesArray,
             currentImageIndex,
             currentMovie,
+            movieStore,
             onSwiper,
             onSlideChange,
             onSlideClick,
@@ -68,10 +70,10 @@ export default {
 
         <swiper-slide v-show="moviesArray.length > 4" v-for="movie in moviesArray" 
         :key="movie._id"
-        @click="onSlideClick(movie._id)"
         :lazy="true"
+        @click="onSlideClick(movie._id)" 
         >
-            <img loading="lazy" :src="movie.image_url" :alt="movie.title + ' poster'" />
+            <img  loading="lazy" :src="movie.image_url" :alt="movie.title + ' poster'" />
         </swiper-slide>
 
         <div class="swiper-pagination" slot="pagination">
@@ -85,13 +87,6 @@ export default {
 
 
 <style lang="scss" scoped>
-
-.hidden{
-   background-color: red;
-   border-radius: 20px;
-   height: 319px;
-   min-width: 204px;
-}
 
 .swiper {
     width: 100%;
