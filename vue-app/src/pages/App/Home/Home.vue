@@ -32,7 +32,7 @@ import ComingSoon from './components/ComingSoon.vue';
     .home {
         height: 100%;
         width: 100%;
-  
+
     }
     .head{
         padding: 30px;

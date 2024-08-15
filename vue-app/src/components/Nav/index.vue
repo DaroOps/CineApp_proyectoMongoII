@@ -35,9 +35,11 @@ const toHome = () => {
     left: 0;
     width: 100%;
     height: 63px;
-    background: var(--background-color2);
+    background: var(--background-linear);
     padding: 15px 15px;
     color: var(--text-color);
+    outline-offset: -1px;
+    outline: 1px rgba(var(--text-color-rgb), 0.1) solid;
     display: flex;
     flex-direction: row;
     align-items: center;

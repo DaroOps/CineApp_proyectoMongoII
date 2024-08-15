@@ -1,5 +1,10 @@
 <script setup>
 import NavComponent from '@components/Nav/index.vue'
+import { computed } from 'vue';
+import { useRoute } from 'vue-router';
+
+const route = useRoute();
+const requiresNav = computed(() => route.meta.requiresNav);
 
 defineOptions({
     name: 'DashboardLayout'
@@ -11,7 +16,9 @@ defineOptions({
         <main class="main">
             <slot />
         </main>
-        <NavComponent />
+        <div v-show="requiresNav">
+            <NavComponent />
+        </div>
     </div>
 </template>
 
