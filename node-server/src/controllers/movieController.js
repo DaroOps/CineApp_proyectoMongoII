@@ -6,13 +6,15 @@ export default class MovieController {
     }
   
     getMovieDetails = async (req, res) => {
-      try {
         const { movieId } = req.params;
         const movieDetails = await this.movieService.getMovieDetails(movieId);
         res.json(movieDetails);
-      } catch (error) {
-        res.status(500).json({ error: 'Error getting movie details' });
-      }
+    };
+
+    getMovieById = async (req, res) => {
+        const { movie_id } = req.params;
+        const movieDetails = await this.movieService.getMovieById(movie_id);
+        res.json(movieDetails);
     };
   
     listMovies = async (req, res) => {

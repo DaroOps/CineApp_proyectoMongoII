@@ -9,14 +9,16 @@ import Ticket from '../models/ticketModel.js';
 
 export default class MovieService {
   async getMovieDetails(movieId) {
-    try {
       const screening = await Screening.findOne({ movie_id: movieId }).populate('movie_id');
       return screening;
-    } catch (error) {
-      console.error('Error getting movie details:', error);
-      throw error;
-    }
   }
+
+  async getMovieById(movie_id) {
+    const movie = await Movie.findById(movie_id);
+    console.log("one movie", movie);
+    
+    return movie;
+}
 
   async listMovies() {
       const movies = await Movie.find().select('_id title genre image_url');;
