@@ -1,3 +1,11 @@
+import Cinema from '../cinemas/cinema.model.js';
+import Actor from '../actors/actor.model.js';
+
+import mongoose from 'mongoose';
+
+console.log('Modelos registrados:', mongoose.modelNames());
+
+
 // proyecto-node-express-moderno/
 // │
 // ├── src/

@@ -30,10 +30,10 @@ const modules = [FreeMode, Mousewheel];
         >
           <swiper-slide v-for="member in cast" :key="member.name" class="cast-member">
             <div class="cast-photo-container">
-              <img :src="member.actor_id?.image_url" :alt="member.name" class="cast-photo">
+              <img :src="member.actor?.img" :alt="member.name" class="cast-photo">
             </div>
             <div class="cast-info">
-              <h3>{{ member.actor_id?.name }}</h3>
+              <h3>{{ member.actor?.name }}</h3>
               <p>{{ member.role }}</p>
             </div>
           </swiper-slide>

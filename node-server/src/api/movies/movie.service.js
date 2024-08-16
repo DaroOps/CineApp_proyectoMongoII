@@ -1,18 +1,34 @@
 // movie.service.js
 import Movie from './movie.model.js';
+import Cinema from '../cinemas/cinema.model.js';
+import Actor from '../actors/actor.model.js';
+
+import ScreeningService from '../screenings/screening.service.js';
 
 import { MovieListDTO, MovieDetailDTO, AvailableSeatDTO } from './movie.dto.js';
+
 
 export default class MovieService {
   async getMovieById(movie_id) {
     const movie = await Movie.findById(movie_id)
       .populate({ path: 'cast.actor_id', model: 'Actor' })
       .lean();
-    
-    if (!movie) return null;
 
-    return new MovieDetailDTO(movie);
+      console.log('Movie:', movie);
+      if (!movie) return null;
+      
+      const screenings = await new ScreeningService().getScreeningsForMovie(movie_id);
+      
+      console.log('Screenings:', screenings);
+      
+    const movieWithScreenings = {
+              ...movie,
+              screenings
+    };
+
+    return new MovieDetailDTO(movieWithScreenings);
   }
+  
 
   async listMovies() {
     const movies = await Movie.find().select('_id title genre image_url');
@@ -30,3 +46,30 @@ export default class MovieService {
     }
   }
 }
+
+// // movie.service.js
+// import Movie from '../models/movie.model.js';
+// import ScreeningService from './screening.service.js';
+// import { MovieDetailDTO } from './movie.dto.js';
+
+// export default class MovieService {
+//   async getMovieById(movie_id) {
+//     const movie = await Movie.findById(movie_id)
+//       .populate({ 
+//         path: 'cast.actor_id', 
+//         model: 'Actor' 
+//       })
+//       .lean();
+    
+//     if (!movie) return null;
+
+//     const screenings = await ScreeningService.getScreeningsForMovie(movie_id);
+
+//     const movieWithScreenings = {
+//       ...movie,
+//       screenings
+//     };
+
+//     return new MovieDetailDTO(movieWithScreenings);
+//   }
+// }

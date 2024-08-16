@@ -30,9 +30,13 @@ const movieSchema = new Schema({
     cast: [{
       actor_id: { type: Schema.Types.ObjectId, ref: 'Actor' },
       role: String
-    }]
+    }],
+    cinema: [{
+      cinema_id: { type: Schema.Types.ObjectId, ref: 'Cinema' },
+    }],
   });
 
 const Movie = mongoose.model('Movie', movieSchema, 'movies');
+
 
 export default Movie;

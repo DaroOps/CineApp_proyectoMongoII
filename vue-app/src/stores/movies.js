@@ -7,8 +7,8 @@ export const useMovieStore = defineStore('movies', {
     selectedMovie: {
       title: '',
       genre: '',
-      image_url: '',
-      _id: ''
+      img: '',
+      id: ''
     },
     currentIndex: 0
   }),

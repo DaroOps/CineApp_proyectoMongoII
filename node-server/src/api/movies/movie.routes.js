@@ -1,6 +1,6 @@
 import express from 'express';
 import { asyncHandler } from '../../middlewares/asyncHandler.js';
-import MovieController from '../../controllers/movieController.js';
+import MovieController from './movie.controller.js';
 
 
 const router = express.Router();

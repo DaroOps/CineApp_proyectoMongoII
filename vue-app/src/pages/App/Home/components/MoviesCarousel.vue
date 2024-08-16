@@ -70,11 +70,11 @@ export default {
         @slideChange="onSlideChange">
 
         <swiper-slide v-show="moviesArray.length > 4" v-for="movie in moviesArray" 
-        :key="movie._id"
+        :key="movie.id"
         :lazy="true"
-        @click="onSlideClick(movie._id)" 
+        @click="onSlideClick(movie.id)" 
         >
-            <img  loading="lazy" :src="movie.image_url" :alt="movie.title + ' poster'" />
+            <img  loading="lazy" :src="movie.img" :alt="movie.title + ' poster'" />
         </swiper-slide>
 
         <div class="swiper-pagination" slot="pagination">

@@ -23,7 +23,7 @@ watch(() => route.params.id, (newId) => {
 
 <template>
     <div class='trailer-preview'>
-        <img loading="lazy" :src="selectedMovie.image_url" :alt="selectedMovie.title" />
+        <img loading="lazy" :src="selectedMovie.img" :alt="selectedMovie.title" />
     </div>
     <div class='trailer-info'>
         <div class="header">

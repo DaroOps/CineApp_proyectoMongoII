@@ -2,10 +2,8 @@ import mongoose from 'mongoose';
 const { Schema } = mongoose;
 
 const screeningSchema = new Schema({
-    movie_id: {
-      type: Schema.Types.ObjectId,
-      required: true
-    },
+    movie_id: { type: Schema.Types.ObjectId, ref: 'Movie' },
+    cinema_id: { type: Schema.Types.ObjectId, ref: 'Cinema' },
     theater_id: {
       type: Schema.Types.ObjectId,
       required: true

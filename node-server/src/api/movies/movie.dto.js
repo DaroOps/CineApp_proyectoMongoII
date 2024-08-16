@@ -1,45 +1,75 @@
 // movie.dto.js
 
-class MovieListDTO {
+export class MovieListDTO {
     constructor({ _id, title, genre, image_url }) {
         this.id = _id;
-        this.t = title;
-        this.g = genre;
+        this.title = title;
+        this.genre = genre;
         this.img = image_url;
     }
 }
 
-class MovieDetailDTO {
-    constructor({ _id, title, genre, duration, synopsis, screening_times, image_url, trailer_url, cast }) {
+export class MovieDetailDTO {
+    constructor({ _id, title, genre, duration, synopsis, screening_times, image_url, trailer_url, cast , screenings}) {
+        console.log('Received data:', { _id, title, genre, duration, synopsis, image_url, trailer_url, cast, screenings });
         this.id = _id;
-        this.t = title;
-        this.g = genre;
-        this.d = duration;
-        this.s = synopsis;
-        this.st = screening_times;
+        this.title = title;
+        this.genre = genre;
+        this.duration = duration;
+        this.synopsis = synopsis;
+        this.screening_times = screening_times;
         this.img = image_url;
-        this.tr = trailer_url;
-        this.c = cast.map(c => new CastMemberDTO(c));
+        this.trailer = trailer_url;
+        this.cast = cast.map(c => new CastMemberDTO(c));
+        this.cinemas = screenings.map(s => new ScreeningCinemaDTO(s)) ;
     }
 }
 
-class CastMemberDTO {
+export class CastMemberDTO {
     constructor({ actor_id, role }) {
-        this.a = { id: actor_id._id, n: actor_id.name };
-        this.r = role;
+        this.actor = { id: actor_id._id, name: actor_id.name, img: actor_id.image_url };
+        this.role = role;
     }
 }
 
-class AvailableSeatDTO {
+// export class ScreeningCinemaDTO {
+//     constructor({_id, name,location}){
+//             this.id = _id;
+//             this.name = name;
+//             this.location = location;
+//     }
+// }
+
+export class ScreeningCinemaDTO {
+    constructor({cinema_id}){
+            this.cinema = cinema_id;
+    }
+}
+
+
+// export class ScreeningCinemaDTO {
+//     constructor({_id, name,location}){
+//             this.id = _id;
+//             this.name = name;
+//             this.location = location;
+//     }
+// }
+
+export class CinemaDTO {
+    constructor({
+      _id,
+      name,
+      location
+    }) {
+      this.id = _id;
+      this.name = name;
+      this.location = location;
+    }
+}
+
+export class AvailableSeatDTO {
     constructor({ row, number }) {
         this.r = row;
         this.n = number;
     }
 }
-
-export default {
-    MovieListDTO,
-    MovieDetailDTO,
-    CastMemberDTO,
-    AvailableSeatDTO
-};
