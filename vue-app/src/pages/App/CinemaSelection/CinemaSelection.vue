@@ -27,7 +27,6 @@
 
 <style scoped>
 .cinema-selection-page {
- 
-  height: 100vh;
+  height: 100%;
 }
 </style>
