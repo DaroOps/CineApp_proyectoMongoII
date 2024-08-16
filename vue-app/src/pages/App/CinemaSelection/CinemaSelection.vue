@@ -1,7 +1,8 @@
 <script setup>
   import CinemaHeader from '@components/CinemaHeader/CinemaHeader.vue';
-  import PreviewTrailer from './components/PreviewTrailer.vue';
+  import PreviewMovie from './components/PrevieMovie/PreviewMovie.vue';
   import { useMovieStore } from '@stores/movies.js';
+  import CastSlider from './components/CastSlider.vue';
 
   const store = useMovieStore();
 
@@ -14,7 +15,13 @@
 <template>
   <div class='cinema-selection-page'>
     <CinemaHeader headerText="Cinema Selection" :onBackClick="backButtonClicked" />
-    <PreviewTrailer />
+    <div class="movie-info-container">
+      <PreviewMovie />
+    </div>
+
+    <div class="cast-slider">
+      <CastSlider :cast="store.selectedMovie?.cast" />
+    </div>
   </div>
 </template>
 

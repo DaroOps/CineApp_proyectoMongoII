@@ -59,6 +59,7 @@ export default {
         :centeredSlides="true" 
         :slidesPerView="'auto'" 
         :spaceBetween="20" 
+        :freeMode="true"
         :loop="moviesArray.length > 1"
         :pagination="{
         clickable: true,

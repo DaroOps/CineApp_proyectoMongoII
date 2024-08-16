@@ -18,16 +18,18 @@
   .movie-card {
     display: flex;
     gap: 18px;
-    border-radius: 10px;
+    border-radius: 20px;
     background-color: var(--background-color2);
     overflow: hidden;
-    padding: 9px 10px;
+   
   }
   
   .poster-container {
     height: 80px;
     width: 80px;
+    margin: 9px 0px 9px 10px;
     overflow: hidden;
+    border-radius: 20px;
   }
   
   .poster {
