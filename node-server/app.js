@@ -2,7 +2,7 @@ import express from 'express';
 import cors from 'cors';
 
 import userRouter from './src/routes/api/users.js';
-import movieRouter from './src/routes/api/movies.js';
+import movieRouter from './src/api/movies/movie.routes.js';
 
 import registerRouter from './src/routes/register.js';
 import connectDB from './src/config/database.js';
