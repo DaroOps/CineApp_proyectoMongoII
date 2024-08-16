@@ -6,6 +6,7 @@ import Movie from '../models/movieModel.js';
 import Screening from '../models/screeningModel.js';
 import Theater from '../models/theaterModel.js';
 import Ticket from '../models/ticketModel.js';
+import Actor from '../models/actorModel.js';
 
 export default class MovieService {
   async getMovieDetails(movieId) {
@@ -14,7 +15,11 @@ export default class MovieService {
   }
 
   async getMovieById(movie_id) {
-    const movie = await Movie.findById(movie_id);
+    const movie = await Movie.findById(movie_id)
+    .populate({
+        path: 'cast.actor_id',
+        model: 'Actor'
+      }).lean();
     console.log("one movie", movie);
     
     return movie;

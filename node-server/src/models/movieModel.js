@@ -23,7 +23,14 @@ const movieSchema = new Schema({
     image_url: {
       type: String,
       required: true
-    }
+    },
+    trailer_url: {
+      type: String
+    },
+    cast: [{
+      actor_id: { type: Schema.Types.ObjectId, ref: 'Actor' },
+      role: String
+    }]
   });
 
 const Movie = mongoose.model('Movie', movieSchema, 'movies');
