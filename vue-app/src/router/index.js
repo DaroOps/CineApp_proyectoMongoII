@@ -6,6 +6,8 @@ import Home from '@pages/App/Home/Home.vue'
 // import Designs from '@pages/App/Designs/index.vue'
 // import Profile from '@pages/App/Profile/index.vue'
 import CinemaSelection from '@pages/App/CinemaSelection/CinemaSelection.vue'
+import Book from '@pages/App/Book/Book.vue'
+
 import Login from '@pages/Login/Login.vue'
 import Register from '@pages/Register/Register.vue'
 
@@ -53,8 +55,14 @@ const routes = [
         meta:{ requiresNav: true }
       },
       {
-        path: '/app/cinema-select:id',
+        path: '/app/c-s:id',
         component: CinemaSelection,
+        meta:{ requiresNav: false },
+      },
+      {
+        path: '/app/b-n:id',
+        name: 'BookNow',
+        component: Book,
         meta:{ requiresNav: false }
       }
     ]

@@ -36,7 +36,7 @@ export default {
 
         const onSlideClick = (movieId) => {
             
-            router.push(`/app/cinema-select${movieId}`);
+            router.push(`/app/c-s${movieId}`);
         };
 
         return {
@@ -60,7 +60,7 @@ export default {
         :slidesPerView="'auto'" 
         :spaceBetween="20" 
         :freeMode="true"
-        :loop="moviesArray.length > 1"
+        :loop="moviesArray.length > 4"
         :pagination="{
         clickable: true,
         el: '.swiper-pagination',

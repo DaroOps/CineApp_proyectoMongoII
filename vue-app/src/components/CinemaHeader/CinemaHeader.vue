@@ -46,7 +46,7 @@
   justify-content: space-between;
 
   color: var(--text-color);
-  padding:  33px 33px 6px 33px;
+  padding:  20px 33px 6px 33px;
 }
 
 .back-arrow {
