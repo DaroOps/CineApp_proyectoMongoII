@@ -1,5 +1,5 @@
 <script setup>
-import { ref, defineEmits } from 'vue'
+import { defineEmits } from 'vue'
 
 defineEmits(['select'])
 

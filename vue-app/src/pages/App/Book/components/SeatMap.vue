@@ -9,6 +9,7 @@ const screeningStore = useScreeningStore()
 const { seats, selectedSeats } = storeToRefs(screeningStore)
 const { toggleSeat } = screeningStore
 
+
 const tagsArray = [
   { id: 1, text: 'Available' , color: 'var(--background-color2)' },
   { id: 2, text: 'Reserved' , color: 'var(--seat-reserved-color)' },
@@ -100,11 +101,13 @@ const tagsArray = [
   border: 0;
   background-color: var(--background-color2);
   cursor: pointer;
+  transition: all 0.3s ease;
 }
 
 .seat.disabled {
   background-color: var(--seat-reserved-color);
   cursor: not-allowed;
+  transition: all 0.3s ease;
 }
 
 .seat.selected {
@@ -113,10 +116,12 @@ const tagsArray = [
   font-weight: 700;
   font-family: poppins;
   font-size: 18px;
+  transition: all 0.3s ease;
 }
 
 .seat.vip {
   background-color: var(--vip-color);
+  transition: all 0.3s ease;
 }
 
 .seat-map-footer {

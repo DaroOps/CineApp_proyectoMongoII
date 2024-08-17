@@ -16,6 +16,7 @@
   --background-color: #121212;
   --background-color-rgb: 243 244 248;
   --background-color2: #272727;
+  --background-color3: #F8F5F5;
   --background-linear: linear-gradient(to left, #161616, #232323);
 
   --seat-reserved-color: #CECECE;
@@ -25,6 +26,7 @@
   --title-color: #ffffff;
   --subtitle-color: #303030;
   --text-color: #ffffff;
+  --text-subtitle-color: #969696;
   --text-color-rgb: 255, 255, 255;
   --link-color: var(--primary-color);
 }
