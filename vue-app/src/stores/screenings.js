@@ -1,0 +1,31 @@
+// stores/screeningStore.js
+import { defineStore } from 'pinia'
+
+export const useScreeningStore = defineStore('screening', {
+  state: () => ({
+    seats: {
+      A: [{ id: 'A1', disabled: true }, { id: 'A2', disabled: true }, { id: 'A3', disabled: true }, { id: 'A4', disabled: true }, { id: 'A5', disabled: true }],
+      B: [{ id: 'B1', disabled: true }, { id: 'B2', disabled: true }, { id: 'B3', disabled: true }, { id: 'B4', disabled: true }, { id: 'B5', disabled: true }, { id: 'B6', disabled: true }, { id: 'B7', disabled: true }],
+      C: [{ id: 'C1', disabled: false }, { id: 'C2', disabled: false }, { id: 'C3', disabled: false }, { id: 'C4', disabled: false }, { id: 'C5', disabled: false }, { id: 'C6', disabled: false }, { id: 'C7', disabled: false }, { id: 'C8', disabled: false }, { id: 'C9', disabled: false }],
+      D: [{ id: 'D1', disabled: false }, { id: 'D2', disabled: false }, { id: 'D3', disabled: false }, { id: 'D4', disabled: false }, { id: 'D5', disabled: false }, { id: 'D6', disabled: false }, { id: 'D7', disabled: false }, { id: 'D8', disabled: false }, { id: 'D9', disabled: false }],
+      E: [{ id: 'E1', disabled: false }, { id: 'E2', disabled: false }, { id: 'E3', disabled: false }, { id: 'E4', disabled: false }, { id: 'E5', disabled: false }, { id: 'E6', disabled: false }, { id: 'E7', disabled: false }, { id: 'E8', disabled: false }, { id: 'E9', disabled: false }],
+      F: [{ id: 'F1', disabled: false }, { id: 'F2', disabled: false }, { id: 'F3', disabled: false }, { id: 'F4', disabled: false }, { id: 'F5', disabled: false }, { id: 'F6', disabled: false }, { id: 'F7', disabled: false }, { id: 'F8', disabled: false }, { id: 'F9', disabled: false }],
+    },
+    selectedSeats: []
+  }),
+  actions: {
+    toggleSeat(seatId) {
+      const [row, number] = seatId.split('')
+      const seat = this.seats[row].find(s => s.id === seatId)
+      if (!seat.disabled) {
+        const index = this.selectedSeats.indexOf(seatId)
+        if (index > -1) {
+          this.selectedSeats.splice(index, 1)
+        } else {
+          this.selectedSeats.push(seatId)
+        }
+        console.log(`${row}${number}`)
+      }
+    }
+  }
+})
