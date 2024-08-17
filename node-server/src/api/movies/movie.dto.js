@@ -21,7 +21,7 @@ export class MovieDetailDTO {
         this.img = image_url;
         this.trailer = trailer_url;
         this.cast = cast.map(c => new CastMemberDTO(c));
-        this.cinemas = screenings.map(s => new ScreeningCinemaDTO(s)) ;
+        this.cinemas = screenings.map(s => new CinemaDTO( new ScreeningCinemaDTO(s))) ;
     }
 }
 
@@ -42,7 +42,7 @@ export class CastMemberDTO {
 
 export class ScreeningCinemaDTO {
     constructor({cinema_id}){
-            this.cinema = cinema_id;
+            return cinema_id;
     }
 }
 
@@ -59,11 +59,13 @@ export class CinemaDTO {
     constructor({
       _id,
       name,
-      location
+      location,
+      image_url
     }) {
       this.id = _id;
       this.name = name;
       this.location = location;
+      this.img = image_url;
     }
 }
 
