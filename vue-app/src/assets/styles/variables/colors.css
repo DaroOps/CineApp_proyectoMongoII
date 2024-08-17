@@ -18,6 +18,8 @@
   --background-color2: #272727;
   --background-linear: linear-gradient(to left, #161616, #232323);
 
+  --seat-reserved-color: #CECECE;
+
   /* Text */
   --title-color: #ffffff;
   --subtitle-color: #303030;
