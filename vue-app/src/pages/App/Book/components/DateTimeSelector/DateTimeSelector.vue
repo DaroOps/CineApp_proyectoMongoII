@@ -34,8 +34,8 @@ function selectTimeSlot(index) {
         <div class="day-cards">
             <DateCard v-for="(date, index) in screeningStore.screeningDays" 
             :key="index"
-            :number="date.number"
-            :name="date.name"
+            :number="date.day"
+            :name="date.weekday"
             :isDaySelected="selectedDateIndex === index"
             @select="selectDateSlot(index)"
             />

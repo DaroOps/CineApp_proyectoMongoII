@@ -2,12 +2,14 @@
   import CinemaHeader from '@components/CinemaHeader/CinemaHeader.vue';
   import PreviewMovie from './components/PrevieMovie/PreviewMovie.vue';
   import { useMovieStore } from '@stores/movies.js';
+  import { useScreeningStore } from '@stores/screenings.js';
   import CastSlider from './components/CastSlider.vue';
   import CinemaCard from './components/CinemaCard.vue';
   import { useRouter } from 'vue-router';
   import { ref } from 'vue';
 
   const store = useMovieStore();
+  const screeningStore = useScreeningStore();
   const router = useRouter();
   const selectedCard = ref(null);
 
@@ -22,6 +24,7 @@
   function bookNowClicked() {
     //TODO: send selectedCard to pinia store 
     //then fecth all the screenings of that movie in that cinema
+    screeningStore.getScreeningsForCinema(store.selectedMovie.id, selectedCard.value);
     router.push(`/app/b-n${selectedCard.value}`);
     console.log(`Book Now clicked for ${selectedCard.value}`, router.currentRoute);
   }

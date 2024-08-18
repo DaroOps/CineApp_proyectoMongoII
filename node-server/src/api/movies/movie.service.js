@@ -19,11 +19,14 @@ export default class MovieService {
       
       const screenings = await new ScreeningService().getScreeningsForMovie(movie_id);
       
+      const uniqueScreenings = Array.from(new Set(screenings.map(s => JSON.stringify({ cinema_id: s.cinema_id }))))
+      .map(s => JSON.parse(s));
+
       console.log('Screenings:', screenings);
       
     const movieWithScreenings = {
               ...movie,
-              screenings
+               screenings: uniqueScreenings 
     };
 
     return new MovieDetailDTO(movieWithScreenings);

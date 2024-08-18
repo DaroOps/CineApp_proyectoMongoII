@@ -32,28 +32,11 @@ export class CastMemberDTO {
     }
 }
 
-// export class ScreeningCinemaDTO {
-//     constructor({_id, name,location}){
-//             this.id = _id;
-//             this.name = name;
-//             this.location = location;
-//     }
-// }
-
 export class ScreeningCinemaDTO {
     constructor({cinema_id}){
             return cinema_id;
     }
 }
-
-
-// export class ScreeningCinemaDTO {
-//     constructor({_id, name,location}){
-//             this.id = _id;
-//             this.name = name;
-//             this.location = location;
-//     }
-// }
 
 export class CinemaDTO {
     constructor({
