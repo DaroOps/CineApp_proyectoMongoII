@@ -4,7 +4,7 @@ defineEmits(['select'])
 
 const props = defineProps({
     number: {
-        type: String,
+        type: Number,
         required: true
     },
     name: {

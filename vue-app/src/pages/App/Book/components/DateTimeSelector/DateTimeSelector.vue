@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, ref } from 'vue';
+import { onMounted, ref,computed } from 'vue';
 import { useScreeningStore } from '@stores/screenings.js';
 import DateCard from './components/DateCard.vue';
 import TimeCard from './components/TimeCard.vue';
@@ -13,18 +13,25 @@ onMounted(() => {
     selectedDateIndex.value = 0;
     selectedTimeIndex.value = 0;
 
-    selectDateSlot(0);
-    selectTimeSlot(0);
+    // selectDateSlot(0);
+    // selectTimeSlot(0);
 });
 
 function selectDateSlot(index) {
     selectedDateIndex.value = index;
     screeningStore.setSelectedDate(screeningStore.screeningDays[index]);
+    selectedTimeIndex.value = 0;
+    updateAvailableSeats();
 }
 
 function selectTimeSlot(index) {
     selectedTimeIndex.value = index;
     screeningStore.setSelectedTimeSlot(screeningStore.timeSlots[index]);
+    updateAvailableSeats();
+}
+
+function updateAvailableSeats() {
+    screeningStore.updateAvailableSeats();  
 }
 
 </script>

@@ -1,6 +1,8 @@
 import Screening from './screening.model.js';
-import { ScreeningDTO } from './screening.dto.js';
+import {FormatedScreeningDTO, ScreeningDTO } from './screening.dto.js';
 import { formatDate } from '../../utils/date.js';
+import Theater from '../theaters/theater.model.js';
+import { TheaterSeatAdapter } from '../../utils/adapters/theaterSeat.adapter.js';
 
 export default class ScreeningService {
     async getScreeningsForMovie(movieId) {
@@ -14,7 +16,12 @@ export default class ScreeningService {
 
     async getScreeningsForCinemaAndMovie(cinemaId, movieId) {
       const screenings = await Screening.find({ cinema_id: cinemaId, movie_id: movieId })
-      // console.log('Screenings:', screenings);
+      .populate({ path: 'theater_id', model: 'Theater' })
+      .populate({ path: 'movie_id', model: 'Movie', select: 'title' })
+      .populate({ path: 'cinema_id', model: 'Cinema' , select: 'name location' });
+      console.log('Screenings:', screenings);
+
+
 
       const formatScreenings = screenings.map(screening => {
         return {
@@ -23,9 +30,18 @@ export default class ScreeningService {
         };
       });
 
-      // console.log('Formated screenings:', formatScreenings);
+     
+
+      const formatSeats = formatScreenings.map(screening => {
+        return {
+          ...screening,
+          seats: TheaterSeatAdapter.adapt(new ScreeningDTO(screening))
+        };
+      });
       
-      return formatScreenings.map(screening => new ScreeningDTO(screening));;
+      console.log('Formated screenings:', formatSeats);
+
+      return formatSeats.map(screening =>  new FormatedScreeningDTO(screening));
     }
 
 

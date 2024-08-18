@@ -9,11 +9,11 @@ const props = defineProps({
         required: true
     },
     price: {
-        type: String,
+        type: Number,
         required: true
     },
-    index: {
-        type: Number,
+    type: {
+        type: String,
         required: true
     },
     isTimeSelected: {

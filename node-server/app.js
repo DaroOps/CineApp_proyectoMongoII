@@ -4,9 +4,12 @@ import cors from 'cors';
 import userRouter from './src/routes/api/users.js';
 import movieRouter from './src/api/movies/movie.routes.js';
 import screeningRouter from './src/api/screenings/screening.routes.js';
+import theaterRouter from './src/api/theaters/theater.routes.js';
 
 import registerRouter from './src/routes/register.js';
 import connectDB from './src/config/database.js';
+
+import mongoose from 'mongoose';
 
 const app = express();
 const port = 3000;
@@ -23,6 +26,9 @@ app.use(cors({
     credentials: false
 }));
 
+console.log('Registered Models:', mongoose.modelNames());
+
+
 app.get('/', (req, res) => {
   res.send('Healt Check: OK');
 });
@@ -30,6 +36,7 @@ app.get('/', (req, res) => {
 app.use('/api/users', userRouter);
 app.use('/api/movies', movieRouter);
 app.use('/api/screenings', screeningRouter);
+app.use('/api/theaters', theaterRouter);
 app.use('/register', registerRouter);
 
 // app.use('login', loginRouter);

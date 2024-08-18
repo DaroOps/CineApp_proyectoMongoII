@@ -1,9 +1,14 @@
-import Cinema from '../cinemas/cinema.model.js';
-import Actor from '../actors/actor.model.js';
+// import Cinema from './cinemas/cinema.model.js';
+// import Actor from './actors/actor.model.js';
+// import Theater from './theaters/theater.model.js';
 
-import mongoose from 'mongoose';
+// import mongoose from 'mongoose';
 
-console.log('Modelos registrados:', mongoose.modelNames());
+// export const registerModels = () => {
+// //   mongoose.model('Theater', Theater);
+// };
+
+// // console.log('Registered Models:', mongoose.modelNames());
 
 
 // proyecto-node-express-moderno/
