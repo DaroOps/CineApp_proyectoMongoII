@@ -26,7 +26,8 @@ const screeningSchema = new Schema({
     row: {
       type: String,
       required: true
-    }
+    },
+    _id: false
   }],
   type: { 
     type: String, 
