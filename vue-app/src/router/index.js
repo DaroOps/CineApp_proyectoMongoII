@@ -7,6 +7,7 @@ import Home from '@pages/App/Home/Home.vue'
 // import Profile from '@pages/App/Profile/index.vue'
 import CinemaSelection from '@pages/App/CinemaSelection/CinemaSelection.vue'
 import Book from '@pages/App/Book/Book.vue'
+import Summary from '@pages/App/Summary/Summary.vue'
 
 import Login from '@pages/Login/Login.vue'
 import Register from '@pages/Register/Register.vue'
@@ -63,6 +64,12 @@ const routes = [
         path: '/app/b-n:id',
         name: 'BookNow',
         component: Book,
+        meta:{ requiresNav: false }
+      },
+      {
+        path: '/app/summary:id',
+        name: 'OrderSummary',
+        component: Summary,
         meta:{ requiresNav: false }
       }
     ]
