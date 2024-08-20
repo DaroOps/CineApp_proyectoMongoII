@@ -2,7 +2,7 @@
 import mongoose from 'mongoose';
 import ReservationManager from '../../utils/ReservationManager.js';
 import Ticket from './ticket.model.js';
-import { TicketDTO } from './ticket.dto.js';
+import { TicketDTO, ReservationDTO } from './ticket.dto.js';
 import { text } from 'express';
 
 export default class TicketService {
@@ -19,9 +19,11 @@ export default class TicketService {
       const Screening = mongoose.model('Screening');
       const Theater = mongoose.model('Theater');
       const TemporaryReservation = mongoose.model('TemporaryReservation');
+      const User = mongoose.model('User');
 
       // const allScreenings = await Screening.find({}).session(session).lean();
       const screening = await Screening.findById(screeningId).session(session);
+      const user = await User.findById(userId).session(session);
       // console.log('Found screening:', screening);
       // console.log('All screenings:', allScreenings);
       
@@ -54,36 +56,38 @@ export default class TicketService {
         { session }
       );
 
+      const { tickets, total, totalServiceFee } = this.calculateTicketPrices(selectedSeats, screening, theater, user);
+
+      const screeningInfo = await Screening.findById(screeningId).session(session).populate({ path: 'cinema_id', model: 'Cinema' }).populate({ path: 'movie_id', model: 'Movie' });
+
+      const responseData = {
+        reservationId: tempReservation._id,
+        screening: screeningInfo,
+        expirationTime: tempReservation.expiration_time,
+        tickets: tickets,
+        total: total.toFixed(2),
+        serviceFee: totalServiceFee.toFixed(2)
+      };
+
+      console.log(responseData);
+      
       await session.commitTransaction();
       this.reservationManager.addReservation(tempReservation._id, tempReservation.expiration_time);
-      return tempReservation;
+      
+      return new ReservationDTO(responseData);
     } catch (error) {
       await session.abortTransaction();
       throw error;
     } finally {
       session.endSession();
     }
-
-    //   const tickets = await this.createTickets(userId, screeningId, selectedSeats, screening, Ticket, session);
-
-    //   screening.occupied_seats.push(...selectedSeats);
-    //   await screening.save({ session });
-
-    //   await session.commitTransaction();
-    //   return tickets.map(ticket => new TicketDTO(ticket));
-    // } catch (error) {
-    //   await session.abortTransaction();
-    //   throw error;
-    // } finally {
-    //   session.endSession();
-    // }
   }
 
   validateSeats(selectedSeats, theater, screening) {
     const validSeats = selectedSeats.every(selectedSeat => {
       // Check if the seat exists in the theater
       const seatExists = theater.seats.some(
-        theatreSeat => theatreSeat.row === selectedSeat.row && theatreSeat.number === selectedSeat.number
+        theatreSeat => theatreSeat.row === selectedSeat.row && theatreSeat.number === selectedSeat.number 
       );
   
       // Check if the seat is not already reserved
@@ -104,7 +108,7 @@ export default class TicketService {
   async createTickets(userId, screeningId, selectedSeats, screening, Ticket, session) {
     return Promise.all(selectedSeats.map(async (seat) => {
       const basePrice = screening.base_price;
-      const finalPrice = this.calculateFinalPrice(basePrice, seat);
+      const finalPrice = this.calculateFinalPrice();
 
       const ticket = new Ticket({
         screening_id: screeningId,
@@ -124,11 +128,56 @@ export default class TicketService {
     }));
   }
 
-  calculateFinalPrice(basePrice, seat) {
-    // TODO: Implement the logic of prices and discounts
-    // For instance:
-    // if (seat.isVIP) return basePrice * 1.5;
-    return basePrice;
+  calculateTicketPrices(selectedSeats, screening, theater, user) {
+    const serviceFeePerSeat = 0.25; // TODO: get this value from the database
+    let total = 0;
+    let totalServiceFee = 0;
+    
+    const tickets = selectedSeats.map(seat => {
+      const theatreSeat = theater.seats.find(s => s.row === seat.row && s.number === seat.number);
+      const seatType = theatreSeat.type === 'vip' ? 'vip' : 'standard';
+      const basePrice = screening.base_price;
+      
+      let finalPrice = this.calculateFinalPrice(basePrice, seatType, user.role);
+      
+      // Add service fee to each ticket
+      // finalPrice += serviceFeePerSeat;
+      // totalServiceFee += serviceFeePerSeat;
+      
+      total += finalPrice;
+  
+      return {
+        seat: `${seat.row}${seat.number}`,
+        seatType: seatType,
+        finalPrice: finalPrice.toFixed(2)
+      };
+    });
+  
+    return { tickets, total, totalServiceFee };
+  }
+
+  calculateFinalPrice(basePrice, seatType, userRole) {
+    let price = basePrice;
+  
+    // Apply seat type multiplier
+    if (seatType === 'vip') {
+      price *= 1.5; // 50% more for VIP seats //TODO: get this value from the database
+    }
+  
+    // Apply user role discount
+    switch(userRole) {
+      case 'student':
+        price *= 0.8; // 20% discount for students
+        break;
+      case 'senior':
+        price *= 0.7; // 30% discount for seniors
+        break;
+      case 'vip':
+        price *= 0.9; // 10% discount for VIP members
+        break;
+    }
+  
+    return price;
   }
 
   async confirmReservation(tempReservationId) {
