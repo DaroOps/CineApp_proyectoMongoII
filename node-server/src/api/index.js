@@ -1,4 +1,8 @@
-// import Cinema from './cinemas/cinema.model.js';
+import TemporaryReservation from "./temporaryReservations/temporaryReservation.model.js";
+
+
+
+//import Cinema from './cinemas/cinema.model.js';
 // import Actor from './actors/actor.model.js';
 // import Theater from './theaters/theater.model.js';
 

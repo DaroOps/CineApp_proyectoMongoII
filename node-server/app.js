@@ -7,6 +7,8 @@ import screeningRouter from './src/api/screenings/screening.routes.js';
 import theaterRouter from './src/api/theaters/theater.routes.js';
 import ticketRouter from './src/api/tickets/ticket.routes.js';
 
+import {} from './src/api/index.js'; //needded for registering orphan models
+
 // import registerRouter from './src/routes/register.js';
 import connectDB from './src/config/database.js';
 
