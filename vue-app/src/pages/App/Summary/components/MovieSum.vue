@@ -1,25 +1,57 @@
 <script setup>
+
 import { defineProps } from 'vue'
 
 const props = defineProps({
-  movie: {
+ movie: {  
     type: Object,
-    required: false
-  }
+    required: true
+ },
+ movieVenue: {  
+    type: String,
+    required: true
+ },
+ movieShowtime: {  
+    type: String,
+    required: true
+ }
 })
+
+function formatMovieShowtime(dateString) {
+    const showtimeDate = new Date(dateString);
+
+const optionsDate = { 
+  weekday: 'short', 
+  day: 'numeric', 
+  month: 'short', 
+  year: 'numeric'
+};
+
+const optionsTime = { 
+  hour: '2-digit', 
+  minute: '2-digit', 
+  hourCycle: 'h23'
+};
+
+const formattedDate = showtimeDate.toLocaleDateString('en-EN', optionsDate).replace(',', '').replace(',', ' ').replace(',', ' ');
+const formattedTime = showtimeDate.toLocaleTimeString('en-EN', optionsTime);
+
+return `${formattedDate}, ${formattedTime}`;
+}
 </script>
 
 <template>
     <div class="movie-card">
-        <img :src="props.movie.posterUrl? movie.posterUrl : 'https://m.media-amazon.com/images/M/MV5BNzRiMjg0MzUtNTQ1Mi00Y2Q5LWEwM2MtMzUwZDU5NmVjN2NkXkEyXkFqcGc@._V1_.jpg'" :alt=" props.movie.title ? movie.title : 'No title'" class="movie-poster">
+        {{console.log(props.movie)}}
+        <img :src="props.movie.img? props.movie.img : 'https://m.media-amazon.com/images/M/MV5BNzRiMjg0MzUtNTQ1Mi00Y2Q5LWEwM2MtMzUwZDU5NmVjN2NkXkEyXkFqcGc@._V1_.jpg'" :alt=" props.movie.title ? movie.title : 'No title'" class="movie-poster">
         <div class="movie-info">
             <div class="screening-info">
-                <h2 class="movie-title">{{ props.movie.title ? movie.title : "No title" }}</h2>
-                <p class="movie-genre">{{ props.movie.genre ? movie.genre : "No genre" }}</p>
+                <h2 class="movie-title">{{ props.movie.title ? props.movie.title : "No title" }}</h2>
+                <p class="movie-genre">{{ props.movie.genre ? props.movie.genre : "No genre" }}</p>
             </div>
             <div class="venue-info">
-                <p class="movie-venue">{{props.movie.venue ? movie.venue : "No venue" }}</p>
-                <p class="movie-showtime">{{ props.movie.showtime ? movie.showtime : "No showtime" }}</p>
+                <p class="movie-venue">{{props.movieVenue ? props.movieVenue : "No venue" }}</p>
+                <p class="movie-showtime">{{ props.movieShowtime ? formatMovieShowtime(props.movieShowtime)  : "No showtime" }}</p>
             </div>
         </div>
     </div>
@@ -73,7 +105,7 @@ const props = defineProps({
             flex-direction: column;
             gap: 10px;
             .movie-venue{
-                padding: 0;
+                padding: 0 46px 0 0;
                 margin: 0;
                 font-size: 14px;
                 font-weight: 600;

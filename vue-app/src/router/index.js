@@ -67,7 +67,7 @@ const routes = [
         meta:{ requiresNav: false }
       },
       {
-        path: '/app/summary:id',
+        path: '/app/summary',
         name: 'OrderSummary',
         component: Summary,
         meta:{ requiresNav: false }

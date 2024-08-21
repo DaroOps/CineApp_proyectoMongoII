@@ -11,7 +11,7 @@ const cinemaSchema = new Schema({
     type: String,
     required: true
   },
-  direction: {
+  location: {
     type: String,
     required: true
   },

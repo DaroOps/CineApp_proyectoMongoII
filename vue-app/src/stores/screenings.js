@@ -28,9 +28,11 @@ export const useScreeningStore = defineStore('screening', {
             { time: '20:30', price: '6.50', type: '2D' },
         ],
         timeSlotsByDay: {},
+        selectedScreening: null,
         selectedDate: null,
         selectedTimeSlot: null,
         userType: 'regular', // 'regular' or 'vip'
+        reserveInfo: null,
     }),
 
     actions: {
@@ -132,9 +134,20 @@ export const useScreeningStore = defineStore('screening', {
             if (selectedScreening && selectedScreening.seats) {
                 // console.log(`Asientos para la proyección seleccionada: ${this.selectedDate.day} ${typeof(this.selectedDate.day)} ${this.selectedTimeSlot.time} ${typeof(this.selectedTimeSlot.time)}`, selectedScreening.seats);
                 this.seats = JSON.parse(JSON.stringify(selectedScreening.seats));
+                this.selectedScreening = selectedScreening.id;
+                console.log('selectedScreening', selectedScreening);
+                
             } else {
                 // console.log(`No se encontró la proyección seleccionada o no tiene asientos para el día ${this.selectedDate.day} a las ${this.selectedTimeSlot.time}`);
             }
+        },
+        async reserveTicket() {
+            const {data} = await axios.post(`http://localhost:3000/api/tickets/reserve`, {
+                userId: "66c28adf555f528336310f72" , ////TODO: retrieve this number from the database
+                screeningId: this.selectedScreening,
+                selectedSeats: this.selectedSeats.map(seat => ({ row: seat[0], number:  parseInt(seat.slice(1)) }))
+            })
+            this.reserveInfo = data;
         }
     },
 
@@ -157,7 +170,7 @@ export const useScreeningStore = defineStore('screening', {
                 let seatPrice = basePrice
 
                 if (seat.isVIP) {
-                    seatPrice = state.userType === 'vip' ? basePrice : basePrice * 2
+                    seatPrice = state.userType === 'vip' ? basePrice : basePrice * 1.5 //TODO: retrieve this number from the database
                 }
 
                 return total + seatPrice

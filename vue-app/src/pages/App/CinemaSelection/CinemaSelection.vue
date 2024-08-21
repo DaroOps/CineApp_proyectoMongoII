@@ -22,8 +22,6 @@
   }
   
   function bookNowClicked() {
-    //TODO: send selectedCard to pinia store 
-    //then fecth all the screenings of that movie in that cinema
     screeningStore.getScreeningsForCinema(store.selectedMovie.id, selectedCard.value);
     router.push(`/app/b-n${selectedCard.value}`);
     console.log(`Book Now clicked for ${selectedCard.value}`, router.currentRoute);

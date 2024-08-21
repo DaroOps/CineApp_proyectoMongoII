@@ -9,10 +9,12 @@
     const screeningStore = useScreeningStore();
     const router = useRouter();
 
-    function buyTicketClicked() {
+    async function buyTicketClicked() {
         console.log('Buy ticket clicked');
-        // router.push(`/app/b-n${screeningStore.selectedMovie.id}`);
+        await screeningStore.reserveTicket();
+        router.push(`/app/summary`);
     }
+
 
     const selectedInfo = computed(() => {
         return screeningStore.selectedDate && screeningStore.selectedTimeSlot && screeningStore.selectedSeats.length > 0;

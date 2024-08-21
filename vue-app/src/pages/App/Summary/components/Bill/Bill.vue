@@ -2,53 +2,53 @@
 import { computed } from 'vue';
 import ItemReview from './components/ItemReview.vue'
 
-const data = {
-    "tickets": [
-        { "seat": "A1", "seatType": "vip", "finalPrice": 7.25 },
-        { "seat": "A2", "seatType": "vip", "finalPrice": 7.25 },
-        { "seat": "B3", "seatType": "standard", "finalPrice": 5.25 },
-        { "seat": "B5", "seatType": "standard", "finalPrice": 5.25 },
-    ],
-    "total": 22.13,
-    "serviceFee": 0.25,
-};
+const props = defineProps({
+    data: {
+        type: Object,
+        required: true
+    },
+    reservationNumber: {
+        type: String,
+        required: true,
+        default: ''
+    }
+})
+
 
 const processedData = computed(() => {
-    const seatGroups = data.tickets.reduce((acc, ticket) => {
-        const key = ticket.seatType.toUpperCase();
-        if (!acc[key]) {
-            acc[key] = { seats: [], price: ticket.finalPrice, count: 0 };
-        }
-        acc[key].seats.push(ticket.seat);
-        acc[key].count++;
-        return acc;
-    }, {});
+  const seatGroups = props.data.tickets.reduce((acc, ticket) => {
+    const key = ticket.seatType.toUpperCase();
+    if (!acc[key]) {
+      acc[key] = { seats: [], price: parseFloat(ticket.finalPrice), count: 0 };
+    }
+    acc[key].seats.push(ticket.seat);
+    acc[key].count++;
+    return acc;
+  }, {});
 
-   
-    const items =  Object.entries(seatGroups).map(([type, info]) => ({
-        name: `${seatGroups[type].seats.length} ${seatGroups[type].seats.length > 1 ? 'SEATS' : 'SEAT'} ${type}`,
-        price: `${info.seats.join(' ')}`,
-        quantity: null
-    }));
+  const items = Object.entries(seatGroups).map(([type, info]) => ({
+    name: `${seatGroups[type].seats.length} ${seatGroups[type].seats.length > 1 ? 'SEATS' : 'SEAT'} ${type}`,
+    price: `${info.seats.join(' ')}`,
+    quantity: null
+  }));
 
+  Object.entries(seatGroups).map(([type, info]) => ({
+    name: `${type} SEAT`,
+    price: parseFloat(info.price).toFixed(2),
+    quantity: info.count
+  })).forEach(item => {
+    items.push(item);
+  });
 
-    Object.entries(seatGroups).map(([type, info]) => ({
-        name: `${type} SEAT ` ,
-        price: info.price.toFixed(2),
-        quantity: info.count
-    })).map(item => {
-        items.push(item);
-    });
+  items.push({
+    name: 'SERVICE FEE',
+    price: parseFloat(props.data.serviceFee).toFixed(2),
+    quantity: 1
+  });
 
-    items.push({
-        name: 'SERVICE FEE',
-        price: data.serviceFee.toFixed(2),
-        quantity: data.tickets.length
-    });
+  items.push({ name: 'TOTAL', price: "$"+parseFloat(props.data.total).toFixed(2), quantity: null });
 
-    items.push({name: 'TOTAL', price: data.total.toFixed(2), quantity: null});
-
-    return items;
+  return items;
 });
 </script>
 
@@ -56,7 +56,7 @@ const processedData = computed(() => {
     <div class="bill">
         <div class="bill-header">
             <p class="order-number">Order number</p>
-            <p class="id-order">{{11111}}</p>
+            <p class="id-order">{{props.reservationNumber}}</p>
         </div>
         <div class="bill-card">
             <ItemReview 
@@ -74,6 +74,7 @@ const processedData = computed(() => {
     display: flex;
     flex-direction: column;
     gap: 25px;
+    padding: 20px 30px 30px 25px;
     .bill-header {
         display: flex;
         text-transform: uppercase;

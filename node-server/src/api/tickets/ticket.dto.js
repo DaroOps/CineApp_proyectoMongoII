@@ -34,6 +34,12 @@ export class ReservationRequestDTO {
       this.img = image_url;
     }
   }
+
+class CinemaDTO{
+  constructor({name, location}){
+    this.name = name;
+  }
+}
   
 export class ScreeningDTO {
     constructor(data) {
@@ -41,10 +47,8 @@ export class ScreeningDTO {
       this.movie = new MovieListDTO(data.screening.movie_id);
       this.price = data.screening.base_price;
       this.dateTime = data.screening.date_time;
-      this.cinema = {
-        name: data.screening.cinema_id.name,
-        location: data.screening.cinema_id.location
-      };
+      this.venue = data.screening.cinema_id.location
+      console.log(data.screening.cinema_id);
       this.type = data.screening.type;
       this.tickets = data.tickets;
       this.total = data.total;
