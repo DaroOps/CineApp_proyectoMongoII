@@ -9,7 +9,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@chenfengyuan/vue-barcode": "^2.0.2",
     "axios": "^1.7.4",
+    "jsbarcode": "^3.11.6",
     "pinia": "^2.2.1",
     "swiper": "^11.1.9",
     "vue": "^3.4.35",

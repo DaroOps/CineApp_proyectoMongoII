@@ -28,6 +28,8 @@
   --subtitle-color: #303030;
   --text-color: #ffffff;
   --text-subtitle-color: #969696;
+  --dark-text-color: #000000;
+  --dark-subtitle-text-color: #787878;
   --text-color-rgb: 255, 255, 255;
   --link-color: var(--primary-color);
 }

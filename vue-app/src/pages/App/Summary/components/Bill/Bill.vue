@@ -74,7 +74,7 @@ const processedData = computed(() => {
     display: flex;
     flex-direction: column;
     gap: 25px;
-    padding: 20px 30px 30px 25px;
+    padding: 20px 30px 25px 30px;
     .bill-header {
         display: flex;
         text-transform: uppercase;

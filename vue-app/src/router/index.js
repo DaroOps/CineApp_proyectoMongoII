@@ -8,6 +8,8 @@ import Home from '@pages/App/Home/Home.vue'
 import CinemaSelection from '@pages/App/CinemaSelection/CinemaSelection.vue'
 import Book from '@pages/App/Book/Book.vue'
 import Summary from '@pages/App/Summary/Summary.vue'
+import Profile from '@pages/App/Profile/Profile.vue'
+import TicketSwiper from '@pages/App/TicketSwiper/TicketSwiper.vue'
 
 import Login from '@pages/Login/Login.vue'
 import Register from '@pages/Register/Register.vue'
@@ -52,7 +54,7 @@ const routes = [
         meta:{ requiresNav: true }
       },
       { path: '/app/profile', name: 'AppProfile',
-        component: Home,
+        component: Profile,
         meta:{ requiresNav: true }
       },
       {
@@ -71,7 +73,13 @@ const routes = [
         name: 'OrderSummary',
         component: Summary,
         meta:{ requiresNav: false }
-      }
+      },
+      {
+        path: '/app/ticket-swiper',
+        name: 'TiketSwiper',
+        component: TicketSwiper,
+        meta:{ requiresNav: false }
+      },
     ]
   },
 ]

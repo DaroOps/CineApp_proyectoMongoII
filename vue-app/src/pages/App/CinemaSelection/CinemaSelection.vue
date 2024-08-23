@@ -87,7 +87,8 @@
     display: flex;
     flex-direction: column;
     gap: 10px;
-    margin-bottom: 58px;
+    padding: 0 0 10px 0;
+    margin-bottom: 60px;
   }
 }
 
@@ -99,8 +100,6 @@
   align-items: center;
   position: fixed;
   background-color: var(--background-color);
- 
-  position: fixed;
   bottom: 0;
   left: 0;
   z-index: 10;

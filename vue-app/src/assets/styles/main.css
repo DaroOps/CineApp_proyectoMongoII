@@ -3,7 +3,7 @@
 @import './variables/fonts.css';
 @import './variables/button.css';
 @import './variables/general.css';
-@import './variables/dark-theme.css';
+
 
 /* Base styles */
 @import './base/reset.css';

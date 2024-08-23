@@ -148,6 +148,12 @@ export const useScreeningStore = defineStore('screening', {
                 selectedSeats: this.selectedSeats.map(seat => ({ row: seat[0], number:  parseInt(seat.slice(1)) }))
             })
             this.reserveInfo = data;
+        },
+        async confirmReservation() {
+            const {data} = await axios.post(`http://localhost:3000/api/tickets/confirm`, {
+                tempReservationId: this.reserveInfo.tempReservationId
+            })
+            this.reserveInfo = data;
         }
     },
 
