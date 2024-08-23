@@ -3,7 +3,6 @@ import mongoose from 'mongoose';
 import ReservationManager from '../../utils/ReservationManager.js';
 import Ticket from './ticket.model.js';
 import { TicketDTO, ReservationDTO } from './ticket.dto.js';
-import { text } from 'express';
 
 export default class TicketService {
   constructor() {
@@ -83,6 +82,141 @@ export default class TicketService {
     }
   }
 
+  async confirmReservation(tempReservationId) {
+    const session = await mongoose.startSession();
+    session.startTransaction();
+    
+    //TODO: check if the payment is done before confirming the reservation
+
+    try {
+      const TemporaryReservation = mongoose.model('TemporaryReservation');
+      const Screening = mongoose.model('Screening');
+      const Ticket = mongoose.model('Ticket');
+      const Movie = mongoose.model('Movie');
+      const Cinema = mongoose.model('Cinema');
+      const Theater = mongoose.model('Theater');
+  
+  
+      const tempReservation = await TemporaryReservation.findById(tempReservationId).session(session);
+      if (!tempReservation || tempReservation.status !== 'pending') {
+        throw new Error('Invalid or expired reservation');
+      }
+  
+      const screening = await Screening.findById(tempReservation.screening_id).session(session);
+      const movie = await Movie.findById(screening.movie_id).session(session);
+      const cinema = await Cinema.findById(screening.cinema_id).session(session);
+      const theater = await Theater.findById(screening.theater_id).session(session);
+  
+      const tickets = await this.createTickets(
+        tempReservation.user_id,
+        tempReservation.screening_id,
+        tempReservation.seats,
+        screening,
+        Ticket,
+        session
+      );
+  
+      tempReservation.status = 'completed';
+      this.reservationManager.cancelReservation(tempReservationId);
+      await tempReservation.save({ session });
+  
+      await session.commitTransaction();
+      
+      const ticketsWithDetails = tickets.map(ticket => ({
+        ...ticket.toObject(),
+        cinema: {
+          location: cinema.location,
+          image: cinema.image_url,
+          hall: theater.name,
+        },
+        movie: {
+          title: movie.title,
+          image: movie.image_url,
+        },
+      }));
+  
+      return ticketsWithDetails;
+    } catch (error) {
+      await session.abortTransaction();
+      throw error;
+    } finally {
+      session.endSession();
+    }
+  }
+
+  async releaseExpiredReservation() {
+    const session = await mongoose.startSession();
+    session.startTransaction();
+  
+    try {
+      const TemporaryReservation = mongoose.model('TemporaryReservation');
+      const Screening = mongoose.model('Screening');
+  
+      const expiredReservations = await TemporaryReservation.find({
+        status: 'pending',
+        expiration_time: { $lt: new Date() }
+      }).session(session);
+  
+      for (const reservation of expiredReservations) {
+        await Screening.updateOne(
+          { _id: reservation.screening_id },
+          { 
+            $pull: { 
+              occupied_seats: { 
+                $or: reservation.seats.map(seat => ({
+                  row: seat.row,
+                  number: seat.number
+                }))
+              } 
+            } 
+          },
+          { session }
+        );
+  
+        reservation.status = 'expired';
+        await reservation.save({ session });
+      }
+  
+      await session.commitTransaction();
+      console.log(`Released ${expiredReservations.length} expired reservations`);
+    } catch (error) {
+      await session.abortTransaction();
+      console.error('Error releasing expired reservations:', error);
+    } finally {
+      session.endSession();
+    }
+  }
+
+  async createTickets(userId, screeningId, selectedSeats, screening, Ticket, session) {
+    const Theater = mongoose.model('Theater');
+    const User = mongoose.model('User');
+    const theater = await Theater.findById(screening.theater_id).session(session);
+    const user = await User.findById(userId).session(session);
+    return Promise.all(selectedSeats.map(async (seat) => {
+      const theatreSeat = theater.seats.find(s => s.row === seat.row && s.number === seat.number);
+      const seatType = theatreSeat.type === 'vip' ? 'vip' : 'standard';
+      const basePrice = screening.base_price;
+      
+      let finalPrice = this.calculateFinalPrice(basePrice, seatType, user.role);
+
+      const ticket = new Ticket({
+        screening_id: screeningId,
+        user_id: userId,
+        screening_time: screening.date_time,
+        seat: {
+          number: seat.number,
+          row: seat.row,
+        },
+        base_price: basePrice,
+        final_price: finalPrice,
+        status: 'reserved',
+        purchase_date: new Date()
+      });
+
+      return ticket.save({ session });
+    }));
+  }
+
   validateSeats(selectedSeats, theater, screening) {
     const validSeats = selectedSeats.every(selectedSeat => {
       // Check if the seat exists in the theater
@@ -103,29 +237,6 @@ export default class TicketService {
     if (!validSeats) {
       throw new Error('Invalid or unavailable seats selected');
     }
-  }
-
-  async createTickets(userId, screeningId, selectedSeats, screening, Ticket, session) {
-    return Promise.all(selectedSeats.map(async (seat) => {
-      const basePrice = screening.base_price;
-      const finalPrice = this.calculateFinalPrice();
-
-      const ticket = new Ticket({
-        screening_id: screeningId,
-        user_id: userId,
-        seat: {
-          theater_id: screening.theater_id,
-          number: seat.number,
-          row: seat.row
-        },
-        base_price: basePrice,
-        final_price: finalPrice,
-        status: 'reserved',
-        purchase_date: new Date()
-      });
-
-      return ticket.save({ session });
-    }));
   }
 
   calculateTicketPrices(selectedSeats, screening, theater, user) {
@@ -180,89 +291,6 @@ export default class TicketService {
     return price;
   }
 
-  async confirmReservation(tempReservationId) {
-    const session = await mongoose.startSession();
-    session.startTransaction();
-    
-    //TODO: check if the payment is done before confirming the reservation
 
-    try {
-      const TemporaryReservation = mongoose.model('TemporaryReservation');
-      const Screening = mongoose.model('Screening');
-      const Ticket = mongoose.model('Ticket');
-      const User = mongoose.model('User');
-  
-      const tempReservation = await TemporaryReservation.findById(tempReservationId).session(session);
-      if (!tempReservation || tempReservation.status !== 'pending') {
-        throw new Error('Invalid or expired reservation');
-      }
-  
-      const screening = await Screening.findById(tempReservation.screening_id).session(session);
-      const user = await User.findById(tempReservation.user_id).session(session);
-  
-      const tickets = await this.createTickets(
-        tempReservation.user_id,
-        tempReservation.screening_id,
-        tempReservation.seats,
-        screening,
-        Ticket,
-        session
-      );
-  
-      tempReservation.status = 'completed';
-      this.reservationManager.cancelReservation(tempReservationId);
-      await tempReservation.save({ session });
-  
-      await session.commitTransaction();
-      return tickets;
-    } catch (error) {
-      await session.abortTransaction();
-      throw error;
-    } finally {
-      session.endSession();
-    }
-  }
 
-  async releaseExpiredReservation() {
-    const session = await mongoose.startSession();
-    session.startTransaction();
-  
-    try {
-      const TemporaryReservation = mongoose.model('TemporaryReservation');
-      const Screening = mongoose.model('Screening');
-  
-      const expiredReservations = await TemporaryReservation.find({
-        status: 'pending',
-        expiration_time: { $lt: new Date() }
-      }).session(session);
-  
-      for (const reservation of expiredReservations) {
-        await Screening.updateOne(
-          { _id: reservation.screening_id },
-          { 
-            $pull: { 
-              occupied_seats: { 
-                $or: reservation.seats.map(seat => ({
-                  row: seat.row,
-                  number: seat.number
-                }))
-              } 
-            } 
-          },
-          { session }
-        );
-  
-        reservation.status = 'expired';
-        await reservation.save({ session });
-      }
-  
-      await session.commitTransaction();
-      console.log(`Released ${expiredReservations.length} expired reservations`);
-    } catch (error) {
-      await session.abortTransaction();
-      console.error('Error releasing expired reservations:', error);
-    } finally {
-      session.endSession();
-    }
-  }
 }

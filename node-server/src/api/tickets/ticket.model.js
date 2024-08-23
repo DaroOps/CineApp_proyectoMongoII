@@ -11,12 +11,11 @@ const ticketSchema = new Schema({
     ref: 'User',
     required: true
   },
+  screening_time: {
+    type: Date,
+    required: true
+  },
   seat: {
-    theater_id: {
-      type: Schema.Types.ObjectId,
-      ref: 'Theater',
-      required: true
-    },
     number: {
       type: Number,
       required: true,
@@ -32,16 +31,6 @@ const ticketSchema = new Schema({
     required: true,
     min: 0
   },
-  discount_applied: {
-    type: {
-      type: String
-    },
-    percentage: {
-      type: Number,
-      min: 0,
-      max: 100
-    }
-  },
   final_price: {
     type: Number,
     required: true,
@@ -55,8 +44,7 @@ const ticketSchema = new Schema({
   purchase_date: {
     type: Date,
     required: true
-  },
-  qr_code: String
+  }
 });
 
 const Ticket = model('Ticket', ticketSchema, 'tickets');
