@@ -19,7 +19,7 @@ export default class ScreeningService {
       .populate({ path: 'theater_id', model: 'Theater' })
       .populate({ path: 'movie_id', model: 'Movie', select: 'title' })
       .populate({ path: 'cinema_id', model: 'Cinema' , select: 'name location' });
-      console.log('Screenings:', screenings);
+      // console.log('Screenings:', screenings);
 
 
 
@@ -39,7 +39,7 @@ export default class ScreeningService {
         };
       });
       
-      console.log('Formated screenings:', formatSeats);
+      // console.log('Formated screenings:', formatSeats);
 
       return formatSeats.map(screening =>  new FormatedScreeningDTO(screening));
     }

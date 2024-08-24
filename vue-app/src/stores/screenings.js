@@ -1,38 +1,43 @@
 // stores/screeningStore.js
-import { defineStore } from 'pinia'
+import { defineStore } from 'pinia';
 import axios from 'axios';
+import { useSocketStore } from '@stores/socket.js';
+import { useRouter } from 'vue-router';
 
 export const useScreeningStore = defineStore('screening', {
     state: () => ({
-        screenings:[],
+        screenings: [],
         seats: {
             A: [{ id: 'A1', disabled: false }, { id: 'A2', disabled: false }, { id: 'A3', disabled: false }, { id: 'A4', disabled: false }, { id: 'A5', disabled: false }],
             B: [{ id: 'B1', disabled: false }, { id: 'B2', disabled: false }, { id: 'B3', disabled: false }, { id: 'B4', disabled: false }, { id: 'B5', disabled: false }, { id: 'B6', disabled: false }, { id: 'B7', disabled: false }],
-            C: [{ id: 'C1', disabled: false }, { id: 'C2', disabled: false }, { id: 'C3', disabled: true }, { id: 'C4', disabled: true }, { id: 'C5', disabled: true }, { id: 'C6', disabled: true }, { id: 'C7', disabled: true }, { id: 'C8', disabled: false }, { id: 'C9', disabled: false }],
-            D: [{ id: 'D1', disabled: false }, { id: 'D2', disabled: false }, { id: 'D3', disabled: false }, { id: 'D4', disabled: false }, { id: 'D5', disabled: true }, { id: 'D6', disabled: false }, { id: 'D7', disabled: false }, { id: 'D8', disabled: false }, { id: 'D9', disabled: false }],
-            E: [{ id: 'E1', disabled: false, isVIP: true }, { id: 'E2', disabled: false, isVIP: true }, { id: 'E3', disabled: false, isVIP: true }, { id: 'E4', disabled: false, isVIP: true }, { id: 'E5', disabled: true, isVIP: true }, { id: 'E6', disabled: false, isVIP: true }, { id: 'E7', disabled: false, isVIP: true }, { id: 'E8', disabled: false, isVIP: true }, { id: 'E9', disabled: false, isVIP: true }],
-            F: [{ id: 'F1', disabled: false, isVIP: true }, { id: 'F2', disabled: false, isVIP: true }, { id: 'F3', disabled: false, isVIP: true }, { id: 'F4', disabled: false, isVIP: true }, { id: 'F5', disabled: true, isVIP: true }, { id: 'F6', disabled: false, isVIP: true }, { id: 'F7', disabled: false, isVIP: true }, { id: 'F8', disabled: false, isVIP: true }, { id: 'F9', disabled: false, isVIP: true }],
+            C: [{ id: 'C1', disabled: false }, { id: 'C2', disabled: false }, { id: 'C3', disabled: false }, { id: 'C4', disabled: false }, { id: 'C5', disabled: false }, { id: 'C6', disabled: false }, { id: 'C7', disabled: false }, { id: 'C8', disabled: false }, { id: 'C9', disabled: false }],
+            D: [{ id: 'D1', disabled: false }, { id: 'D2', disabled: false }, { id: 'D3', disabled: false }, { id: 'D4', disabled: false }, { id: 'D5', disabled: false }, { id: 'D6', disabled: false }, { id: 'D7', disabled: false }, { id: 'D8', disabled: false }, { id: 'D9', disabled: false }],
+            E: [{ id: 'E1', disabled: false, isVIP: true }, { id: 'E2', disabled: false, isVIP: true }, { id: 'E3', disabled: false, isVIP: true }, { id: 'E4', disabled: false, isVIP: true }, { id: 'E5', disabled: false, isVIP: true }, { id: 'E6', disabled: false, isVIP: true }, { id: 'E7', disabled: false, isVIP: true }, { id: 'E8', disabled: false, isVIP: true }, { id: 'E9', disabled: false, isVIP: true }],
+            F: [{ id: 'F1', disabled: false, isVIP: true }, { id: 'F2', disabled: false, isVIP: true }, { id: 'F3', disabled: false, isVIP: true }, { id: 'F4', disabled: false, isVIP: true }, { id: 'F5', disabled: false, isVIP: true }, { id: 'F6', disabled: false, isVIP: true }, { id: 'F7', disabled: false, isVIP: true }, { id: 'F8', disabled: false, isVIP: true }, { id: 'F9', disabled: false, isVIP: true }],
         },
         selectedSeats: [],
         screeningDays: [
-            { weekday: 'Err', day: 'Er' },
-            { weekday: 'Err', day: 'Er' },
-            { weekday: 'Err', day: 'Er' },
-            { weekday: 'Err', day: 'Er' },
-            { weekday: 'Err', day: 'Er' },
+            { weekday: 'Mon', day: '1' },
+            // { weekday: 'Thu', day: '2' },
+            // { weekday: 'Wed', day: '3' },
+            // { weekday: 'Fri', day: '4' },
+            // { weekday: 'Sat', day: '5' },
         ],
-        timeSlots:[
+        timeSlots: [
             { time: '13:00', price: '5.25', type: '3D' },
-            { time: '15:45', price: '5.99', type: '3D' },
-            { time: '18:50', price: '4.50', type: '2D' },
-            { time: '20:30', price: '6.50', type: '2D' },
+            // { time: '15:45', price: '5.99', type: '3D' },
+            // { time: '18:50', price: '4.50', type: '2D' },
+            // { time: '20:30', price: '6.50', type: '2D' },
         ],
         timeSlotsByDay: {},
         selectedScreening: null,
         selectedDate: null,
         selectedTimeSlot: null,
+        dateIndex: 0,
+        timeSlotIndex: 0,
         userType: 'regular', // 'regular' or 'vip'
         reserveInfo: null,
+        currentRouteparams: null,
     }),
 
     actions: {
@@ -47,17 +52,18 @@ export const useScreeningStore = defineStore('screening', {
                 } else {
                     this.selectedSeats.push(seatId)
                 }
-                console.log(`${seatId} ${seat.isVIP ? '(VIP)' : ''} ${index > -1 ? 'deselected' : 'selected'}`)
+                // console.log(`${seatId} ${seat.isVIP ? '(VIP)' : ''} ${index > -1 ? 'deselected' : 'selected'}`)
             }
         },
-
         setSelectedDate(date) {
             this.selectedDate = date;
             this.selectedTimeSlot = this.timeSlotsByDay[this.selectedDate.day][0];
+            this.dateIndex = this.screeningDays.findIndex(day => day.day === date.day);
             this.updateAvailableTimeSlots();
         },
         setSelectedTimeSlot(timeSlot) {
             this.selectedTimeSlot = timeSlot
+            this.timeSlotIndex = this.timeSlots.findIndex(slot => slot.time === timeSlot.time);
         },
         updateAvailableTimeSlots() {
             if (this.selectedDate && this.timeSlotsByDay[this.selectedDate.day]) {
@@ -78,13 +84,38 @@ export const useScreeningStore = defineStore('screening', {
             }
         },
 
+        async abortReservation() {
+            const { data } = await axios.post(`http://localhost:3000/api/tickets/abort`, {
+                tempReservationId: this.reserveInfo.reservation
+            })
+            this.reserveInfo = data;
+        },
+
         async getScreeningsForCinema(movieId, cinemaId) {
+            // console.log('realoaded screenings');
+            console.log(movieId, cinemaId);
+            this.screenings = [];
+            this.updateAvailableSeats();
+            
             const response = await axios.get(`http://localhost:3000/api/screenings/${movieId}/${cinemaId}`);
             // console.log('Screenings:', response.data);
             this.screenings = response?.data;
             this.processScreenings(this.screenings);
-            this.selectedDate = this.screeningDays[0];
-            this.selectedTimeSlot = this.timeSlotsByDay[this.selectedDate.day][0];
+            
+            if(this.dateIndex > 0 || this.timeSlotIndex > 0)
+            {
+                console.log("special preload");
+
+                this.setSelectedDate(this.screeningDays[this.dateIndex]);
+                this.setSelectedTimeSlot(this.timeSlots[this.timeSlotIndex]);
+            }
+             else{
+                console.log("deafult preload");
+                
+                this.selectedDate = this.screeningDays[0];
+                this.selectedTimeSlot = this.timeSlotsByDay[this.selectedDate.day][0]; 
+            }
+        
             this.updateAvailableTimeSlots();
             this.updateAvailableSeats();
         },
@@ -98,7 +129,7 @@ export const useScreeningStore = defineStore('screening', {
                     ])
                 ).values()
             ).sort((a, b) => a.day - b.day);
-            
+
             //group the slots by day
             this.timeSlotsByDay = screenings.reduce((acc, screening) => {
                 if (!acc[screening.day]) {
@@ -111,7 +142,7 @@ export const useScreeningStore = defineStore('screening', {
                 });
                 return acc;
             }, {});
-        
+
             for (let day in this.timeSlotsByDay) {
                 this.timeSlotsByDay[day].sort((a, b) => {
                     const timeA = a.time.split(':').map(Number);
@@ -121,41 +152,61 @@ export const useScreeningStore = defineStore('screening', {
             }
         },
         updateAvailableSeats() {
+            // console.log("updateAvailableSeats!!!!");
+
             if (!this.selectedDate || !this.selectedTimeSlot) {
-                console.log('Fecha o hora no seleccionada');
+                console.log('Date or time not selected');
                 return;
             }
-        
+
             const selectedScreening = this.screenings.find(screening => {
                 return screening.day === this.selectedDate.day &&
-                       screening.time === this.selectedTimeSlot.time;
+                    screening.time === this.selectedTimeSlot.time;
             });
-        
+
             if (selectedScreening && selectedScreening.seats) {
-                // console.log(`Asientos para la proyección seleccionada: ${this.selectedDate.day} ${typeof(this.selectedDate.day)} ${this.selectedTimeSlot.time} ${typeof(this.selectedTimeSlot.time)}`, selectedScreening.seats);
                 this.seats = JSON.parse(JSON.stringify(selectedScreening.seats));
                 this.selectedScreening = selectedScreening.id;
-                console.log('selectedScreening', selectedScreening);
-                
+                // console.log('selectedScreening', selectedScreening, this.seats);
+                useSocketStore().joinRoom(this.selectedScreening);
+
+
+                if (this.selectedSeats && this.selectedSeats.length > 0) {
+                    this.selectedSeats = this.selectedSeats.filter(seatId => {
+                        const [row, seatNumber] = seatId.split('');
+                        const seat = this.seats[row].find(s => s.id === seatId);
+                        if (seat && seat.disabled) {
+                            console.log(`Removing disabled seat ${seatId}`);
+                            return false; // Remove this seat
+                        }
+                        return true; // Keep this seat
+                    });
+                }
             } else {
-                // console.log(`No se encontró la proyección seleccionada o no tiene asientos para el día ${this.selectedDate.day} a las ${this.selectedTimeSlot.time}`);
+                console.log(`Cant found selected projection or doesn't have seats for day ${this.selectedDate.day} at ${this.selectedTimeSlot.time}`);
             }
         },
         async reserveTicket() {
-            const {data} = await axios.post(`http://localhost:3000/api/tickets/reserve`, {
-                userId: "66c28adf555f528336310f72" , ////TODO: retrieve this number from the database
+            const { data } = await axios.post(`http://localhost:3000/api/tickets/reserve`, {
+                userId: "66c28adf555f528336310f72", ////TODO: retrieve this number from the database
                 screeningId: this.selectedScreening,
-                selectedSeats: this.selectedSeats.map(seat => ({ row: seat[0], number:  parseInt(seat.slice(1)) }))
+                selectedSeats: this.selectedSeats.map(seat => ({ row: seat[0], number: parseInt(seat.slice(1)) }))
             })
             this.reserveInfo = data;
         },
         async confirmReservation() {
-            const {data} = await axios.post(`http://localhost:3000/api/tickets/confirm`, {
+            const { data } = await axios.post(`http://localhost:3000/api/tickets/confirm`, {
                 tempReservationId: this.reserveInfo.tempReservationId
             })
             this.reserveInfo = data;
+        },
+        receivedSocketEvent() {
+            console.log("receivedSocketEvent", this.currentRouteparams);
+            this.getScreeningsForCinema(this.currentRouteparams[0], this.currentRouteparams[1]);
         }
+       
     },
+
 
     getters: {
         totalSelectedSeats: (state) => state.selectedSeats.length,

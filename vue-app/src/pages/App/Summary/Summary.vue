@@ -22,6 +22,14 @@ async function buyTicketClicked() {
     router.push(`/app/ticket-swiper`);
 }
 
+async function onExpiration() {
+    await screeningStore.abortReservation();
+    router.back();
+}
+
+async function onbackClick() {
+     await screeningStore.abortReservation();
+}
 
 async function selectPaymentCard(id) {
         id != selectedCard.value? selectedCard.value = id : selectedCard.value = null;
@@ -47,7 +55,7 @@ const cards = [{
 <template>
     <div class="head">
         <div class="gradient"/>
-            <CinemaHeader headerText="Order Summary" />    
+            <CinemaHeader headerText="Order Summary" :onBackClick="onbackClick" />
         <MovieSum 
             :movieVenue="screeningStore.reserveInfo.screening.venue" 
             :movieShowtime="screeningStore.reserveInfo.screening.dateTime" 
@@ -71,7 +79,7 @@ const cards = [{
         </div>
     </div>
     <div class="timer-container">
-        <Timer :expirationTime="screeningStore.reserveInfo.expirationTime" :onExpiration="()=>{}" />
+        <Timer :expirationTime="screeningStore.reserveInfo.expirationTime" :onExpiration="onExpiration" />
     </div>
     <div class="buy-ticket-container">
         <button class="buy-ticket-button" @click="buyTicketClicked" :disabled="!selectedCard">

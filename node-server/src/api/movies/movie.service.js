@@ -14,7 +14,7 @@ export default class MovieService {
       .populate({ path: 'cast.actor_id', model: 'Actor' })
       .lean();
 
-      console.log('Movie:', movie);
+      // console.log('Movie:', movie);
       if (!movie) return null;
       
       const screenings = await new ScreeningService().getScreeningsForMovie(movie_id);
@@ -22,7 +22,7 @@ export default class MovieService {
       const uniqueScreenings = Array.from(new Set(screenings.map(s => JSON.stringify({ cinema_id: s.cinema_id }))))
       .map(s => JSON.parse(s));
 
-      console.log('Screenings:', screenings);
+      // console.log('Screenings:', screenings);
       
     const movieWithScreenings = {
               ...movie,

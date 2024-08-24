@@ -1,29 +1,38 @@
 <script setup>
 import SkeletonLoader from '@components/SkeletonLoader/SkeletonLoader.vue';
 import { useMovieStore } from '@stores/movies.js';
-import { onMounted, watch } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useRoute } from 'vue-router';
 import TrailerButton from './components/TrailerButton.vue';
+
 
 
 const route = useRoute();
 const movieId = route.params.id;
 const store = useMovieStore();
 const { selectedMovie } = storeToRefs(store);
+const showTrailer = ref(false);
 
 onMounted(() => {
     store.fetchMovieDetails(movieId);
+    showTrailer.value = false;
 });
 
 watch(() => route.params.id, (newId) => {
     store.fetchMovieDetails(newId);
 });
+
+const toggleTrailer = () => {
+    showTrailer.value = !showTrailer.value;
+};
 </script>
+
 
 <template>
     <div class='trailer-preview'>
-        <img loading="lazy" :src="selectedMovie.img" :alt="selectedMovie.title" />
+        <img v-if="!showTrailer" loading="lazy" :src="selectedMovie.img" :alt="selectedMovie.title" />
+        <lite-youtube v-else  :videoid="selectedMovie.trailer"></lite-youtube>
     </div>
     <div class='trailer-info'>
         <div class="header">
@@ -31,7 +40,7 @@ watch(() => route.params.id, (newId) => {
                 <h2 class='title'>{{ selectedMovie.title }}</h2>
                 <p class='genre'>{{ selectedMovie.genre }}</p>
             </div>
-            <TrailerButton />
+            <TrailerButton @click="toggleTrailer"/>
         </div>
         <p class='synopsis'>{{ selectedMovie.synopsis }}</p>
     </div>
@@ -49,6 +58,12 @@ watch(() => route.params.id, (newId) => {
         width: 100%;
         height: 150%;
         object-fit: cover;
+    }
+
+    & lite-youtube {
+        width: 100%;
+        height: 100%;
+        
     }
 }
 

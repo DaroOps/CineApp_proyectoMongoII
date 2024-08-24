@@ -11,7 +11,7 @@ export class MovieListDTO {
 
 export class MovieDetailDTO {
     constructor({ _id, title, genre, duration, synopsis, screening_times, image_url, trailer_url, cast , screenings}) {
-        console.log('Received data:', { _id, title, genre, duration, synopsis, image_url, trailer_url, cast, screenings });
+        // console.log('Received data:', { _id, title, genre, duration, synopsis, image_url, trailer_url, cast, screenings });
         this.id = _id;
         this.title = title;
         this.genre = genre;

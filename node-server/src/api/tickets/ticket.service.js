@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 import ReservationManager from '../../utils/ReservationManager.js';
 import Ticket from './ticket.model.js';
 import { TicketDTO, ReservationDTO } from './ticket.dto.js';
+import { io } from '../../../app.js';
 
 export default class TicketService {
   constructor() {
@@ -12,7 +13,7 @@ export default class TicketService {
   async reserveTickets({userId, screeningId, selectedSeats} ) {
     const session = await mongoose.startSession();
     session.startTransaction();
-    console.log(userId, screeningId, selectedSeats);
+    // console.log(userId, screeningId, selectedSeats);
     
     try {
       const Screening = mongoose.model('Screening');
@@ -68,12 +69,65 @@ export default class TicketService {
         serviceFee: totalServiceFee.toFixed(2)
       };
 
-      console.log(responseData);
+      // console.log(responseData);
       
       await session.commitTransaction();
       this.reservationManager.addReservation(tempReservation._id, tempReservation.expiration_time);
-      
+      const screeninId = tempReservation.screening_id.toString() 
+      io.to(screeninId).emit('screeningUpdated',  screeninId);
       return new ReservationDTO(responseData);
+    } catch (error) {
+      await session.abortTransaction();
+      throw error;
+    } finally {
+      session.endSession();
+    }
+  }
+
+  async abortReservation(tempReservationId) {
+    const session = await mongoose.startSession();
+    session.startTransaction();
+  
+    try {
+      const TemporaryReservation = mongoose.model('TemporaryReservation');
+      const Screening = mongoose.model('Screening');
+  
+      const tempReservation = await TemporaryReservation.findById(tempReservationId).session(session);
+      if (!tempReservation || tempReservation.status !== 'pending') {
+        throw new Error('Invalid or expired reservation');
+      }
+  
+      await Screening.updateOne(
+        { _id: tempReservation.screening_id },
+        {
+          $pull: { 
+            occupied_seats: { 
+              $or: tempReservation.seats.map(seat => ({
+                row: seat.row,
+                number: seat.number
+              }))
+            } 
+          }  
+        },
+        { session }
+      );
+      // $pull: { 
+      //   occupied_seats: { 
+      //     $in: tempReservation.seats
+      //   } 
+      // } 
+      
+      tempReservation.status = 'cancelled';
+      await tempReservation.save({ session });
+
+      const screeninId = tempReservation.screening_id.toString() 
+      this.reservationManager.cancelReservation(tempReservationId);
+
+      io.to(screeninId).emit('screeningUpdated',  screeninId );
+  
+      await session.commitTransaction();
+      
+      return { message: 'Reservation cancelled successfully' };
     } catch (error) {
       await session.abortTransaction();
       throw error;
@@ -232,7 +286,7 @@ export default class TicketService {
       return seatExists && seatNotReserved;
     });
   
-    console.log('Valid seats:', validSeats);
+    // console.log('Valid seats:', validSeats);
   
     if (!validSeats) {
       throw new Error('Invalid or unavailable seats selected');

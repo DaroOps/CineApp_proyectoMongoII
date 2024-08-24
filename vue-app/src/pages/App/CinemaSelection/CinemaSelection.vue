@@ -17,14 +17,15 @@
     store.clearSelectedMovie();
   }
 
-  function selectLogo(id) {
+  function selectCinema(id) {
     id != selectedCard.value? selectedCard.value = id : selectedCard.value = null;
   }
   
   function bookNowClicked() {
     screeningStore.getScreeningsForCinema(store.selectedMovie.id, selectedCard.value);
-    router.push(`/app/b-n${selectedCard.value}`);
-    console.log(`Book Now clicked for ${selectedCard.value}`, router.currentRoute);
+
+    router.push(`/app/b-n${store.selectedMovie.id}-${selectedCard.value}`);
+    // console.log(`Book Now clicked for ${selectedCard.value}`, router.currentRoute);
   }
 
 </script>
@@ -49,7 +50,7 @@
         :name="cinema.name" 
         :location="cinema.location" 
         :isSelected="selectedCard === cinema.id"
-         @select="selectLogo(cinema.id)"
+         @select="selectCinema(cinema.id)"
         />
       </div>
       

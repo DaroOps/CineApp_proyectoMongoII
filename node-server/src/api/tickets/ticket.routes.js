@@ -8,5 +8,6 @@ const ticketController = new TicketController();
 
 router.post("/reserve", asyncHandler(ticketController.reserveTickets));
 router.post("/confirm", asyncHandler(ticketController.confirmReservation));
+router.post("/abort", asyncHandler(ticketController.abortReservation));
 
 export default router;

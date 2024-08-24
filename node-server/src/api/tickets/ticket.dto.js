@@ -48,7 +48,7 @@ export class ScreeningDTO {
       this.price = data.screening.base_price;
       this.dateTime = data.screening.date_time;
       this.venue = data.screening.cinema_id.location
-      console.log(data.screening.cinema_id);
+      // console.log(data.screening.cinema_id);
       this.type = data.screening.type;
       this.tickets = data.tickets;
       this.total = data.total;

@@ -6,23 +6,27 @@
  import {EffectCards} from 'swiper/modules';
  import 'swiper/css/effect-cards';
  import { useTicketStore } from '@stores/tickets.js';
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
+import { useRouter } from 'vue-router';
 
-
+const router = useRouter();
  const ticketStore = useTicketStore();
 
  const tickets = computed(() => ticketStore.tickets);
 
+ function onbackClick(){
+     router.push('/app/');
+ }
+
  const modules = [
     EffectCards
   ];
-  
 
 </script>
 
 <template>
   <div class="ticket-swiper-container">
-    <CinemmaHeader headerText="Ticket" />
+    <CinemmaHeader headerText="Ticket" :onBackClick="onbackClick" />
     <div class="tickets-container">
         <swiper
             :modules="modules"

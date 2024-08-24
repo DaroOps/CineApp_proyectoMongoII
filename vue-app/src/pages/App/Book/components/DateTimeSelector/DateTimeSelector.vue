@@ -1,21 +1,35 @@
 <script setup>
 import { onMounted, ref,computed } from 'vue';
 import { useScreeningStore } from '@stores/screenings.js';
+import { storeToRefs } from 'pinia';
 import DateCard from './components/DateCard.vue';
 import TimeCard from './components/TimeCard.vue';
 
 const screeningStore = useScreeningStore();
 
+const { dateIndex, timeSlotIndex } = storeToRefs(screeningStore);
+
+
 const selectedDateIndex = ref(null);
 const selectedTimeIndex = ref(null);
 
 onMounted(() => {
-    selectedDateIndex.value = 0;
-    selectedTimeIndex.value = 0;
 
-    // selectDateSlot(0);
-    // selectTimeSlot(0);
+    if(dateIndex.value > 0 || timeSlotIndex.value > 0)
+    {
+        selectDateSlot(dateIndex.value);
+        selectTimeSlot(timeSlotIndex.value);
+    }
+    else{
+           selectedDateIndex.value = 0;
+            selectedTimeIndex.value = 0;
+    }
+
+
+    // selectDateSlot(dateIndex);
+    // selectTimeSlot(timeSlotIndex);
 });
+
 
 function selectDateSlot(index) {
     selectedDateIndex.value = index;

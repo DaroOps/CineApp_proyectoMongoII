@@ -14,9 +14,18 @@ export default class TicketController {
 
     confirmReservation = async (req, res) => { 
         const { tempReservationId } = req.body;
-        console.log("confirmReservation", tempReservationId);
+        // console.log("confirmReservation", tempReservationId);
         
         const tickets = await this.ticketService.confirmReservation(tempReservationId);
+
+        res.status(200).json(tickets);
+    }
+
+    abortReservation = async (req, res) => { 
+        const { tempReservationId } = req.body;
+        // console.log("abortReservation", tempReservationId);
+        
+        const tickets = await this.ticketService.abortReservation(tempReservationId);
 
         res.status(200).json(tickets);
     }

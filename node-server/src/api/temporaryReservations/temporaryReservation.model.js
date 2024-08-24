@@ -5,7 +5,7 @@ const temporaryReservationSchema = new mongoose.Schema({
     screening_id: { type: mongoose.Schema.Types.ObjectId, ref: 'Screening', required: true },
     seats: [{ row: String, number: Number }],
     expiration_time: { type: Date, required: true },
-    status: { type: String, enum: ['pending', 'completed', 'expired'], default: 'pending' }
+    status: { type: String, enum: ['pending', 'completed', 'expired', 'cancelled'], default: 'pending' }
   });
   
 const TemporaryReservation = mongoose.model('TemporaryReservation', temporaryReservationSchema, 'temporary_reservations');
