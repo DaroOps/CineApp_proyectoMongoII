@@ -1,6 +1,7 @@
 // stores/screeningStore.js
 import { defineStore } from 'pinia';
 import axios from 'axios';
+import axiosInstance from "@plugins/axios.js";
 import { useSocketStore } from '@stores/socket.js';
 import { useRouter } from 'vue-router';
 
@@ -85,7 +86,7 @@ export const useScreeningStore = defineStore('screening', {
         },
 
         async abortReservation() {
-            const { data } = await axios.post(`http://localhost:3000/api/tickets/abort`, {
+            const { data } = await axiosInstance.post(`/api/tickets/abort`, {
                 tempReservationId: this.reserveInfo.reservation
             })
             this.reserveInfo = data;
@@ -97,7 +98,7 @@ export const useScreeningStore = defineStore('screening', {
             this.screenings = [];
             this.updateAvailableSeats();
             
-            const response = await axios.get(`http://localhost:3000/api/screenings/${movieId}/${cinemaId}`);
+            const response = await axiosInstance.get(`/api/screenings/${movieId}/${cinemaId}`);
             // console.log('Screenings:', response.data);
             this.screenings = response?.data;
             this.processScreenings(this.screenings);
@@ -187,15 +188,15 @@ export const useScreeningStore = defineStore('screening', {
             }
         },
         async reserveTicket() {
-            const { data } = await axios.post(`http://localhost:3000/api/tickets/reserve`, {
-                userId: "66c28adf555f528336310f72", ////TODO: retrieve this number from the database
+            const { data } = await axiosInstance.post(`/api/tickets/reserve`, {
+                userId: "66c28adf555f528336310f72", ////TODO: retrieve this number from the auth store
                 screeningId: this.selectedScreening,
                 selectedSeats: this.selectedSeats.map(seat => ({ row: seat[0], number: parseInt(seat.slice(1)) }))
             })
             this.reserveInfo = data;
         },
         async confirmReservation() {
-            const { data } = await axios.post(`http://localhost:3000/api/tickets/confirm`, {
+            const { data } = await axiosInstance.post(`/api/tickets/confirm`, {
                 tempReservationId: this.reserveInfo.tempReservationId
             })
             this.reserveInfo = data;

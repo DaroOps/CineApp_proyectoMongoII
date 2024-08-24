@@ -1,10 +1,12 @@
 import User from './user.model.js';
 import bcrypt from 'bcrypt';
 
+import { UserDetailDTO } from './user.dto.js';
+
 export default class UserService {
   async getUserById(id) {
     const user = await User.findById(id).lean();
-    return user;
+    return new UserDetailDTO(user);
   }
 
   async createUser({ userData }) {

@@ -13,10 +13,12 @@
     "@justinribeiro/lite-youtube": "^1.5.0",
     "axios": "^1.7.4",
     "jsbarcode": "^3.11.6",
+    "jwt-decode": "^4.0.0",
     "pinia": "^2.2.1",
     "socket.io-client": "^4.7.5",
     "swiper": "^11.1.9",
     "vue": "^3.4.35",
+    "vue-cookies": "^1.8.4",
     "vue-router": "^4.4.3",
     "vue3-marquee-slider": "^1.0.5"
   },

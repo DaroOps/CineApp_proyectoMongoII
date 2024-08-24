@@ -28,6 +28,7 @@ async function onExpiration() {
 }
 
 async function onbackClick() {
+        router.back();
      await screeningStore.abortReservation();
 }
 
@@ -57,13 +58,13 @@ const cards = [{
         <div class="gradient"/>
             <CinemaHeader headerText="Order Summary" :onBackClick="onbackClick" />
         <MovieSum 
-            :movieVenue="screeningStore.reserveInfo.screening.venue" 
-            :movieShowtime="screeningStore.reserveInfo.screening.dateTime" 
-            :movie="screeningStore.reserveInfo.screening.movie" 
+            :movieVenue="screeningStore?.reserveInfo?.screening?.venue" 
+            :movieShowtime="screeningStore?.reserveInfo?.screening?.dateTime" 
+            :movie="screeningStore?.reserveInfo?.screening?.movie" 
         />
     </div>
     <div class="bill-container">
-        <Bill :reservationNumber="screeningStore.reserveInfo.reservation" :data="screeningStore?.reserveInfo?.screening" />
+        <Bill :reservationNumber="screeningStore?.reserveInfo?.reservation" :data="screeningStore?.reserveInfo?.screening" />
     </div>
     <div class="payment-container">
         <h2 class="payment-title">Payment method</h2>
@@ -79,7 +80,7 @@ const cards = [{
         </div>
     </div>
     <div class="timer-container">
-        <Timer :expirationTime="screeningStore.reserveInfo.expirationTime" :onExpiration="onExpiration" />
+        <Timer :expirationTime="screeningStore?.reserveInfo?.expirationTime" :onExpiration="onExpiration" />
     </div>
     <div class="buy-ticket-container">
         <button class="buy-ticket-button" @click="buyTicketClicked" :disabled="!selectedCard">

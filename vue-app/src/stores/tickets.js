@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import axios from 'axios';
+import axiosInstance from "@plugins/axios.js";
 import { useScreeningStore } from '@stores/screenings.js';
 
 export const useTicketStore = defineStore('tickets', {
@@ -39,7 +40,7 @@ export const useTicketStore = defineStore('tickets', {
   actions: {
     async confirmReservation(tempReservationId) {
       console.log("confirmReservation", tempReservationId);
-      const {data} = await axios.post(`http://localhost:3000/api/tickets/confirm`, {tempReservationId: tempReservationId})
+      const {data} = await axiosInstance.post(`/api/tickets/confirm`, {tempReservationId: tempReservationId})
       
       this.tickets = data;
     }

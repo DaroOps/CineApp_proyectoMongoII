@@ -15,6 +15,7 @@
 
   function backButtonClicked() {
     store.clearSelectedMovie();
+    router.back();
   }
 
   function selectCinema(id) {

@@ -1,3 +1,62 @@
+<script setup>
+import { ref, reactive, computed } from 'vue';
+import { useAuthStore } from '@stores/auth.js';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
+
+const authStore = useAuthStore();
+
+const form = reactive({
+  email: '',
+  password: ''
+});
+
+const errors = reactive({
+  email: '',
+  password: ''
+});
+
+const isFormValid = computed(() => {
+  return !Object.values(errors).some(error => error !== '') &&
+         Object.values(form).every(value => value !== '');
+});
+
+const validateField = (field) => {
+  errors[field] = '';
+  switch(field) {
+    case 'email':
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(form.email)) {
+        errors.email = 'Por favor, ingrese un email válido';
+      }
+      break;
+    case 'password':
+      if (form.password.length < 5) {
+        errors.password = 'La contraseña debe tener al menos 6 caracteres';
+      }
+      break;
+  }
+};
+
+const validateForm = () => {
+  validateField('email');
+  validateField('password');
+};
+
+const submitForm = () => {
+  validateForm();
+  if (isFormValid.value) {
+    authStore.login(form.email, form.password);
+    console.log('Formulario de inicio de sesión enviado', form);
+    router.push('/app/home');
+  } else {
+    console.log('El formulario tiene errores');
+  }
+};
+</script>
+
+
 <template>
   <div class="login-page">
     <div class="login-content">
@@ -35,61 +94,6 @@
     </div>
   </div>
 </template>
-
-<script>
-export default {
-  name: 'LoginPage',
-  data() {
-    return {
-      form: {
-        email: '',
-        password: ''
-      },
-      errors: {
-        email: '',
-        password: ''
-      }
-    }
-  },
-  computed: {
-    isFormValid() {
-      return !Object.values(this.errors).some(error => error !== '') &&
-             Object.values(this.form).every(value => value !== '');
-    }
-  },
-  methods: {
-    validateField(field) {
-      this.errors[field] = '';
-      switch(field) {
-        case 'email':
-          const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-          if (!emailRegex.test(this.form.email)) {
-            this.errors.email = 'Por favor, ingrese un email válido';
-          }
-          break;
-        case 'password':
-          if (this.form.password.length < 6) {
-            this.errors.password = 'La contraseña debe tener al menos 6 caracteres';
-          }
-          break;
-      }
-    },
-    validateForm() {
-      this.validateField('email');
-      this.validateField('password');
-    },
-    submitForm() {
-      this.validateForm();
-      if (this.isFormValid) {
-        // Aquí iría la lógica para enviar el formulario de inicio de sesión
-        console.log('Formulario de inicio de sesión enviado', this.form);
-      } else {
-        console.log('El formulario tiene errores');
-      }
-    }
-  }
-}
-</script>
 
 <style scoped>
 .login-page {

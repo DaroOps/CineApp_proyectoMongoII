@@ -14,7 +14,7 @@ const props = defineProps({
   },
   onBackClick: {
     type: Function,
-    default: () => { }
+    default: null
   },
   isDummy: {
     type: Boolean,
@@ -23,9 +23,12 @@ const props = defineProps({
 });
 
 function handleBackClick() {
-  props.onBackClick ?
-    props.onBackClick() : {};
-  router.back();
+  if(props.onBackClick != null){
+    props.onBackClick()
+    return
+  } 
+
+  router.back()
 }
 
 </script>

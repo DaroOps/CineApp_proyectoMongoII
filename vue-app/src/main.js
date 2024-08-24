@@ -5,6 +5,7 @@ import { createPinia } from 'pinia'
 import App from './App.vue'
 import VueBarcode from '@chenfengyuan/vue-barcode';
 import { useSocketStore } from '@stores/socket.js';
+import VueCookies from 'vue-cookies';
 
 
 const pinia = createPinia()
@@ -12,6 +13,7 @@ const app = createApp(App)
 
 app.component(VueBarcode.name, VueBarcode);
 app.use(router)
+app.use(VueCookies)
 app.use(pinia)
 
 const socketStore = useSocketStore()

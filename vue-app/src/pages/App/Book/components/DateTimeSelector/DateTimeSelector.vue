@@ -24,10 +24,6 @@ onMounted(() => {
            selectedDateIndex.value = 0;
             selectedTimeIndex.value = 0;
     }
-
-
-    // selectDateSlot(dateIndex);
-    // selectTimeSlot(timeSlotIndex);
 });
 
 

@@ -1,15 +1,20 @@
+import cookieParser from 'cookie-parser';
 import express from 'express';
 import cors from 'cors';
 import http from 'http';
 import { Server } from 'socket.io';
+import {} from './src/api/index.js';
+import connectDB from './src/config/database.js';
+import mongoose from 'mongoose';
 import userRouter from './src/api/users/user.routes.js';
 import movieRouter from './src/api/movies/movie.routes.js';
 import screeningRouter from './src/api/screenings/screening.routes.js';
 import theaterRouter from './src/api/theaters/theater.routes.js';
 import ticketRouter from './src/api/tickets/ticket.routes.js';
-import {} from './src/api/index.js';
-import connectDB from './src/config/database.js';
-import mongoose from 'mongoose';
+import authRouter from './src/api/auth/auth.routes.js';
+import errorHandler from './src/middlewares/errorHandler.js';
+import authenticateToken from './src/middlewares/jwtAuthHandler.js';
+
 
 const app = express();
 const server = http.createServer(app);  
@@ -26,11 +31,13 @@ connectDB();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
+app.use(errorHandler)
 app.use(cors({
-  origin: process.env.NODE_ENV === 'production' ? process.env.ALLOWED_ORIGINS : '*',
+  origin: process.env.NODE_ENV === 'production' ? process.env.ALLOWED_ORIGINS : ['http://localhost:5173','http://localhost:3000'],
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'Authorization'],
-  credentials: false
+  credentials: true
 }));
 
 console.log('Registered Models:', mongoose.modelNames());
@@ -39,13 +46,12 @@ app.get('/', (req, res) => {
   res.send('Health Check: OK');
 });
 
-app.use('/api/users', userRouter);
-app.use('/api/movies', movieRouter);
-app.use('/api/screenings', screeningRouter);
-app.use('/api/theaters', theaterRouter);
-app.use('/api/tickets', ticketRouter);
-
-const rooms = new Map();
+app.use('/api/auth', authRouter);
+app.use('/api/users', authenticateToken ,userRouter);//TODO: protect api routes! app.use('/api/users', authenticateToken, userRouter);
+app.use('/api/movies',authenticateToken , movieRouter);
+app.use('/api/screenings',authenticateToken , screeningRouter);
+app.use('/api/theaters',authenticateToken , theaterRouter);
+app.use('/api/tickets', authenticateToken ,ticketRouter);
 
 
 io.on('connection', (socket) => {

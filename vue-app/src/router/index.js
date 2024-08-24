@@ -1,4 +1,5 @@
 import { createWebHistory, createRouter } from 'vue-router'
+import  authGuard  from '@auth/authGuard.js';
 
 import App from '@pages/App/App.vue'
 // import Categories from '@pages/App/Categories/index.vue'
@@ -17,29 +18,31 @@ import Register from '@pages/Register/Register.vue'
 const routes = [
   {
     path: '/',
-    redirect: '/iniciar-sesion'
+    redirect: '/login'
   },
   {
-    path: '/iniciar-sesion',
+    path: '/login',
     name: 'Login',
     component: Login
   },
   {
-    path: '/registrarse',
+    path: '/register',
     name: 'Register',
     component: Register
   },
   {
     path: '/app',
+    redirect: '/app/home',
     name: 'App',
+    meta: { requiresAuth: true },
     component: App,
     children: [
       {
-        path: '/app/',
+        path: '/app/home',
         name: 'AppHome',
+      
         component: Home,
         meta:{ requiresNav: true }
-
       },
       {
         path: '/app/search',
@@ -88,5 +91,7 @@ const router = createRouter({
   history: createWebHistory(),
   routes,
 })
+
+router.beforeEach(authGuard);
 
 export default router

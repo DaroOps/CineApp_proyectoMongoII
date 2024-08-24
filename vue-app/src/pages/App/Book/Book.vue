@@ -49,16 +49,13 @@ const selectedInfo = computed(() => {
     return selectedDate.value && selectedTimeSlot.value && selectedSeats.value.length > 0;
 });
 
-function onBackClick() {
-
-}
 
 
 
 </script>
 
 <template>
-    <CinemaHeader headerText="Choose Seat" :onBackClick="onBackClick" />
+    <CinemaHeader headerText="Choose Seat" />
     <div class="seat-map-container">
         <SeatMap />
     </div>

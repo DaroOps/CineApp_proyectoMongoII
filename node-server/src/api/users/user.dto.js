@@ -9,12 +9,11 @@ export class UserListDTO {
   }
   
   export class UserDetailDTO {
-    constructor({ _id, name, email, role, vip_card, purchase_history }) {
+    constructor({ _id, name, email, role, purchase_history }) {
       this.id = _id;
       this.name = name;
       this.email = email;
       this.role = new RoleDTO(role);
-      this.vipCard = vip_card ? new VipCardDTO(vip_card) : null;
       this.purchaseHistory = purchase_history.map(p => new PurchaseHistoryDTO(p));
     }
   }

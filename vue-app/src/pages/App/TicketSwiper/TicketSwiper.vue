@@ -15,7 +15,9 @@ const router = useRouter();
  const tickets = computed(() => ticketStore.tickets);
 
  function onbackClick(){
-     router.push('/app/');
+    console.log("onbackClick" );
+     router.push('/app/home');
+     
  }
 
  const modules = [
