@@ -51,6 +51,7 @@ export default class AuthService {
 
     async logout(accessToken) {
         try {
+          const User = mongoose.model('User');
           const payload = jwt.verify(accessToken, process.env.JWT_ACCESS_SECRET);
           const user = await User.findById(payload.id);
           user.password = undefined;

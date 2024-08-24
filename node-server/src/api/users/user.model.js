@@ -45,6 +45,10 @@ const userSchema = new Schema({
     type: roleSchema,
     required: true
   },
+  profileImage: {
+    url: String,
+    hash: String
+  },
   vip_card: {
     type: vipCardSchema
   },

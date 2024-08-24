@@ -15,8 +15,8 @@ export default class AuthController {
     refresh = async (req, res) => {
         const refreshToken = req.cookies.refresh_token;
         const { accessToken } = this.authService.refreshAccessToken(refreshToken);
-        res.cookie('access_token', accessToken, { httpOnly: true, secure: true, sameSite: 'strict' });
-        res.success(200).json({ success: true });
+        res.cookie('access_token', accessToken);
+        res.status(200).json({ success: true });
     }
 
     verify = async (req, res) => {
@@ -28,8 +28,11 @@ export default class AuthController {
     }
 
     logout = async (req, res) => {
-        const { accessToken } = req.cookies;
-        await this.authService.logout(accessToken);
-        res.clearCookie('access_token').status(200).json({ success: true });
+        const { access_token } = req.cookies;
+        await this.authService.logout(access_token);
+      
+        res.clearCookie('access_token');
+        res.clearCookie('refresh_token');
+        res.status(200).json({ success: true });
     }
 }

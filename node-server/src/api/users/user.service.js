@@ -1,5 +1,8 @@
 import User from './user.model.js';
 import bcrypt from 'bcrypt';
+import cloudinary from '../../config/cloudinary.js';
+import fs from 'fs';
+import calculateFileHash from '../../utils/crypto.js';
 
 import { UserDetailDTO } from './user.dto.js';
 
@@ -25,11 +28,63 @@ export default class UserService {
     return savedUser.toObject();
   }
 
-  async updateUser(id, updateData ) {
+  async updateUser(id, updateData, imageFile) {
+    const existingUser = await User.findById(id);
+  
+    if (!existingUser) {
+      throw new Error('User not found');
+    }
+  
     if (updateData.password) {
       updateData.password = await bcrypt.hash(updateData.password, 10);
     }
+    
+    if (imageFile) {
+      try {
+        // Calcular el hash del archivo
+        const fileHash = await calculateFileHash(imageFile.path);
+        
+        // Buscar si ya existe una imagen con este hash
+        const duplicateUser = await User.findOne({ 'profileImage.hash': fileHash });
+        
+        if (duplicateUser) {
+          // Si ya existe, usar la URL existente
+          updateData.profileImage = {
+            url: duplicateUser.profileImage.url,
+            hash: fileHash
+          };
+        } else {
+          // Si no existe, subir a Cloudinary
+          const result = await cloudinary.uploader.upload(imageFile.path);
+          updateData.profileImage = {
+            url: result.secure_url,
+            hash: fileHash,
+            public_id: result.public_id
+          };
+        }
+        
+        // Eliminar el archivo temporal
+        fs.unlinkSync(imageFile.path);
+  
+        // Si el usuario ya tenía una imagen de perfil, eliminarla de Cloudinary
+        if (existingUser.profileImage && existingUser.profileImage.url && existingUser.profileImage.hash !== fileHash) {
+          try {
+            // console.log('Deleting old profile image from Cloudinary');
+            await cloudinary.uploader.destroy(existingUser.profileImage.url.split('/').pop().split('.png')[0]);
+          } catch (deleteError) {
+            console.error('Error deleting old image from Cloudinary:', deleteError);
+          }
+        }
+      } catch (error) {
+        console.error('Error processing image:', error);
+        throw new Error('Failed to process image');
+      }
+    }
+  
     const updatedUser = await User.findByIdAndUpdate(id, updateData, { new: true }).lean();
+    if (!updatedUser) {
+      throw new Error('Failed to update user');
+    }
     return updatedUser;
   }
 

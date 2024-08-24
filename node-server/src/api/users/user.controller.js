@@ -5,18 +5,6 @@ export default class UserController {
     this.userService = new UserService();
   }
 
-  loginUser = async (req, res) => {
-    const user = await this.userService.loginUser(req.body);
-    res
-    .cookie('access_token', user.token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
-      maxAge: parseInt(process.env.COOKIE_MAX_AGE),
-    })
-    .status(200).json({ success: "logged in successfully"});
-  };
-
   createUser = async (req, res) => {
     const user = await this.userService.createUser(req.body);
     res.json(user);
@@ -28,7 +16,11 @@ export default class UserController {
   };
 
   updateUser = async (req, res) => {
-    const user = await this.userService.updateUser(req.params.id, req.body);
+    const { id } = req.params;
+    const updateData = req.body;
+    const imageFile = req.file;
+
+    const user = await this.userService.updateUser(id, updateData, imageFile);
     res.json(user);
   };
 
