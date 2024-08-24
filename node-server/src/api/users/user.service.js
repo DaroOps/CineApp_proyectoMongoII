@@ -41,20 +41,20 @@ export default class UserService {
     
     if (imageFile) {
       try {
-        // Calcular el hash del archivo
+      
         const fileHash = await calculateFileHash(imageFile.path);
         
-        // Buscar si ya existe una imagen con este hash
+ 
         const duplicateUser = await User.findOne({ 'profileImage.hash': fileHash });
         
         if (duplicateUser) {
-          // Si ya existe, usar la URL existente
+         
           updateData.profileImage = {
             url: duplicateUser.profileImage.url,
             hash: fileHash
           };
         } else {
-          // Si no existe, subir a Cloudinary
+          
           const result = await cloudinary.uploader.upload(imageFile.path);
           updateData.profileImage = {
             url: result.secure_url,
@@ -63,10 +63,8 @@ export default class UserService {
           };
         }
         
-        // Eliminar el archivo temporal
         fs.unlinkSync(imageFile.path);
   
-        // Si el usuario ya tenía una imagen de perfil, eliminarla de Cloudinary
         if (existingUser.profileImage && existingUser.profileImage.url && existingUser.profileImage.hash !== fileHash) {
           try {
             // console.log('Deleting old profile image from Cloudinary');
