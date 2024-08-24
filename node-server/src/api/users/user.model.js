@@ -47,7 +47,8 @@ const userSchema = new Schema({
   },
   profileImage: {
     url: String,
-    hash: String
+    hash: String,
+    public_id: String
   },
   vip_card: {
     type: vipCardSchema

@@ -65,10 +65,10 @@ export default class UserService {
         
         fs.unlinkSync(imageFile.path);
   
-        if (existingUser.profileImage && existingUser.profileImage.url && existingUser.profileImage.hash !== fileHash) {
+        if (existingUser.profileImage && existingUser.profileImage.public_id ) {
           try {
             // console.log('Deleting old profile image from Cloudinary');
-            await cloudinary.uploader.destroy(existingUser.profileImage.url.split('/').pop().split('.png')[0]);
+            await cloudinary.uploader.destroy(existingUser.profileImage.public_id);
           } catch (deleteError) {
             console.error('Error deleting old image from Cloudinary:', deleteError);
           }
