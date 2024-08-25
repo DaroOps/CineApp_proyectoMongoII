@@ -3,29 +3,20 @@ import CinemaHeader from "@components/CinemaHeader/CinemaHeader.vue";
 import MovieSum from "./components/MovieSum.vue";
 import Bill from "./components/Bill/Bill.vue";
 import Timer from "./components/Timer.vue";
-import PaymentCard from "./components/PaymentCard.vue";
 import { useScreeningStore } from "@stores/screenings.js";
 import { useTicketStore } from "@stores/tickets.js";
 import { useRouter } from 'vue-router';
 import CardOnly from '@components/CardOnly/CardOnly.vue';
-
 
 import { onMounted, ref } from "vue";
 
 const screeningStore = useScreeningStore();
 const ticketStore = useTicketStore();
 const router = useRouter();
-const selectedCard = ref(null);
-
-async function buyTicketClicked() {
-    console.log('Buy ticket clicked');
-    await ticketStore.confirmReservation(screeningStore.reserveInfo.reservation);
-    
-}
 
 async function onExpiration() {
-    await screeningStore.abortReservation();
     router.back();
+    await screeningStore.abortReservation();
 }
 
 async function onbackClick() {
@@ -33,23 +24,6 @@ async function onbackClick() {
      await screeningStore.abortReservation();
 }
 
-async function selectPaymentCard(id) {
-        id != selectedCard.value? selectedCard.value = id : selectedCard.value = null;
-}
-
-const cards = [{
-    id: 1,
-    logoSrc: "https://www.paypalobjects.com/webstatic/mktg/logo/pp_cc_mark_37x23.jpg",
-    name: "Master Card",
-    description: "**** **** **** 0000"
-},
-{
-    id: 2,
-    logoSrc: "https://www.paypalobjects.com/webstatic/mktg/logo/pp_cc_mark_37x23.jpg",
-    name: "Master Card2",
-    description: "**** **** **** 0000"
-}
-];
 
 const cardComponent = ref(null);
 const stripeLoaded = ref(false);
@@ -120,17 +94,16 @@ async function pay() {
     </div>
     <div class="payment-container">
         <h2 class="payment-title">Payment method</h2>
-        <div class="payment-cards">
-            <CardOnly 
-            ref="cardComponent"
-            @payment-processing="handleProcessing"
-            @payment-success="handleSuccess"
-            @payment-error="handleError"
-            @form-completion-change="handleFormCompletionChange"
-            />
-            {{stripeLoaded}}
-            {{isProcessing}}
-            {{isFormComplete}}
+        <div class="payment-card">
+            <div class="payment-card-container">
+                <CardOnly 
+                ref="cardComponent"
+                @payment-processing="handleProcessing"
+                @payment-success="handleSuccess"
+                @payment-error="handleError"
+                @form-completion-change="handleFormCompletionChange"
+                />
+            </div>
         </div>
     </div>
     <div class="timer-container">
@@ -173,12 +146,24 @@ async function pay() {
     padding: 0;
    }
 
-   .payment-cards{
+   .payment-card{
        display: flex;
        gap: 10px;
        flex-direction: column;
        padding: 15.1px 0;
-   }
+
+       .payment-card-container{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        height: 69.81px;
+        padding: 13.21px 18.87px 12.86px 14.15px;
+        background-color: var(--background-color2);
+        width: 100%;
+        border-radius: 10px;
+        outline: 1px solid rgb(from var(--text-color) r g b / 20%);
+    }
+}
    
 }
 .timer-container{
