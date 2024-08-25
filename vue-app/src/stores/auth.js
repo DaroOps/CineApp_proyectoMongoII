@@ -37,7 +37,12 @@ export const useAuthStore = defineStore('auth', {
       try {
         const {data} = await axiosInstance.post('/api/auth/verify');
         !this.user?
-        this.setUser(data): '';
+        this.setUser(data)
+        : 
+        !this.user.profileImage?
+        this.fetchUser()
+        :
+        '';
         this.setAuthenticated(true);
         return true;
       } catch (error) {
@@ -67,5 +72,42 @@ export const useAuthStore = defineStore('auth', {
         console.error('Logout failed', error);
       }
     },
+
+    async updateUser(data) {
+      try {
+        // console.log('Received data for update:', data);
+    
+        const formData = new FormData();
+    
+        for (const [key, value] of Object.entries(data)) {
+          if (value instanceof File || value instanceof Blob) {
+            formData.append(key, value);
+          } else if (value !== null && value !== undefined && value !== '') {
+            formData.append(key, String(value));
+          }
+        }
+    
+        // form data
+        // for (let [key, value] of formData.entries()) {
+        //   console.log(`${key}: ${value}`);
+        // }
+    
+        if (formData.entries().next().done) {
+          console.log('No data to update');
+          return;
+        }
+    
+        const response = await axiosInstance.put(`/api/users/${this.user.id}`, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        });
+    
+        console.log('User updated successfully', response.data);
+        await this.fetchUser();
+      } catch (error) {
+        console.error('Failed to update user', error);
+      }
+    }
   },
 });

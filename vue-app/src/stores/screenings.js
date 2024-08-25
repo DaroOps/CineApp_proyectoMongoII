@@ -38,7 +38,7 @@ export const useScreeningStore = defineStore('screening', {
         selectedTimeSlot: null,
         dateIndex: 0,
         timeSlotIndex: 0,
-        userType: 'regular', // 'regular' or 'vip'
+        userType: 'standard', // 'standard' or 'vip'
         reserveInfo: null,
         currentRouteparams: null,
     }),
@@ -82,7 +82,7 @@ export const useScreeningStore = defineStore('screening', {
         },
 
         setUserType(type) {
-            if (type === 'regular' || type === 'vip') {
+            if (type === 'standard' || type === 'vip') {
                 this.userType = type
             }
         },

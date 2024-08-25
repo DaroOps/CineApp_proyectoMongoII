@@ -7,12 +7,12 @@ import IconProfile from '@icons/nav/IconProfile.vue'
 export default [
   {
     pageName: 'AppHome',
-    text: 'Inicio',
+    text: 'Home',
     icon: IconHome,
   },
   {
     pageName: 'AppSearch',
-    text: 'Search',
+    text: 'Browse',
     icon: IconSearch,
   },
   {
@@ -22,7 +22,7 @@ export default [
   },
   {
     pageName: 'AppProfile',
-    text: 'Perfil',
+    text: 'Profile',
     icon: IconProfile,
   }
 ]

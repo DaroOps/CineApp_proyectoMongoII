@@ -3,41 +3,24 @@ import CinemaHeader from '@components/CinemaHeader/CinemaHeader.vue';
 import SeatMap from './components/SeatMap.vue';
 import DateTimeSelector from './components/DateTimeSelector/DateTimeSelector.vue';
 import { useScreeningStore } from '@stores/screenings.js';
+import { useAuthStore } from '@stores/auth.js';
 import { useRouter } from 'vue-router';
-import { computed, onBeforeMount, onMounted, onUnmounted } from 'vue';
+import { computed, onBeforeMount } from 'vue';
 import { storeToRefs } from 'pinia';
 
 
 const screeningStore = useScreeningStore();
+const authStore = useAuthStore();
 const { selectedDate, selectedTimeSlot, selectedSeats, totalPrice, selectedScreening } = storeToRefs(screeningStore);
 const route = useRouter();
 const paramvalue = route.currentRoute.value.params.id.split('-');
 
 onBeforeMount(() => {
     console.log("before mount book");
+    screeningStore.setUserType(authStore.user.role.type);
     screeningStore.currentRouteparams = paramvalue;
     screeningStore.getScreeningsForCinema(paramvalue[0], paramvalue[1]);
 });
-
-
-// onMounted(() => {
-//     console.log("mounted book");
-   
-// });
-
-// onUnmounted(() => {
-//     console.log("dimounted book");
-
-//     screeningStore.initializeSocket();
-//     screeningStore.joinScreeningRoom(selectedScreening);
-//     screeningStore.getScreeningsForCinema(paramvalue[0], paramvalue[1]);
-    
-//     // if (screeningStore.currentScreeningId) {
-//     //     console.log("leave room");
-//     //     socket.emit('leaveRoom', screeningStore.currentScreeningId);
-//     // }
-// });
-
 
 async function buyTicketClicked() {
     console.log('Buy ticket clicked');
@@ -48,9 +31,6 @@ async function buyTicketClicked() {
 const selectedInfo = computed(() => {
     return selectedDate.value && selectedTimeSlot.value && selectedSeats.value.length > 0;
 });
-
-
-
 
 </script>
 
