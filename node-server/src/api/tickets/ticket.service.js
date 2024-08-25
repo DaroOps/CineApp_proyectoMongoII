@@ -4,6 +4,8 @@ import ReservationManager from '../../utils/ReservationManager.js';
 import Ticket from './ticket.model.js';
 import { TicketDTO, ReservationDTO } from './ticket.dto.js';
 import { io } from '../../../app.js';
+import Stripe from 'stripe';
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 export default class TicketService {
   constructor() {
@@ -136,6 +138,54 @@ export default class TicketService {
     }
   }
 
+  async processPayment(tempReservationId, token) {
+    const session = await mongoose.startSession();
+    session.startTransaction();
+
+    try {
+      const TemporaryReservation = mongoose.model('TemporaryReservation');
+      const Screening = mongoose.model('Screening');
+      const Theater = mongoose.model('Theater');
+      const User = mongoose.model('User');
+
+      const tempReservation = await TemporaryReservation.findById(tempReservationId).session(session);
+      if (!tempReservation || tempReservation.status !== 'pending') {
+        throw new Error('Invalid or expired reservation');
+      }
+
+      const screening = await Screening.findById(tempReservation.screening_id).session(session);
+      const theater = await Theater.findById(screening.theater_id).session(session);
+      const user = await User.findById(tempReservation.user_id).session(session);
+
+      const { total } = this.calculateTicketPrices(tempReservation.seats, screening, theater, user);
+
+      const amount = Math.round(total * 100);
+
+      const charge = await stripe.charges.create({
+        amount,
+        currency: 'usd', // Ajusta según tu moneda
+        source: token,
+        description: `Ticket reservation for screening ${screening.id}`,
+      });
+
+      if (charge.status === 'succeeded') {
+        const confirmedTickets = await this.confirmReservation(tempReservationId);
+        
+        await session.commitTransaction();
+        return { success: true, tickets: confirmedTickets };
+      } else {
+        throw new Error('Payment failed');
+      }
+    } catch (error) {
+      await session.abortTransaction();
+      throw error;
+    } finally {
+      session.endSession();
+    }
+  }
+
+
+
   async confirmReservation(tempReservationId) {
     const session = await mongoose.startSession();
     session.startTransaction();
@@ -262,7 +312,7 @@ export default class TicketService {
           row: seat.row,
         },
         base_price: basePrice,
-        final_price: finalPrice,
+        final_price: finalPrice.toFixed(2),
         status: 'reserved',
         purchase_date: new Date()
       });
@@ -294,9 +344,8 @@ export default class TicketService {
   }
 
   calculateTicketPrices(selectedSeats, screening, theater, user) {
-    const serviceFeePerSeat = 0.25; // TODO: get this value from the database
     let total = 0;
-    let totalServiceFee = 0;
+    let totalServiceFee = 1.99;// TODO: get this value from the database
     
     const tickets = selectedSeats.map(seat => {
       const theatreSeat = theater.seats.find(s => s.row === seat.row && s.number === seat.number);
@@ -305,10 +354,7 @@ export default class TicketService {
       
       let finalPrice = this.calculateFinalPrice(basePrice, seatType, user.role);
       
-      // Add service fee to each ticket
-      // finalPrice += serviceFeePerSeat;
-      // totalServiceFee += serviceFeePerSeat;
-      
+      total += totalServiceFee;
       total += finalPrice;
   
       return {

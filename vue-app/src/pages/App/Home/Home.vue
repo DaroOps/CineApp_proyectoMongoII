@@ -29,6 +29,7 @@ const authStore = useAuthStore();
             </div>
         </div>
     </div>
+  <!-- <CardOnly/> -->
 </template>
 
 <style scoped>

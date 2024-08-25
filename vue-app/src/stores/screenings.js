@@ -200,6 +200,7 @@ export const useScreeningStore = defineStore('screening', {
             this.reserveInfo = data;
         },
         async confirmReservation() {
+            console.log("THIS SHOULDN'T BE CALLED!!!");
             const { data } = await axiosInstance.post(`/api/tickets/confirm`, {
                 tempReservationId: this.reserveInfo.tempReservationId
             })

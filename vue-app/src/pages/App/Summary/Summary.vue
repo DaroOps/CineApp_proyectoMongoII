@@ -7,9 +7,10 @@ import PaymentCard from "./components/PaymentCard.vue";
 import { useScreeningStore } from "@stores/screenings.js";
 import { useTicketStore } from "@stores/tickets.js";
 import { useRouter } from 'vue-router';
+import CardOnly from '@components/CardOnly/CardOnly.vue';
 
 
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 
 const screeningStore = useScreeningStore();
 const ticketStore = useTicketStore();
@@ -19,7 +20,7 @@ const selectedCard = ref(null);
 async function buyTicketClicked() {
     console.log('Buy ticket clicked');
     await ticketStore.confirmReservation(screeningStore.reserveInfo.reservation);
-    router.push(`/app/ticket-swiper`);
+    
 }
 
 async function onExpiration() {
@@ -50,7 +51,58 @@ const cards = [{
 }
 ];
 
-// const movie = useScreeningStore().reservationInfo.movie;
+const cardComponent = ref(null);
+const stripeLoaded = ref(false);
+const isProcessing = ref(false);
+const paymentMessage = ref('');
+const isFormComplete = ref(false);
+
+onMounted(() => {
+  const checkLoaded = setInterval(() => {
+    if (cardComponent.value && cardComponent.value.isLoaded()) {
+      stripeLoaded.value = true;
+      clearInterval(checkLoaded);
+    }
+  }, 100);
+
+});
+
+const handleProcessing = () => {
+  console.log('Payment processing started');
+  isProcessing.value = true;
+};
+
+const handleSuccess = async (token) => {
+  console.log('Payment successful, token:', token);
+  console.log('Buy ticket clicked');
+  await ticketStore.confirmReservation(screeningStore.reserveInfo.reservation , token.id);
+  isProcessing.value = false;
+  router.push(`/app/ticket-swiper`);
+};
+
+const handleError = (error) => {
+  console.log('Payment error:', error);
+  isProcessing.value = false;
+};
+
+const handleFormCompletionChange = (isComplete) => {
+  console.log('Form completion changed:', isComplete);
+  isFormComplete.value = isComplete;
+};
+
+async function pay() {
+  if (cardComponent.value) {
+    try {
+      await cardComponent.value.processPayment();
+    } catch (error) {
+      console.error('Error processing payment:', error);
+      paymentMessage.value = 'Error processing payment. Please try again.';
+    }
+  } else {
+    console.error('Card component not found');
+    paymentMessage.value = 'Payment system not ready. Please try again.';
+  }
+}
 </script>
 
 <template>
@@ -69,22 +121,25 @@ const cards = [{
     <div class="payment-container">
         <h2 class="payment-title">Payment method</h2>
         <div class="payment-cards">
-            <PaymentCard v-for="card in cards" 
-            :key="card.id"
-            :logoSrc="card.logoSrc" 
-            :name="card.name" 
-            :description="card.description"
-            :isSelected="selectedCard === card.id"
-            @select="selectPaymentCard(card.id)"
+            <CardOnly 
+            ref="cardComponent"
+            @payment-processing="handleProcessing"
+            @payment-success="handleSuccess"
+            @payment-error="handleError"
+            @form-completion-change="handleFormCompletionChange"
             />
+            {{stripeLoaded}}
+            {{isProcessing}}
+            {{isFormComplete}}
         </div>
     </div>
     <div class="timer-container">
         <Timer :expirationTime="screeningStore?.reserveInfo?.expirationTime" :onExpiration="onExpiration" />
     </div>
     <div class="buy-ticket-container">
-        <button class="buy-ticket-button" @click="buyTicketClicked" :disabled="!selectedCard">
-          <span>Buy ticket</span>
+        <p v-if="paymentMessage">{{ paymentMessage }}</p>
+        <button class="buy-ticket-button" @click="pay" :disabled="!stripeLoaded || isProcessing || !isFormComplete">
+          <span>{{ isProcessing ? 'Processing...' : 'Buy ticket' }}</span>
         </button>
     </div>
    

@@ -12,6 +12,17 @@ export default class TicketController {
         res.status(200).json(reserved_tickets);
     }
 
+    processPayment = async (req, res) => {
+        const { tempReservationId, token } = req.body;
+        
+        try {
+          const result = await this.ticketService.processPayment(tempReservationId, token);
+          res.status(200).json(result);
+        } catch (error) {
+          res.status(400).json({ error: error.message });
+        }
+    };
+
     confirmReservation = async (req, res) => { 
         const { tempReservationId } = req.body;
         // console.log("confirmReservation", tempReservationId);

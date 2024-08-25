@@ -25,6 +25,7 @@
     "mongoose": "^8.5.3",
     "multer": "^1.4.5-lts.1",
     "run-rs": "^0.7.7",
-    "socket.io": "^4.7.5"
+    "socket.io": "^4.7.5",
+    "stripe": "^16.8.0"
   }
 }

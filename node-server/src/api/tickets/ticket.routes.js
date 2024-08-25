@@ -9,5 +9,6 @@ const ticketController = new TicketController();
 router.post("/reserve", asyncHandler(ticketController.reserveTickets));
 router.post("/confirm", asyncHandler(ticketController.confirmReservation));
 router.post("/abort", asyncHandler(ticketController.abortReservation));
+router.post("/process-payment", asyncHandler(ticketController.processPayment));
 
 export default router;

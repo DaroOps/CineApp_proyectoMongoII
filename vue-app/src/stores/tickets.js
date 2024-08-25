@@ -38,11 +38,11 @@ export const useTicketStore = defineStore('tickets', {
     ]
   }),
   actions: {
-    async confirmReservation(tempReservationId) {
-      console.log("confirmReservation", tempReservationId);
-      const {data} = await axiosInstance.post(`/api/tickets/confirm`, {tempReservationId: tempReservationId})
+    async confirmReservation(tempReservationId, token) {
+      console.log("confirmReservation - token", tempReservationId , token);
+      const {data} = await axiosInstance.post(`/api/tickets/process-payment`, {tempReservationId: tempReservationId, token: token})
       
-      this.tickets = data;
+      this.tickets = data.tickets;
     }
   },
 })
