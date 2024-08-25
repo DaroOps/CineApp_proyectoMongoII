@@ -44,11 +44,11 @@ const validateForm = () => {
   validateField('password');
 };
 
-const submitForm = () => {
+const submitForm = async () => {
   validateForm();
   if (isFormValid.value) {
-    authStore.login(form.email, form.password);
-    console.log('Formulario de inicio de sesión enviado', form);
+    await authStore.login(form.email, form.password);
+    // console.log('Formulario de inicio de sesión enviado', form);
     router.push('/app/home');
   } else {
     console.log('El formulario tiene errores');

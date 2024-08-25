@@ -3,7 +3,9 @@ import { defineStore } from 'pinia';
 import axios from 'axios';
 import axiosInstance from "@plugins/axios.js";
 import { useSocketStore } from '@stores/socket.js';
+import { useAuthStore } from '@stores/auth.js';
 import { useRouter } from 'vue-router';
+
 
 export const useScreeningStore = defineStore('screening', {
     state: () => ({
@@ -188,8 +190,10 @@ export const useScreeningStore = defineStore('screening', {
             }
         },
         async reserveTicket() {
+            const authStore = useAuthStore();
+
             const { data } = await axiosInstance.post(`/api/tickets/reserve`, {
-                userId: "66c28adf555f528336310f72", ////TODO: retrieve this number from the auth store
+                userId: authStore.user.id,
                 screeningId: this.selectedScreening,
                 selectedSeats: this.selectedSeats.map(seat => ({ row: seat[0], number: parseInt(seat.slice(1)) }))
             })

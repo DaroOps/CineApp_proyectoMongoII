@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken';
 
 export const authenticateToken = (req, res, next) => {
     const token = req.cookies.access_token;
-    console.log('token in middleware', token);
+    // console.log('token in middleware', token);
     
     
     if (!token) {

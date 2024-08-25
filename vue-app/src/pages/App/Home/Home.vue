@@ -4,6 +4,9 @@ import SeeAll from './components/SeeAll.vue'
 import CustomInput from './components/CustomInput.vue';
 import ProfileHead from './components/ProfileHead.vue'
 import ComingSoon from './components/ComingSoon.vue';
+import { useAuthStore } from '@stores/auth.js';
+
+const authStore = useAuthStore();
 
 </script>
 
@@ -11,7 +14,7 @@ import ComingSoon from './components/ComingSoon.vue';
     <div class="home">
         <div class="head">
             <div class="profile">
-                <ProfileHead name="John Doe" profilePicUrl="https://wallpapers.com/images/featured/cool-profile-picture-87h46gcobjl5e4xu.jpg"/>
+                <ProfileHead :name="authStore?.user?.name" :profilePicUrl="authStore?.user?.profileImage"/>
                 <CustomInput/>
             </div>
             <SeeAll/>

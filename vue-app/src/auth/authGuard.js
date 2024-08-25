@@ -1,12 +1,15 @@
 import { useAuthStore } from '@stores/auth.js';
 
+
 export default async function authGuard(to, from, next) {
   const authStore = useAuthStore();
   
   if (to.matched.some(record => record.meta.requiresAuth)) {
-    await authStore.checkAuth();
+    const isAuthenticated = await authStore.checkAuth();
     
-    if (!authStore.isAuthenticated) {
+    if (!isAuthenticated) {
+      console.log('Redirecting to login by authGuard ;)');
+      
       next({
         path: '/login',
         query: { redirect: to.fullPath }
