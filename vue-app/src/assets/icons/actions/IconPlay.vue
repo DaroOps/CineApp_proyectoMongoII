@@ -1,0 +1,11 @@
+<template>
+    <svg height="100%"  viewBox="0 0 9 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M9 6L0.75 11.1962L0.750001 0.803847L9 6Z" fill="currentColor"/>
+    </svg>
+</template>
+
+<script>
+    export default {
+        name: 'IconArrow'
+    }
+</script>
