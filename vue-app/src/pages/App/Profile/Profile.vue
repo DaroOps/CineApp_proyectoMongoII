@@ -1,5 +1,5 @@
 <script setup>
-import { ref, reactive, computed, onMounted, onBeforeMount } from 'vue';
+import { ref, reactive, computed, onMounted, onBeforeMount, watchEffect } from 'vue';
 import { useAuthStore } from '@stores/auth.js';
 import InputForm from '@components/InputForm/InputForm.vue';
 import IconProfile from '@icons/nav/IconProfile.vue';
@@ -20,7 +20,6 @@ onBeforeMount(() => {
   }
 });
 
-
 const initialForm = {
   name: user.name,
   email: user.email,
@@ -30,6 +29,16 @@ const initialForm = {
 const form = ref({...initialForm});
 const profileImage = ref(user.profileImage);
 const newProfileImage = ref(null);
+
+watchEffect(() => {
+  if (user.value && user.value.name && user.value.email) {
+    form.value = {
+      name: user.value.name,
+      email: user.value.email,
+      password: ''
+    };
+  }
+});
 
 async function logout(){
   await authStore.logout();
@@ -188,7 +197,7 @@ async function pay() {
 
         <div class="profile-image-container">
             <div class="profile-image">
-                <img :src="profileImage? profileImage : 'https://wallpapers.com/images/featured/cool-profile-picture-87h46gcobjl5e4xu.jpg'" alt="Profile Image" />
+                <img :src="user.profileImage? user.profileImage : 'https://wallpapers.com/images/featured/cool-profile-picture-87h46gcobjl5e4xu.jpg'" alt="Profile Image" />
                 <div class="image-overlay">
                     <label for="imageUpload" class="upload-label">
                         <IconProfile />
