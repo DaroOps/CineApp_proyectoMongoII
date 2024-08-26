@@ -1,0 +1,23 @@
+:root {
+  /* Typography */
+  --font-family-base: var(--font-nunito);
+  --font-family-headings: var(--font-poppins);
+  --font-size-base: 16px;
+  --line-height-base: 1.5;
+
+  /* Spacing */
+  --spacing-small: 8px;
+  --spacing-medium: 16px;
+  --spacing-large: 24px;
+
+  /* Layout */
+  --container-max-width: 1200px;
+  --border-radius: 7px;
+
+  /* Transitions */
+  --transition-fast: 0.3s ease;
+  --transition-slow: 0.5s ease;
+
+  /* Shadows */
+  --box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
