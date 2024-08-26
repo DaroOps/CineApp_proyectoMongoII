@@ -197,7 +197,7 @@ async function pay() {
 
         <div class="profile-image-container">
             <div class="profile-image">
-                <img :src="user.profileImage? user.profileImage : 'https://wallpapers.com/images/featured/cool-profile-picture-87h46gcobjl5e4xu.jpg'" alt="Profile Image" />
+                <img :src="!profileImage? user.profileImage : profileImage" alt="Profile Image" />
                 <div class="image-overlay">
                     <label for="imageUpload" class="upload-label">
                         <IconProfile />
