@@ -11,7 +11,7 @@ export const useSocketStore = defineStore('socket', {
   actions: {
     initSocket() {
       if (!this.socket) {
-        this.socket = io('http://localhost:3000/', {
+        this.socket = io(`${import.meta.env.NODE_ENV === 'production' ? import.meta.env.BACKEND_URL : 'http://localhost:3000'}`, {
           reconnection: true,
           reconnectionAttempts: Infinity,
           reconnectionDelay: 1000,

@@ -1,8 +1,11 @@
 import axios from 'axios';
 import { useAuthStore } from '@stores/auth.js';
 
+console.log('ENV:', import.meta.env.VITE_ENV);
+console.log('BACKEND_URL:', import.meta.env.VITE_BACKEND_URL);
+
 const axiosInstance = axios.create({
-  baseURL: 'http://localhost:3000',
+  baseURL: import.meta.env.VITE_ENV === 'production' ?  import.meta.env.VITE_BACKEND_URL : 'http://localhost:3000',
   withCredentials: true,
 });
 

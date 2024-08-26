@@ -34,7 +34,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(errorHandler)
 app.use(cors({
-  origin: process.env.NODE_ENV === 'production' ? process.env.ALLOWED_ORIGINS : ['http://localhost:5173','http://localhost:3000'],
+  origin: process.env.NODE_ENV === 'production' ? process.env.ALLOWED_ORIGINS.split(',') : ['http://localhost:5173','http://localhost:3000'],
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'Authorization'],
   credentials: true
