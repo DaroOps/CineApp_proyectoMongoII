@@ -1,24 +1,34 @@
 <script setup>
-import { ref, reactive, computed, onMounted } from 'vue';
+import { ref, reactive, computed, onMounted, onBeforeMount } from 'vue';
 import { useAuthStore } from '@stores/auth.js';
 import InputForm from '@components/InputForm/InputForm.vue';
 import IconProfile from '@icons/nav/IconProfile.vue';
 import CardOnly from '@components/CardOnly/CardOnly.vue';
 import SeeAll from '@components/SeeAll/SeeAll.vue';
 import { useRouter } from 'vue-router';
+import { storeToRefs } from 'pinia';
 
 const router = useRouter();
 const authStore = useAuthStore();
+const { user } = storeToRefs(authStore);
 const inputForm = ref(null);
 
+onBeforeMount(() => {
+  if (!user.role?.type) {
+    console.log('fetching user');
+    authStore.fetchUser();
+  }
+});
+
+
 const initialForm = {
-  name: authStore.user.name,
-  email: authStore.user.email,
+  name: user.name,
+  email: user.email,
   password: ''
 };
 
 const form = ref({...initialForm});
-const profileImage = ref(authStore.user.profileImage);
+const profileImage = ref(user.profileImage);
 const newProfileImage = ref(null);
 
 async function logout(){
@@ -121,6 +131,8 @@ const paymentMessage = ref('');
 const isFormComplete = ref(false);
 
 onMounted(() => {
+
+
   const checkLoaded = setInterval(() => {
     if (cardComponent.value && cardComponent.value.isLoaded()) {
       stripeLoaded.value = true;
@@ -176,7 +188,7 @@ async function pay() {
 
         <div class="profile-image-container">
             <div class="profile-image">
-                <img :src="profileImage" alt="Profile Image" />
+                <img :src="profileImage? profileImage : 'https://wallpapers.com/images/featured/cool-profile-picture-87h46gcobjl5e4xu.jpg'" alt="Profile Image" />
                 <div class="image-overlay">
                     <label for="imageUpload" class="upload-label">
                         <IconProfile />
@@ -194,7 +206,7 @@ async function pay() {
         <div class="paymets-container">
           <SeeAll title="VIP" alt="Secure Payment" />
           <div class="payment-card">
-            <CardOnly v-if="authStore?.user?.role?.type !== 'VIP'"
+            <CardOnly v-if="user?.role?.type !== 'VIP'"
                 ref="cardComponent"
                 @payment-processing="handleProcessing"
                 @payment-success="handleSuccess"
@@ -203,7 +215,7 @@ async function pay() {
                 /> 
           </div>
           <div class="actions-container">
-              <button @click="pay" class="btn btn-primary" :disabled="authStore.user.role.type === 'VIP' && !stripeLoaded || isProcessing || !isFormComplete ">{{ authStore.user.role.type === 'VIP' ? 'VIP Already Earned' : 'Become VIP for only $9.99' }}</button>
+              <button @click="pay" class="btn btn-primary" :disabled="user?.role?.type === 'VIP' && !stripeLoaded || isProcessing || !isFormComplete ">{{ user?.role?.type === 'VIP' ? 'VIP Already Earned' : 'Become VIP for only $9.99' }}</button>
           </div>
         </div>
         <SeeAll title="Actions" alt="Profile Settings" />
