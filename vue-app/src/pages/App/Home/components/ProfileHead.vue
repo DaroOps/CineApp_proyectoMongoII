@@ -48,6 +48,7 @@
     height: 48px;
     margin-right: 12px;
     border-radius: 50%;
+    object-fit: cover;
   }
   
   .message {
