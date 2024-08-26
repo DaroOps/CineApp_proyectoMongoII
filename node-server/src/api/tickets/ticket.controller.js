@@ -40,4 +40,13 @@ export default class TicketController {
 
         res.status(200).json(tickets);
     }
+
+    getUserTickets = async (req, res) => {
+        const userId = req.query.userId;
+        const tickets = await this.ticketService.getUserTickets(userId);
+          
+          res.status(200).json(tickets);
+    }
+    
+      
 }

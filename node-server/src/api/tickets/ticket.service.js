@@ -399,6 +399,45 @@ export default class TicketService {
     return price;
   }
 
+  async getUserTickets(userId) {
+    const tickets = await Ticket.find({ user_id: userId })
+      .populate({
+        path: 'screening_id',
+        populate: [
+          { path: 'movie_id', model: 'Movie' },
+          { path: 'cinema_id', model: 'Cinema' },
+          {path: 'theater_id', model: 'Theater', select: 'name'}
+        ]
+      })
+      .sort({ screening_time: -1 });
+
+    const ticketsByScreening = tickets.reduce((acc, ticket) => {
+      const screeningId = ticket.screening_id._id.toString();
+      if (!acc[screeningId]) {
+        acc[screeningId] = {
+          screening: {
+            _id: screeningId,
+            movie: ticket.screening_id.movie_id,
+            cinema: ticket.screening_id.cinema_id,
+            screening_time: ticket.screening_time,
+          },
+          tickets: []
+        };
+      }
+      acc[screeningId].tickets.push({
+        _id: ticket._id,
+        seat: ticket.seat,
+        base_price: ticket.base_price,
+        final_price: ticket.final_price,
+        status: ticket.status,
+        purchase_date: ticket.purchase_date,
+        theater: ticket.screening_id.theater_id
+      });
+      return acc;
+    }, {});
+
+    return Object.values(ticketsByScreening);
+  }
 
 
 }

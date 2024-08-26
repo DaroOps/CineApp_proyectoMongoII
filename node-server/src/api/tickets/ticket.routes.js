@@ -6,6 +6,7 @@ const router = express.Router();
 
 const ticketController = new TicketController();
 
+router.get("/user-tickets", asyncHandler(ticketController.getUserTickets));
 router.post("/reserve", asyncHandler(ticketController.reserveTickets));
 router.post("/confirm", asyncHandler(ticketController.confirmReservation));
 router.post("/abort", asyncHandler(ticketController.abortReservation));

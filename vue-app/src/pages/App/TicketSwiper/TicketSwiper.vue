@@ -16,8 +16,7 @@ const router = useRouter();
 
  function onbackClick(){
     console.log("onbackClick" );
-     router.push('/app/home');
-     
+    router.push('/app/tickets');
  }
 
  const modules = [
