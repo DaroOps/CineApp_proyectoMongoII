@@ -16,4 +16,9 @@ export default class MovieController {
     res.json(movies);
   };
 
+  getComingSoonMovies = async (req, res) => {
+    const comingSoonMovies = await this.movieService.listMoviesWithoutScreenings(req.query.page, req.query.limit);
+    res.json(comingSoonMovies);
+  };
+
 }

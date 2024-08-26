@@ -9,6 +9,6 @@ const movieController = new MovieController();
 
 router.get('/', asyncHandler(movieController.listMovies));
 router.get('/:movie_id', asyncHandler(movieController.getMovieById));
-
+router.get('/v1/coming-soon', asyncHandler(movieController.getComingSoonMovies));
 
 export default router;

@@ -6,6 +6,7 @@ import axiosInstance from "@plugins/axios.js";
 export const useMovieStore = defineStore('movies', {
   state: () => ({
     movies: [],
+    comingSoonMovies: [],
     selectedMovie: {
       title: '',
       genre: '',
@@ -21,6 +22,10 @@ export const useMovieStore = defineStore('movies', {
     },
     prevImage() {
       this.currentIndex = (this.currentIndex - 1 + this.movies.length) % this.movies.length
+    },
+    async fetchComingSoonMovies() {
+      const {data} = await axiosInstance.get(`/api/movies/v1/coming-soon?limit=3`);
+      this.comingSoonMovies = data.movies;
     },
     async fetchMovies() {
       const {data} = await axiosInstance.get(`/api/movies`)

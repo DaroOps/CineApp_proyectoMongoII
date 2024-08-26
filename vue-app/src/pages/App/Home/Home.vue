@@ -5,8 +5,16 @@ import CustomInput from './components/CustomInput.vue';
 import ProfileHead from './components/ProfileHead.vue'
 import ComingSoon from './components/ComingSoon.vue';
 import { useAuthStore } from '@stores/auth.js';
+import { useMovieStore } from '@stores/movies.js';
+import { onMounted } from 'vue';
 
 const authStore = useAuthStore();
+const movieStore = useMovieStore();
+
+onMounted(() => {
+  !authStore.user.name?authStore.fetchUser():'';
+   movieStore.fetchComingSoonMovies();
+});
 
 </script>
 
@@ -23,9 +31,7 @@ const authStore = useAuthStore();
         <div class="botom">
             <SeeAll title="Coming Soon"/>
             <div class="coming-soon">
-                <ComingSoon/>
-                <ComingSoon/>
-                <ComingSoon/>
+                <ComingSoon v-for="movie in movieStore.comingSoonMovies" :key="movie.id" :movie="movie"/>
             </div>
         </div>
     </div>

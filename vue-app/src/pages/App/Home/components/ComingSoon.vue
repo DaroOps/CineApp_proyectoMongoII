@@ -1,18 +1,38 @@
+<script setup>
+import { defineProps } from 'vue';
+import { useRouter } from 'vue-router';
+    const router = useRouter();
+
+    const props = defineProps({
+        movie: {
+            type: Object,
+            required: true,
+            default: {
+                title: '',
+                genre: '',
+                image_url: ''
+            }
+        }
+    });
+
+    const onCardClick = (movieId) => {
+            
+            router.push(`/app/c-s${movieId}`);
+        };
+
+</script>
+
 <template>
-    <div class="movie-card">
+    <div class="movie-card" @click="onCardClick(movie.id)">
       <div class="poster-container">
-        <img src="https://image.tmdb.org/t/p/w500/r7vmZjiyZw9rpJMQJdXpjgiCOk9.jpg" alt="Movie poster collage" class="poster">
+        <img :src="movie.img" alt="Movie poster collage" class="poster">
       </div>
       <div class="info-container">
-        <h2 class="title">Furious 10 (2023)</h2>
-        <p class="genre">Action, Adventure</p>
+        <h2 class="title">{{ movie.title }}</h2>
+        <p class="genre">{{ movie.genre }}</p>
       </div>
     </div>
   </template>
-  
-  <script setup>
-  // No reactive data or methods needed for this static component
-  </script>
   
   <style scoped>
   .movie-card {
@@ -23,6 +43,10 @@
     overflow: hidden;
    
   }
+
+  .movie-card:hover{
+    cursor: pointer;
+  }
   
   .poster-container {
     height: 80px;
@@ -31,13 +55,16 @@
     overflow: hidden;
     border-radius: 20px;
   }
+
+  .info-container{
+    padding: 19px 0 0 0;
+  }
   
   .poster {
     width: 100%;
     height: 100%;
     object-fit: cover;
   }
-  
   
   .title {
     color: var(--text-color);

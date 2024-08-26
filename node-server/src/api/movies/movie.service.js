@@ -45,5 +45,23 @@ export default class MovieService {
     return movies.map(movie => new MovieListDTO(movie));
   }
 
+  async listMoviesWithoutScreenings(page = 1, limit = 10) {
+    const skip = (page - 1) * limit;
+    const Screenings = mongoose.model('Screening');
+    const screenings = await Screenings.find().distinct('movie_id');
+    
+    const movies = await Movie.find({ _id: { $nin: screenings } })
+      .select('_id title genre image_url')
+      .skip(skip)
+      .limit(limit);
   
+    const total = await Movie.countDocuments({ _id: { $nin: screenings } });
+  
+    return {
+      movies: movies.map(movie => new MovieListDTO(movie)),
+      currentPage: page,
+      totalPages: Math.ceil(total / limit),
+      totalMovies: total
+    };
+  }
 }
