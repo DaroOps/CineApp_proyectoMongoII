@@ -7,6 +7,7 @@ export const useMovieStore = defineStore('movies', {
   state: () => ({
     movies: [],
     comingSoonMovies: [],
+    searchResults: [],
     selectedMovie: {
       title: '',
       genre: '',
@@ -34,6 +35,10 @@ export const useMovieStore = defineStore('movies', {
     async fetchMovieDetails(movieId) {
       const {data} = await axiosInstance.get(`/api/movies/${movieId}`)
       this.selectedMovie = data;
+    },
+    async searchMovies(query) {
+      const {data} = await axiosInstance.get(`/api/movies/v1/search?query=${query}`)
+      this.searchResults = data;
     },
     setSelectedMovie(movie) {
       this.selectedMovie = movie ? { ...movie } : null;

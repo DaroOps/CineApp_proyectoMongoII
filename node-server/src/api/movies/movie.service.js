@@ -64,4 +64,36 @@ export default class MovieService {
       totalMovies: total
     };
   }
+
+  async searchMovies(query) {
+    const Actor = mongoose.model('Actor');
+    const Cinema = mongoose.model('Cinema');
+    const Movie = mongoose.model('Movie');
+  
+    const movies = await Movie.find({
+      $or: [
+        { title: { $regex: query, $options: 'i' } },
+        { genre: { $regex: query, $options: 'i' } }
+      ]
+    }).limit(10);
+  
+    const actors = await Actor.find({ name: { $regex: query, $options: 'i' } }).limit(5);
+  
+    const actorMovies = await Promise.all(actors.map(async (actor) => {
+      const movies = await Movie.find({ 'cast.actor_id': actor._id }).limit(2);
+      return {
+        actor: actor,
+        movies: movies.map(movie => new MovieListDTO(movie))
+      };
+    }));
+  
+    const cinemas = await Cinema.find({ name: { $regex: query, $options: 'i' } }).limit(5);
+  
+    return {
+      movies: movies.map(movie => new MovieListDTO(movie)),
+      actorMovies: actorMovies,
+      actors: actors,
+      cinemas: cinemas
+    };
+  }
 }

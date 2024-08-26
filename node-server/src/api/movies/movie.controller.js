@@ -21,4 +21,15 @@ export default class MovieController {
     res.json(comingSoonMovies);
   };
 
+  searchMovies = async (req, res) => {
+    const { query } = req.query;
+    console.log('Searching for:', query);
+    
+    if (!query) {
+      return res.status(400).json({ message: "Search query is required" });
+    }
+    const searchResults = await this.movieService.searchMovies(query);
+    res.json(searchResults);
+  };
+
 }

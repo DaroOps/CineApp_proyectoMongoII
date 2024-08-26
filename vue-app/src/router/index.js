@@ -2,10 +2,9 @@ import { createWebHistory, createRouter } from 'vue-router'
 import  authGuard  from '@auth/authGuard.js';
 
 import App from '@pages/App/App.vue'
-// import Categories from '@pages/App/Categories/index.vue'
 import Home from '@pages/App/Home/Home.vue'
-// import Designs from '@pages/App/Designs/index.vue'
-// import Profile from '@pages/App/Profile/index.vue'
+import Browse from '@pages/App/Browse/Browse.vue'
+import Tickets from '@pages/App/Tickets/Tickets.vue'
 import CinemaSelection from '@pages/App/CinemaSelection/CinemaSelection.vue'
 import Book from '@pages/App/Book/Book.vue'
 import Summary from '@pages/App/Summary/Summary.vue'
@@ -45,15 +44,15 @@ const routes = [
         meta:{ requiresNav: true }
       },
       {
-        path: '/app/search',
+        path: '/app/browse/:query?',
         name: 'AppSearch',
-        component: Home,
+        component: Browse,
         meta:{ requiresNav: true }
       },
       {
         path: '/app/tickets',
         name: 'AppTickets',
-        component: Home,
+        component: Tickets,
         meta:{ requiresNav: true }
       },
       { path: '/app/profile', name: 'AppProfile',

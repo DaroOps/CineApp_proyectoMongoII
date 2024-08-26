@@ -1,7 +1,7 @@
 <script setup>
 import MoviesCarousel from './components/MoviesCarousel.vue'
 import SeeAll from './components/SeeAll.vue'
-import CustomInput from './components/CustomInput.vue';
+import CustomInput from '@components/CustomInput/CustomInput.vue';
 import ProfileHead from './components/ProfileHead.vue'
 import ComingSoon from './components/ComingSoon.vue';
 import { useAuthStore } from '@stores/auth.js';
@@ -16,6 +16,11 @@ onMounted(() => {
    movieStore.fetchComingSoonMovies();
 });
 
+
+const searchMovies = async (query) => {
+  await movieStore.searchMovies(query)
+}
+
 </script>
 
 <template>
@@ -23,7 +28,7 @@ onMounted(() => {
         <div class="head">
             <div class="profile">
                 <ProfileHead :name="authStore?.user?.name" :profilePicUrl="authStore?.user?.profileImage"/>
-                <CustomInput/>
+                <CustomInput isHomePage="true" :searchFunction="searchMovies"/>
             </div>
             <SeeAll/>
         </div>
