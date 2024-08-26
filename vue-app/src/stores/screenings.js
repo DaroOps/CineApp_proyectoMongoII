@@ -7,6 +7,8 @@ import { useAuthStore } from '@stores/auth.js';
 import { useRouter } from 'vue-router';
 
 
+
+
 export const useScreeningStore = defineStore('screening', {
     state: () => ({
         screenings: [],
@@ -38,7 +40,7 @@ export const useScreeningStore = defineStore('screening', {
         selectedTimeSlot: null,
         dateIndex: 0,
         timeSlotIndex: 0,
-        userType: 'standard', // 'standard' or 'vip'
+        userType: null, // 'standard' or 'vip'
         reserveInfo: null,
         currentRouteparams: null,
     }),
@@ -82,7 +84,7 @@ export const useScreeningStore = defineStore('screening', {
         },
 
         setUserType(type) {
-            if (type === 'standard' || type === 'vip') {
+            if (type === 'standard' || type === 'VIP') {
                 this.userType = type
             }
         },
@@ -209,6 +211,14 @@ export const useScreeningStore = defineStore('screening', {
         receivedSocketEvent() {
             console.log("receivedSocketEvent", this.currentRouteparams);
             this.getScreeningsForCinema(this.currentRouteparams[0], this.currentRouteparams[1]);
+        },
+
+        async rehidratate() {
+            console.log("rehidratate");
+            
+            const authStore = useAuthStore();
+            await authStore.fetchUser();
+            this.setUserType(authStore?.user?.role?.type);
         }
        
     },
@@ -233,7 +243,7 @@ export const useScreeningStore = defineStore('screening', {
                 let seatPrice = basePrice
 
                 if (seat.isVIP) {
-                    seatPrice = state.userType === 'vip' ? basePrice : basePrice * 1.5 //TODO: retrieve this number from the database
+                    seatPrice = state.userType === 'VIP' ? basePrice : basePrice * 1.5 //TODO: retrieve this number from the database
                 }
 
                 return total + seatPrice

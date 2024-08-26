@@ -3,10 +3,18 @@
   import PreviewMovie from './components/PrevieMovie/PreviewMovie.vue';
   import { useMovieStore } from '@stores/movies.js';
   import { useScreeningStore } from '@stores/screenings.js';
+  import { useAuthStore } from '@stores/auth.js';
   import CastSlider from './components/CastSlider.vue';
   import CinemaCard from './components/CinemaCard.vue';
   import { useRouter } from 'vue-router';
-  import { ref } from 'vue';
+  import { onBeforeMount, ref } from 'vue';
+
+  
+  onBeforeMount(() => {
+    const authStore = useAuthStore();
+    !authStore.user.role? screeningStore.rehidratate(): "" ;
+    screeningStore.setUserType(authStore?.user?.role?.type);
+  });
 
   const store = useMovieStore();
   const screeningStore = useScreeningStore();

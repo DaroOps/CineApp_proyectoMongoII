@@ -346,15 +346,13 @@ export default class TicketService {
   calculateTicketPrices(selectedSeats, screening, theater, user) {
     let total = 0;
     let totalServiceFee = 1.99;// TODO: get this value from the database
-    
+    total += totalServiceFee;
     const tickets = selectedSeats.map(seat => {
       const theatreSeat = theater.seats.find(s => s.row === seat.row && s.number === seat.number);
       const seatType = theatreSeat.type === 'vip' ? 'vip' : 'standard';
       const basePrice = screening.base_price;
       
-      let finalPrice = this.calculateFinalPrice(basePrice, seatType, user.role);
-      
-      total += totalServiceFee;
+      let finalPrice = this.calculateFinalPrice(basePrice, seatType, user.role.type);
       total += finalPrice;
   
       return {
@@ -369,24 +367,34 @@ export default class TicketService {
 
   calculateFinalPrice(basePrice, seatType, userRole) {
     let price = basePrice;
-  
+    console.log(price);
+    console.log(userRole);
+    console.log(seatType);
+    
     // Apply seat type multiplier
-    if (seatType === 'vip') {
-      price *= 1.5; // 50% more for VIP seats //TODO: get this value from the database
+    if (seatType === 'vip' && userRole === 'VIP') {
+      price = basePrice; // normal price for VIP members
     }
+    else if (seatType === 'vip' && userRole !== 'VIP') {
+      price = basePrice * 1.5; // 50% more for VIP seats //TODO: get this number from the database
+    }
+
+    console.log("AFTER ",price);
+    console.log("AFTER ",userRole);
+    console.log("AFTER ",seatType);
   
-    // Apply user role discount
-    switch(userRole) {
-      case 'student':
-        price *= 0.8; // 20% discount for students
-        break;
-      case 'senior':
-        price *= 0.7; // 30% discount for seniors
-        break;
-      case 'vip':
-        price *= 0.9; // 10% discount for VIP members
-        break;
-    }
+    // // Apply user role discount
+    // switch(userRole) {
+    //   case 'student':
+    //     price *= 0.8; // 20% discount for students
+    //     break;
+    //   case 'senior':
+    //     price *= 0.7; // 30% discount for seniors
+    //     break;
+    //   case 'VIP':
+    //     price == basePrice; // 10% discount for VIP members
+    //     break;
+    // }
   
     return price;
   }

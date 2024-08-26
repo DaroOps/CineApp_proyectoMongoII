@@ -1,9 +1,13 @@
 <script setup>
-import { ref, reactive, computed } from 'vue';
+import { ref, reactive, computed, onMounted } from 'vue';
 import { useAuthStore } from '@stores/auth.js';
 import InputForm from '@components/InputForm/InputForm.vue';
 import IconProfile from '@icons/nav/IconProfile.vue';
+import CardOnly from '@components/CardOnly/CardOnly.vue';
+import SeeAll from '@components/SeeAll/SeeAll.vue';
+import { useRouter } from 'vue-router';
 
+const router = useRouter();
 const authStore = useAuthStore();
 const inputForm = ref(null);
 
@@ -16,6 +20,11 @@ const initialForm = {
 const form = ref({...initialForm});
 const profileImage = ref(authStore.user.profileImage);
 const newProfileImage = ref(null);
+
+async function logout(){
+  await authStore.logout();
+  router.push('/');
+}
 
 const fields = [
   {
@@ -37,7 +46,7 @@ const fields = [
     name: 'password',
     type: 'password',
     placeholder: 'Password (leave blank to keep current)',
-    validation: (value) => value && value.length < 6 ? 'Password must be at least 6 characters long' : ''
+    validation: (value) => value && value.length < 5 ? 'Password must be at least 6 characters long' : ''
   },
 ];
 
@@ -103,6 +112,60 @@ const updateProfile = async () => {
     console.log('Form has errors, cannot update');
   }
 };
+
+
+const cardComponent = ref(null);
+const stripeLoaded = ref(false);
+const isProcessing = ref(false);
+const paymentMessage = ref('');
+const isFormComplete = ref(false);
+
+onMounted(() => {
+  const checkLoaded = setInterval(() => {
+    if (cardComponent.value && cardComponent.value.isLoaded()) {
+      stripeLoaded.value = true;
+      clearInterval(checkLoaded);
+    }
+  }, 100);
+
+});
+
+const handleProcessing = () => {
+  console.log('Payment processing started');
+  isProcessing.value = true;
+};
+
+const handleSuccess = async (token) => {
+  console.log('Payment successful, token:', token);
+  console.log('Buy ticket clicked');
+  await authStore.becomeVIP(token.id);
+  isProcessing.value = false;
+  // router.push(`/app/ticket-swiper`);
+};
+
+const handleErrorCard = (error) => {
+  console.log('Payment error:', error);
+  isProcessing.value = false;
+};
+
+const handleFormCompletionChange = (isComplete) => {
+  console.log('Form completion changed:', isComplete);
+  isFormComplete.value = isComplete;
+};
+
+async function pay() {
+  if (cardComponent.value) {
+    try {
+      await cardComponent.value.processPayment();
+    } catch (error) {
+      console.error('Error processing payment:', error);
+      paymentMessage.value = 'Error processing payment. Please try again.';
+    }
+  } else {
+    console.error('Card component not found');
+    paymentMessage.value = 'Payment system not ready. Please try again.';
+  }
+}
 </script>
 
 <template>
@@ -130,8 +193,17 @@ const updateProfile = async () => {
         </form>
 
         <SeeAll title="VIP" alt="Secure Payment" />
+        <div class="payment-card">
+          <CardOnly v-if="authStore?.user?.role?.type !== 'VIP'"
+              ref="cardComponent"
+              @payment-processing="handleProcessing"
+              @payment-success="handleSuccess"
+              @payment-error="handleErrorCard"
+              @form-completion-change="handleFormCompletionChange"
+              /> 
+        </div>
         <div class="actions-container">
-            <button @click="becomeVIP" class="btn btn-primary" :disabled="authStore.user.role !== 'VIP'">{{ authStore.user.role === 'VIP' ? 'VIP Already Earned' : 'Become VIP for only $9.99' }}</button>
+            <button @click="pay" class="btn btn-primary" :disabled="authStore.user.role.type === 'VIP' && !stripeLoaded || isProcessing || !isFormComplete ">{{ authStore.user.role.type === 'VIP' ? 'VIP Already Earned' : 'Become VIP for only $9.99' }}</button>
         </div>
         <SeeAll title="Actions" alt="Profile Settings" />
         <div class="logout-container">
@@ -250,6 +322,7 @@ const updateProfile = async () => {
                     background-color: rgb(from var(--primary-color)r g b / 50%);
                     color: var(--text-color);
                     cursor: not-allowed;
+                    
                 }
             }
         }
@@ -257,10 +330,14 @@ const updateProfile = async () => {
 
     .actions-container {
         display: flex;
-        flex-direction: column;
-        align-items: center;
+      
         gap: 15px;
         margin: 20px 0;
+
+        .payment-card{
+            display: flex;
+          
+          }
         .btn {
             width: 100%;
             padding: 10px 15px;
@@ -269,7 +346,8 @@ const updateProfile = async () => {
             cursor: pointer;
             font-family: var(--font-inter);
             font-weight: 600;
-            transition: all 0.3s ease;
+          
+            z-index:0;
 
             &-primary {
                 background-color: var(--vip-color);
@@ -277,10 +355,11 @@ const updateProfile = async () => {
             }
 
             &:disabled {
-                background-color: rgb(from var(--vip-color)r g b / 90%);
+                background-color: rgb(from var(--vip-color)r g b / 70%);
                 cursor: not-allowed;
+
                 
-            }
+              }
         }
     }
 
@@ -315,4 +394,5 @@ const updateProfile = async () => {
         }
     }
 }
+
 </style>

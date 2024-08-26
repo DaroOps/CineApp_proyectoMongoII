@@ -3,6 +3,9 @@ import bcrypt from 'bcrypt';
 import cloudinary from '../../config/cloudinary.js';
 import fs from 'fs';
 import calculateFileHash from '../../utils/crypto.js';
+import Stripe from 'stripe';
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+import mongoose from 'mongoose';
 
 import { UserDetailDTO } from './user.dto.js';
 
@@ -91,26 +94,49 @@ export default class UserService {
     return deletedUser;
   }
 
-  async addVipCard(id, vipCardData) {
-    const updatedUser = await User.findByIdAndUpdate(
-      id,
-      { 
-        vip_card: {
-          ...vipCardData,
-          issue_date: new Date()
-        }
-      },
-      { new: true }
-    ).lean();
-    return updatedUser;
-  }
+  async becomeVIP(id, token) {
+    const total = 9.99; // TODO: get this value from the database
+    const session = await mongoose.startSession();
+    session.startTransaction();
+    
+    try{
+      const user = await User.findById(id);
+      
+      if (!user) {
+        throw new Error('User not found');
+      }
+  
+      if (user.role.type === 'VIP') {
+        throw new Error('User is already VIP');
+      }
+      
+      const amount = Math.round(total * 100);
 
-  async addPurchaseToHistory(id, purchaseId) {
-    const updatedUser = await User.findByIdAndUpdate(
-      id,
-      { $push: { purchase_history: purchaseId } },
-      { new: true }
-    ).lean();
-    return updatedUser;
+      const charge = await stripe.charges.create({
+        amount,
+        currency: 'usd',
+        source: token,
+        description: `User Become VIP  ${user.name}`,
+      });
+
+      if (charge.status === 'succeeded') {
+        user.role.type = 'VIP';
+        user.role.assignment_date = new Date();
+        await user.save({ session });
+        
+        await session.commitTransaction();
+        return { success: true };
+      } else {
+        throw new Error('Payment failed');
+      }
+
+    }
+    catch (error) {
+      await session.abortTransaction();
+      throw error;
+    } finally {
+      session.endSession();
+    }
+    
   }
 }

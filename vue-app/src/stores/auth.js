@@ -108,6 +108,17 @@ export const useAuthStore = defineStore('auth', {
       } catch (error) {
         console.error('Failed to update user', error);
       }
+    },
+
+    async becomeVIP(token) {
+      try {
+        const { data } = await axiosInstance.post(`/api/users/become-vip/${this.user.id}`, { token: token });
+        console.log('User become VIP successfully', data);
+        await this.fetchUser();
+      } catch (error) {
+        console.error('Failed to turn the user into VIP', error);
+      }
     }
   },
+
 });

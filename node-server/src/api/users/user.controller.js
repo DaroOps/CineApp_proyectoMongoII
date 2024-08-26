@@ -29,14 +29,10 @@ export default class UserController {
     res.json(user);
   };
 
-  addVipCard = async (req, res) => {
-    const user = await this.userService.addVipCard(req.params.id, req.body);
+  becomeVIP = async (req, res) => {
+    const { id } = req.params;
+    const { token } = req.body;
+    const user = await this.userService.becomeVIP(id, token);
     res.json(user);
   };
-
-  addPurchaseToHistory = async (req, res) => {
-    const user = await this.userService.addPurchaseToHistory(req.params.id, req.body);
-    res.json(user);
-  };
-
 }

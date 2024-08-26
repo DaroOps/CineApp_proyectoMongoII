@@ -17,7 +17,9 @@ const paramvalue = route.currentRoute.value.params.id.split('-');
 
 onBeforeMount(() => {
     console.log("before mount book");
-    screeningStore.setUserType(authStore.user.role.type);
+    const authStore = useAuthStore();
+    !authStore.user.role? screeningStore.rehidratate(): "" ;
+
     screeningStore.currentRouteparams = paramvalue;
     screeningStore.getScreeningsForCinema(paramvalue[0], paramvalue[1]);
 });

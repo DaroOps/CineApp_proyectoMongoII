@@ -1,11 +1,12 @@
 // movie.service.js
 import Movie from './movie.model.js';
-import Cinema from '../cinemas/cinema.model.js';
-import Actor from '../actors/actor.model.js';
+import Cinema from '../cinemas/cinema.model.js'; //Needed 
+import Actor from '../actors/actor.model.js'; //Needed
 
 import ScreeningService from '../screenings/screening.service.js';
 
 import { MovieListDTO, MovieDetailDTO, AvailableSeatDTO } from './movie.dto.js';
+import mongoose from 'mongoose';
 
 
 export default class MovieService {
@@ -34,45 +35,15 @@ export default class MovieService {
   
 
   async listMovies() {
-    const movies = await Movie.find().select('_id title genre image_url');
+    const Screenings = mongoose.model('Screening');
+    const screenings = await Screenings.find().distinct('movie_id');
+  
+    const movies = await Movie.find({ _id: { $in: screenings } })
+      .select('_id title genre image_url')
+      .limit(5);
+  
     return movies.map(movie => new MovieListDTO(movie));
   }
 
-  async listAvailableSeats(screeningId) {
-    try {
-      // ... (lógica previa sin cambios)
-
-      return availableSeats.map(seat => new AvailableSeatDTO(seat));
-    } catch (error) {
-      console.error('Error listing available seats:', error);
-      throw error;
-    }
-  }
+  
 }
-
-// // movie.service.js
-// import Movie from '../models/movie.model.js';
-// import ScreeningService from './screening.service.js';
-// import { MovieDetailDTO } from './movie.dto.js';
-
-// export default class MovieService {
-//   async getMovieById(movie_id) {
-//     const movie = await Movie.findById(movie_id)
-//       .populate({ 
-//         path: 'cast.actor_id', 
-//         model: 'Actor' 
-//       })
-//       .lean();
-    
-//     if (!movie) return null;
-
-//     const screenings = await ScreeningService.getScreeningsForMovie(movie_id);
-
-//     const movieWithScreenings = {
-//       ...movie,
-//       screenings
-//     };
-
-//     return new MovieDetailDTO(movieWithScreenings);
-//   }
-// }
