@@ -35,4 +35,10 @@ export default class AuthController {
         res.clearCookie('refresh_token');
         res.status(200).json({ success: true });
     }
+
+    createUser = async (req, res) => {
+        const user = await this.authService.createUser(req.body);
+        res.json(user);
+    };
+    
 }

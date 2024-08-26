@@ -191,19 +191,20 @@ async function pay() {
             <InputForm ref="inputForm" :fields="fields" :initial-values="form" @submit="handleSubmit" @error="handleError" @update:modelValue="(newValue) => form = newValue"/>
             <button type="submit" class="btn btn-success" :disabled="!canUpdate || !inputForm?.isFormValid">Update</button>
         </form>
-
-        <SeeAll title="VIP" alt="Secure Payment" />
-        <div class="payment-card">
-          <CardOnly v-if="authStore?.user?.role?.type !== 'VIP'"
-              ref="cardComponent"
-              @payment-processing="handleProcessing"
-              @payment-success="handleSuccess"
-              @payment-error="handleErrorCard"
-              @form-completion-change="handleFormCompletionChange"
-              /> 
-        </div>
-        <div class="actions-container">
-            <button @click="pay" class="btn btn-primary" :disabled="authStore.user.role.type === 'VIP' && !stripeLoaded || isProcessing || !isFormComplete ">{{ authStore.user.role.type === 'VIP' ? 'VIP Already Earned' : 'Become VIP for only $9.99' }}</button>
+        <div class="paymets-container">
+          <SeeAll title="VIP" alt="Secure Payment" />
+          <div class="payment-card">
+            <CardOnly v-if="authStore?.user?.role?.type !== 'VIP'"
+                ref="cardComponent"
+                @payment-processing="handleProcessing"
+                @payment-success="handleSuccess"
+                @payment-error="handleErrorCard"
+                @form-completion-change="handleFormCompletionChange"
+                /> 
+          </div>
+          <div class="actions-container">
+              <button @click="pay" class="btn btn-primary" :disabled="authStore.user.role.type === 'VIP' && !stripeLoaded || isProcessing || !isFormComplete ">{{ authStore.user.role.type === 'VIP' ? 'VIP Already Earned' : 'Become VIP for only $9.99' }}</button>
+          </div>
         </div>
         <SeeAll title="Actions" alt="Profile Settings" />
         <div class="logout-container">
@@ -327,6 +328,11 @@ async function pay() {
             }
         }
     }
+    .paymets-container{
+        display: flex;
+        flex-direction: column;
+        gap:10px;
+        }
 
     .actions-container {
         display: flex;
@@ -334,9 +340,10 @@ async function pay() {
         gap: 15px;
         margin: 20px 0;
 
+      
+
         .payment-card{
             display: flex;
-          
           }
         .btn {
             width: 100%;

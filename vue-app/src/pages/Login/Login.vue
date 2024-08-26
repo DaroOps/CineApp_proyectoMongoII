@@ -28,12 +28,12 @@ const validateField = (field) => {
     case 'email':
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!emailRegex.test(form.email)) {
-        errors.email = 'Por favor, ingrese un email válido';
+        errors.email = 'Please enter a valid email';
       }
       break;
     case 'password':
       if (form.password.length < 5) {
-        errors.password = 'La contraseña debe tener al menos 6 caracteres';
+        errors.password = 'Password must be at least 6 characters long';
       }
       break;
   }
@@ -48,21 +48,20 @@ const submitForm = async () => {
   validateForm();
   if (isFormValid.value) {
     await authStore.login(form.email, form.password);
-    // console.log('Formulario de inicio de sesión enviado', form);
+    // console.log('Login form submitted', form);
     router.push('/app/home');
   } else {
-    console.log('El formulario tiene errores');
+    console.log('The form has errors');
   }
 };
 </script>
-
 
 <template>
   <div class="login-page">
     <div class="login-content">
       <div class="login-form">
         <div class="login-form-title">
-          <h1>Iniciar Sesión</h1>
+          <h1>Login</h1>
         </div>
         <div class="login-form-content">
           <div class="login-form-input">
@@ -79,16 +78,16 @@ const submitForm = async () => {
             <input 
               v-model="form.password" 
               type="password" 
-              placeholder="Contraseña" 
+              placeholder="Password" 
               class="login-form-input-field"
               @blur="validateField('password')"
             >
             <p v-if="errors.password" class="error-message">{{ errors.password }}</p>
           </div>
           <div class="login-form-button">
-            <button @click="submitForm" class="login-form-button-submit" :disabled="!isFormValid">Iniciar Sesión</button>
+            <button @click="submitForm" class="login-form-button-submit" :disabled="!isFormValid">Login</button>
           </div>
-          <p>¿No tienes cuenta? <router-link to="/registrarse" class="redirect-to-register">Registrarse</router-link></p>
+          <p>Don't have an account? <router-link to="/register" class="redirect-to-register">Register</router-link></p>
         </div>
       </div>
     </div>

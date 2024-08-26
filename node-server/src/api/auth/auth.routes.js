@@ -10,5 +10,6 @@ router.post('/login', asyncHandler(authController.login));
 router.post('/refresh', asyncHandler(authController.refresh));
 router.post('/verify', asyncHandler(authController.verify));
 router.post('/logout', asyncHandler(authController.logout));
+router.post('/register', asyncHandler(authController.createUser));
 
 export default router;

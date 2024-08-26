@@ -33,6 +33,14 @@ export const useAuthStore = defineStore('auth', {
       }
     },
 
+    async register(data) {
+      try {
+        await axiosInstance.post('api/auth/register', { userData: data});
+      } catch (error) {
+        console.error('Registration failed', error);
+      }
+    },
+
     async checkAuth() {
       try {
         const {data} = await axiosInstance.post('/api/auth/verify');

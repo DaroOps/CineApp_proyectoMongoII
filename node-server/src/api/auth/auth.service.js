@@ -62,4 +62,20 @@ export default class AuthService {
         }
     }
 
+    async createUser({ userData }) {
+      const User = mongoose.model('User');
+      const hashedPassword = await bcrypt.hash(userData.password, 3);
+      const user = new User({
+        ...userData,
+        password: hashedPassword,
+        role: {
+          type:  'standard',
+          assignment_date: new Date()
+        },
+        profileImage: {url:"https://wallpapers.com/images/featured/cool-profile-picture-87h46gcobjl5e4xu.jpg"}
+      });
+      const savedUser = await user.save();
+      return savedUser.toObject();
+    }
+
 }
