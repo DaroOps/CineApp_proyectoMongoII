@@ -201,13 +201,13 @@ export const useScreeningStore = defineStore('screening', {
             })
             this.reserveInfo = data;
         },
-        async confirmReservation() {
-            console.log("THIS SHOULDN'T BE CALLED!!!");
-            const { data } = await axiosInstance.post(`/api/tickets/confirm`, {
-                tempReservationId: this.reserveInfo.tempReservationId
-            })
-            this.reserveInfo = data;
-        },
+        // async confirmReservation() {
+        //     console.log("THIS SHOULDN'T BE CALLED!!!");
+        //     const { data } = await axiosInstance.post(`/api/tickets/confirm`, {
+        //         tempReservationId: this.reserveInfo.tempReservationId
+        //     })
+        //     this.reserveInfo = data;
+        // },
         receivedSocketEvent() {
             console.log("receivedSocketEvent", this.currentRouteparams);
             this.getScreeningsForCinema(this.currentRouteparams[0], this.currentRouteparams[1]);
