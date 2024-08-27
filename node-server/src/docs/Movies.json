@@ -1,0 +1,432 @@
+{
+	"info": {
+		"_postman_id": "86619223-b353-491c-9800-7f4c41fce24c",
+		"name": "Movies",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_uid": "28971835-86619223-b353-491c-9800-7f4c41fce24c"
+	},
+	"item": [
+		{
+			"name": "CommingSoon",
+			"id": "58731003-b7dc-4d59-867b-61df7011fdfe",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/movies/v1/coming-soon?limit=3",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"movies",
+						"v1",
+						"coming-soon"
+					],
+					"query": [
+						{
+							"key": "limit",
+							"value": "3"
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"id": "9cbdb56d-4149-4322-b918-1e636717f68a",
+					"name": "CommingSoon",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/movies/v1/coming-soon?limit=3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"movies",
+								"v1",
+								"coming-soon"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "3"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express",
+							"uuid": "0165af8b-b7a3-4437-9299-c5406a719fc9"
+						},
+						{
+							"key": "Vary",
+							"value": "Origin",
+							"uuid": "80692004-4d85-4e32-8a1e-7ad65b0f66ed"
+						},
+						{
+							"key": "Access-Control-Allow-Credentials",
+							"value": "true",
+							"uuid": "ef43664a-5602-44f8-836d-11ac7e712162"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8",
+							"uuid": "649273bc-1dbf-4882-96d1-dc7a8a38d3df"
+						},
+						{
+							"key": "Content-Length",
+							"value": "669",
+							"uuid": "2543617b-18dc-46d7-b852-6e47c8764f4e"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"29d-6ZtwudeOrtl0EjzQLAPRLNASFKc\"",
+							"uuid": "b91fecbe-0437-4ba0-b32e-2408fa84e63d"
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 27 Aug 2024 00:38:03 GMT",
+							"uuid": "bea49869-1bd0-4f3d-aa50-4bc5fe497df0"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive",
+							"uuid": "2455fe5a-9987-449a-824c-414ce5b72ee7"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5",
+							"uuid": "d5d0b518-8682-4921-8018-59548b33aac8"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"movies\": [\n        {\n            \"id\": \"66cbdafdc1f675b78a793c88\",\n            \"title\": \"Argylle\",\n            \"genre\": \"Thriller\",\n            \"img\": \"https://m.media-amazon.com/images/M/MV5BNDkzMTU2OWUtZjA2ZS00ZmYxLWE2MzgtZDlhZDc1YjM4Yjk5XkEyXkFqcGc@._V1_.jpg\"\n        },\n        {\n            \"id\": \"66cbdb50c1f675b78a793c89\",\n            \"title\": \"Oppenheimer\",\n            \"genre\": \"Biography\",\n            \"img\": \"https://m.media-amazon.com/images/M/MV5BMDBmYTZjNjUtN2M1MS00MTQ2LTk2ODgtNzc2M2QyZGE5NTVjXkEyXkFqcGdeQXVyNzAwMjU2MTY@._V1_.jpg\"\n        },\n        {\n            \"id\": \"66cbdb7cc1f675b78a793c8a\",\n            \"title\": \"The Family Plan\",\n            \"genre\": \"Comedy\",\n            \"img\": \"https://m.media-amazon.com/images/M/MV5BZWQzZWFmOWMtODM4Ni00YjYwLWI4ZTYtOTkwZmYyMzFkN2E2XkEyXkFqcGdeQXVyODk4OTc3MTY@._V1_.jpg\"\n        }\n    ],\n    \"currentPage\": 1,\n    \"totalPages\": 2,\n    \"totalMovies\": 4\n}"
+				}
+			]
+		},
+		{
+			"name": "Search",
+			"id": "63b73ebf-2562-48a6-994c-eee6e2c936ed",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/movies/v1/search?query=Hugh Jackman",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"movies",
+						"v1",
+						"search"
+					],
+					"query": [
+						{
+							"key": "query",
+							"value": "Hugh Jackman"
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"id": "0f0a5f73-2e4c-4e84-8277-dfd4c6b81417",
+					"name": "Search",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/movies/v1/search?query=Hugh Jackman",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"movies",
+								"v1",
+								"search"
+							],
+							"query": [
+								{
+									"key": "query",
+									"value": "Hugh Jackman"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express",
+							"uuid": "222ed8e3-c572-41ca-9542-cb567fc243ae"
+						},
+						{
+							"key": "Vary",
+							"value": "Origin",
+							"uuid": "48d602b5-2f4c-4706-9c27-463dcec7c4a8"
+						},
+						{
+							"key": "Access-Control-Allow-Credentials",
+							"value": "true",
+							"uuid": "5ce16e00-adb3-4d49-a795-cfe4ea7b7d4e"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8",
+							"uuid": "dcf1814e-e51b-4c61-930f-85811f67d5a7"
+						},
+						{
+							"key": "Content-Length",
+							"value": "646",
+							"uuid": "8609e0d6-db56-4349-8137-9c5423376321"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"286-kIpeqaqWCeRXI/Ukq9zHg7EbHBo\"",
+							"uuid": "bcf7e490-48b6-4220-8411-ed37f69da3b2"
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 27 Aug 2024 00:37:53 GMT",
+							"uuid": "ce28da75-21c2-4f8c-bdda-acc165b6f67e"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive",
+							"uuid": "557be5c1-2252-414b-8fe7-f5148405f3e3"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5",
+							"uuid": "cf7c7b4a-4032-4e79-88ac-7a96b68bb715"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"movies\": [],\n    \"actorMovies\": [\n        {\n            \"actor\": {\n                \"_id\": \"66beb1c3619fcd1209397658\",\n                \"name\": \"Hugh Jackman\",\n                \"image_url\": \"https://m.media-amazon.com/images/M/MV5BNDExMzIzNjk3Nl5BMl5BanBnXkFtZTcwOTE4NDU5OA@@._V1_UX32_CR0,0,32,44_AL_.jpg\"\n            },\n            \"movies\": [\n                {\n                    \"id\": \"66a1293e41165c14ebdd4f6d\",\n                    \"title\": \"Deadpool & Wolverine\",\n                    \"genre\": \"Action\",\n                    \"img\": \"https://m.media-amazon.com/images/M/MV5BNzRiMjg0MzUtNTQ1Mi00Y2Q5LWEwM2MtMzUwZDU5NmVjN2NkXkEyXkFqcGc@._V1_.jpg\\\"\"\n                }\n            ]\n        }\n    ],\n    \"actors\": [\n        {\n            \"_id\": \"66beb1c3619fcd1209397658\",\n            \"name\": \"Hugh Jackman\",\n            \"image_url\": \"https://m.media-amazon.com/images/M/MV5BNDExMzIzNjk3Nl5BMl5BanBnXkFtZTcwOTE4NDU5OA@@._V1_UX32_CR0,0,32,44_AL_.jpg\"\n        }\n    ],\n    \"cinemas\": []\n}"
+				}
+			]
+		},
+		{
+			"name": "Movies",
+			"id": "cc9f7bd7-5d3f-42d4-bb81-aac82679e1ec",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/movies",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"movies"
+					]
+				}
+			},
+			"response": [
+				{
+					"id": "a7c73436-25ab-48fc-b03e-4b82e591fc45",
+					"name": "New Request",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/movies",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"movies"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express",
+							"uuid": "527cce05-d18b-4571-95b1-4816d650bf79"
+						},
+						{
+							"key": "Vary",
+							"value": "Origin",
+							"uuid": "ae609f6f-a87a-498a-8b85-e39019546586"
+						},
+						{
+							"key": "Access-Control-Allow-Credentials",
+							"value": "true",
+							"uuid": "718da544-9946-4a9c-8b7a-c37337bbdcb0"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8",
+							"uuid": "60c7a911-8c22-4d5d-9117-8f57f8bf810b"
+						},
+						{
+							"key": "Content-Length",
+							"value": "1009",
+							"uuid": "00d65548-baa2-4eb0-a3e8-7e445936a830"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"3f1-ZwD41W+zV+OE9adS9AY3NclQASA\"",
+							"uuid": "dd9575a0-4e7b-407e-9554-b8f35bd9a7dc"
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 27 Aug 2024 00:39:02 GMT",
+							"uuid": "6e744005-2e9f-4684-8084-3567b5d28cdc"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive",
+							"uuid": "416edfea-470d-4fe7-ad34-cb4edc977465"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5",
+							"uuid": "8e49f8a9-bb39-4dae-bc04-919bb8541a09"
+						}
+					],
+					"cookie": [],
+					"body": "[\n    {\n        \"id\": \"66a1293e41165c14ebdd4f6d\",\n        \"title\": \"Deadpool & Wolverine\",\n        \"genre\": \"Action\",\n        \"img\": \"https://m.media-amazon.com/images/M/MV5BNzRiMjg0MzUtNTQ1Mi00Y2Q5LWEwM2MtMzUwZDU5NmVjN2NkXkEyXkFqcGc@._V1_.jpg\\\"\"\n    },\n    {\n        \"id\": \"66a1293e41165c14ebdd4f6e\",\n        \"title\": \"Boorderlands\",\n        \"genre\": \"Action\",\n        \"img\": \"https://m.media-amazon.com/images/M/MV5BOWZmOTM5YmMtNjliMi00OGRkLWIwNGUtNDI2NTE3NzZmMDdmXkEyXkFqcGdeQXVyMTUzMTg2ODkz._V1_.jpg\"\n    },\n    {\n        \"id\": \"66a1293e41165c14ebdd4f6f\",\n        \"title\": \"Trap\",\n        \"genre\": \"Thriller\",\n        \"img\": \"https://m.media-amazon.com/images/M/MV5BMzJiN2UyZjgtMjQ3MS00MDhhLTg5ZDItZmVjMTU3MTcwNzE4XkEyXkFqcGc@._V1_.jpg\"\n    },\n    {\n        \"id\": \"66a12bf041165c14ebdd4f7f\",\n        \"title\": \"Inside Out 2\",\n        \"genre\": \"Family\",\n        \"img\": \"https://m.media-amazon.com/images/M/MV5BYTc1MDQ3NjAtOWEzMi00YzE1LWI2OWUtNjQ0OWJkMzI3MDhmXkEyXkFqcGdeQXVyMDM2NDM2MQ@@._V1_.jpg\"\n    },\n    {\n        \"id\": \"66bd281a75b90e7d73ad0c76\",\n        \"title\": \"Hit Man\",\n        \"genre\": \"Romance\",\n        \"img\": \"https://m.media-amazon.com/images/M/MV5BNjE0ZDFiNjQtODhlOS00ZDllLTk0OTctODhjZGM2Y2RmZGQyXkEyXkFqcGdeQXVyMTY3ODkyNDkz._V1_.jpg\"\n    }\n]"
+				}
+			]
+		},
+		{
+			"name": "Movie Details",
+			"id": "4392a408-1aa4-4b43-bf76-3d072c814817",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/movies/66a1293e41165c14ebdd4f6d",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"movies",
+						"66a1293e41165c14ebdd4f6d"
+					]
+				}
+			},
+			"response": [
+				{
+					"id": "0067ee48-790e-4942-a292-8c0c16ca2d5f",
+					"name": "New Request",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/movies/66a1293e41165c14ebdd4f6d",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"movies",
+								"66a1293e41165c14ebdd4f6d"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express",
+							"uuid": "b93e0b18-30ef-4e31-8b49-16d0a0249cae"
+						},
+						{
+							"key": "Vary",
+							"value": "Origin",
+							"uuid": "06056a1e-8782-4c54-a9c5-ac8a4dea7862"
+						},
+						{
+							"key": "Access-Control-Allow-Credentials",
+							"value": "true",
+							"uuid": "796934e7-66b6-470c-8524-24c93d8a7d96"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8",
+							"uuid": "42540c10-9ec8-4b14-b09a-ec0a21c4e312"
+						},
+						{
+							"key": "Content-Length",
+							"value": "13744",
+							"uuid": "aa75f98a-7ca9-4d6c-8610-ea91fbabc774"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"35b0-4Oomil42FnawBWGwUSK9tVsyCNc\"",
+							"uuid": "f240ec1a-e671-458a-9b6a-d7e1acc05851"
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 27 Aug 2024 00:39:58 GMT",
+							"uuid": "26ffb7ac-bcce-465d-a108-8b4d8fd0c4b7"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive",
+							"uuid": "bc3b44ea-a9d6-4b0b-89c9-d188b533a455"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5",
+							"uuid": "528e09e4-c346-4fe8-b37e-31336b23f497"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": \"66a1293e41165c14ebdd4f6d\",\n    \"title\": \"Deadpool & Wolverine\",\n    \"genre\": \"Action\",\n    \"duration\": 169,\n    \"synopsis\": \"Deadpool is offered a place in the Marvel Cinematic Universe by the Time Variance Authority, but instead recruits a variant of Wolverine to save his universe from extinction.\",\n    \"screening_times\": [\n        \"2024-08-01T18:00:00.000Z\",\n        \"2024-08-01T21:00:00.000Z\",\n        \"2024-08-02T18:00:00.000Z\"\n    ],\n    \"img\": \"https://m.media-amazon.com/images/M/MV5BNzRiMjg0MzUtNTQ1Mi00Y2Q5LWEwM2MtMzUwZDU5NmVjN2NkXkEyXkFqcGc@._V1_.jpg\\\"\",\n    \"trailer\": \"73_1biulkYk\",\n    \"cast\": [\n        {\n            \"actor\": {\n                \"id\": \"66beb055619fcd1209397657\",\n                \"name\": \"Ryan Reynolds\",\n                \"img\": \"https://m.media-amazon.com/images/M/MV5BODFmN2VmZmEtYTRjZi00ZjY1LTgxYjQtODMyNDI3ZDk4ZTJiXkEyXkFqcGdeQXVyMTkxNjUyNQ@@._V1_UX32_CR0,0,32,44_AL_.jpg\"\n            },\n            \"role\": \"Deadpool\"\n        },\n        {\n            \"actor\": {\n                \"id\": \"66beb1c3619fcd1209397658\",\n                \"name\": \"Hugh Jackman\",\n                \"img\": \"https://m.media-amazon.com/images/M/MV5BNDExMzIzNjk3Nl5BMl5BanBnXkFtZTcwOTE4NDU5OA@@._V1_UX32_CR0,0,32,44_AL_.jpg\"\n            },\n            \"role\": \"Wolverine\"\n        },\n        {\n            \"actor\": {\n                \"id\": \"66beb23c619fcd1209397659\",\n                \"name\": \"Emma Corrin\",\n                \"img\": \"https://m.media-amazon.com/images/M/MV5BNWRlNDA3YzUtYjhiZi00NTI5LThmMjUtYWRiMTg1ZmM2YTg3XkEyXkFqcGc@._V1_UX32_CR0,0,32,44_AL_.jpg\"\n            },\n            \"role\": \"Cassandra Nova\"\n        },\n        {\n            \"actor\": {\n                \"id\": \"66beb2b9619fcd120939765a\",\n                \"name\": \"Matthew Macfadyen\",\n                \"img\": \"https://m.media-amazon.com/images/M/MV5BMjQ1ODY2ODA5MV5BMl5BanBnXkFtZTgwNDA3MzkxNzM@._V1_UY44_CR1,0,32,44_AL_.jpg\"\n            },\n            \"role\": \"Mr. Paradox\"\n        },\n        {\n            \"actor\": {\n                \"id\": \"66beb68b095bccb7ced248a9\",\n                \"name\": \"Dafne Keen\",\n                \"img\": \"https://m.media-amazon.com/images/M/MV5BMzk1YTFkNmItZGUzOC00YzVlLTkwOGUtMDY0YTAyYmEwYWZlXkEyXkFqcGdeQXVyMDA4NzMyOA@@._V1_UY44_CR1,0,32,44_AL_.jpg\"\n            },\n            \"role\": \"X-23\"\n        },\n        {\n            \"actor\": {\n                \"id\": \"66beb68b095bccb7ced248aa\",\n                \"name\": \"Jon Favreau\",\n                \"img\": \"https://m.media-amazon.com/images/M/MV5BNjcwNzg4MjktNDNlMC00M2U1LWJmMjgtZTVkMmI4MDI2MTVmXkEyXkFqcGdeQXVyMjI4MDI0NTM@._V1_UY44_CR0,0,32,44_AL_.jpg\"\n            },\n            \"role\": \"Happy Hogan\"\n        },\n        {\n            \"actor\": {\n                \"id\": \"66beb68b095bccb7ced248ab\",\n                \"name\": \"Morena Baccarin\",\n                \"img\": \"https://m.media-amazon.com/images/M/MV5BNmU5Yjk4OTItMjMzZS00MTYzLWI1ZDktYWM4YWM2NTM2YzMzXkEyXkFqcGdeQXVyMzY2OTA2MzM@._V1_UY44_CR0,0,32,44_AL_.jpg\"\n            },\n            \"role\": \"Vanessa\"\n        },\n        {\n            \"actor\": {\n                \"id\": \"66beb68b095bccb7ced248ac\",\n                \"name\": \"Rob Delaney\",\n                \"img\": \"https://m.media-amazon.com/images/M/MV5BZGJjM2MzMTAtMTZiNi00ZDEyLWI2YmEtNWMxYzI0YjA5ZGZiXkEyXkFqcGc@._V1_UY44_CR1,0,32,44_AL_.jpg\"\n            },\n            \"role\": \"Peter\"\n        },\n        {\n            \"actor\": {\n                \"id\": \"66beb68b095bccb7ced248ad\",\n                \"name\": \"Leslie Uggams\",\n                \"img\": \"https://m.media-amazon.com/images/M/MV5BMTU4MDU0MzkxNV5BMl5BanBnXkFtZTYwMjg4OTU2._V1_UY44_CR1,0,32,44_AL_.jpg\"\n            },\n            \"role\": \"Blind Al\"\n        },\n        {\n            \"actor\": {\n                \"id\": \"66beb68b095bccb7ced248ae\",\n                \"name\": \"Jennifer Garner\",\n                \"img\": \"https://m.media-amazon.com/images/M/MV5BNTA4MDgzMTc1Nl5BMl5BanBnXkFtZTcwNjQyMjIwNQ@@._V1_UY44_CR1,0,32,44_AL_.jpg\"\n            },\n            \"role\": \"Elektra\"\n        },\n        {\n            \"actor\": {\n                \"id\": \"66beb68b095bccb7ced248af\",\n                \"name\": \"Wesley Snipes\",\n                \"img\": \"https://m.media-amazon.com/images/M/MV5BMTI4Mzk4MDk2NV5BMl5BanBnXkFtZTYwODgxNjc4._V1_UX32_CR0,0,32,44_AL_.jpg\"\n            },\n            \"role\": \"Blade\"\n        },\n        {\n            \"actor\": {\n                \"id\": \"66beb68b095bccb7ced248b0\",\n                \"name\": \"Channing Tatum\",\n                \"img\": \"https://m.media-amazon.com/images/M/MV5BMDE2N2M2OWMtZTEwMy00MTlmLTlkMTMtYWU3M2NjMDFjMTU3XkEyXkFqcGdeQXVyMTkxNjUyNQ@@._V1_UX32_CR0,0,32,44_AL_.jpg\"\n            },\n            \"role\": \"Gambit\"\n        },\n        {\n            \"actor\": {\n                \"id\": \"66beb68b095bccb7ced248b1\",\n                \"name\": \"Chris Evans\",\n                \"img\": \"https://m.media-amazon.com/images/M/MV5BMWZlMzRkZmYtZTg0My00MGE2LWFhZWQtOTRmZGQxMWY5OTJhXkEyXkFqcGdeQXVyMTMxODA4Njgx._V1_UX32_CR0,0,32,44_AL_.jpg\"\n            },\n            \"role\": \"Johnny Storm\"\n        },\n        {\n            \"actor\": {\n                \"id\": \"66beb68b095bccb7ced248b2\",\n                \"name\": \"Henry Cavill\",\n                \"img\": \"https://m.media-amazon.com/images/M/MV5BMWEzMTRiNmMtYmFiOC00OTAyLWIxOGMtNTdkNWUxZGM4OWE2XkEyXkFqcGdeQXVyMDM2NDM2MQ@@._V1_UY44_CR0,0,32,44_AL_.jpg\"\n            },\n            \"role\": \"The Cavillrine\"\n        },\n        {\n            \"actor\": {\n                \"id\": \"66beb68b095bccb7ced248b3\",\n                \"name\": \"Wunmi Mosaku\",\n                \"img\": \"https://m.media-amazon.com/images/M/MV5BMTA4ODkxOTEwMzZeQTJeQWpwZ15BbWU4MDc4NjM1NDAx._V1_UY44_CR17,0,32,44_AL_.jpg\"\n            },\n            \"role\": \"B-15\"\n        },\n        {\n            \"actor\": {\n                \"id\": \"66beb68b095bccb7ced248b4\",\n                \"name\": \"Aaron Stanford\",\n                \"img\": \"https://m.media-amazon.com/images/M/MV5BNGU4ODk4NDItMTM2NC00YTA0LWJlZjYtYzBkNGU1YzhhNTMzXkEyXkFqcGdeQXVyMTU5OTI2MzU1._V1_UY44_CR6,0,32,44_AL_.jpg\"\n            },\n            \"role\": \"Pyro\"\n        },\n        {\n            \"actor\": {\n                \"id\": \"66beb68b095bccb7ced248b5\",\n                \"name\": \"Tyler Mane\",\n                \"img\": \"https://m.media-amazon.com/images/M/MV5BMjA5NjM4ODIzM15BMl5BanBnXkFtZTgwMTA3OTg5NDE@._V1_UX32_CR0,0,32,44_AL_.jpg\"\n            },\n            \"role\": \"Sabretooth\"\n        },\n        {\n            \"actor\": {\n                \"id\": \"66beb68b095bccb7ced248b6\",\n                \"name\": \"Karan Soni\",\n                \"img\": \"https://m.media-amazon.com/images/M/MV5BMTg0NjQ1MTU1MF5BMl5BanBnXkFtZTgwNTAyMzc1MDE@._V1_UX32_CR0,0,32,44_AL_.jpg\"\n            },\n            \"role\": \"Dopinder\"\n        },\n        {\n            \"actor\": {\n                \"id\": \"66beb68b095bccb7ced248b7\",\n                \"name\": \"Brianna Hildebrand\",\n                \"img\": \"https://m.media-amazon.com/images/M/MV5BODYyMjZjNDYtMTE2ZS00Y2FmLTkxODEtNWY5YzliZTE2MDZlXkEyXkFqcGdeQXVyMTU4NTQ4Mzk4._V1_UY44_CR1,0,32,44_AL_.jpg\"\n            },\n            \"role\": \"Negasonic Teenage Warhead\"\n        },\n        {\n            \"actor\": {\n                \"id\": \"66beb68b095bccb7ced248b8\",\n                \"name\": \"Shioli Kutsuna\",\n                \"img\": \"https://m.media-amazon.com/images/M/MV5BMjMyNDg1MTEwMV5BMl5BanBnXkFtZTgwNDA5MTU0MDE@._V1_UX32_CR0,0,32,44_AL_.jpg\"\n            },\n            \"role\": \"Yukio\"\n        },\n        {\n            \"actor\": {\n                \"id\": \"66beb68b095bccb7ced248b9\",\n                \"name\": \"Stefan Kapicic\",\n                \"img\": \"https://m.media-amazon.com/images/M/MV5BY2E2ODE0ZDctNTg3Yi00YmNhLTljZDUtNDFjZWU3N2E1NDJkL2ltYWdlXkEyXkFqcGdeQXVyMTY0NjUxOTY@._V1_UY44_CR1,0,32,44_AL_.jpg\"\n            },\n            \"role\": \"Colossus\"\n        },\n        {\n            \"actor\": {\n                \"id\": \"66beb68b095bccb7ced248ba\",\n                \"name\": \"Randal Reeder\",\n                \"img\": \"https://m.media-amazon.com/images/M/MV5BNjZmNjU4YTItMTdjYy00ZDNiLTlkZDMtZjNjNWNiZmUzMzM4XkEyXkFqcGdeQXVyMjQwMDg0Ng@@._V1_UY44_CR43,0,32,44_AL_.jpg\"\n            },\n            \"role\": \"Buck\"\n        },\n        {\n            \"actor\": {\n                \"id\": \"66beb68b095bccb7ced248bb\",\n                \"name\": \"Lewis Tan\",\n                \"img\": \"https://m.media-amazon.com/images/M/MV5BYmNiZWZlODYtZmM4ZC00ZDgzLTljOWQtNjU0NzVlYTM2ZDliXkEyXkFqcGdeQXVyNzYxNjMxOA@@._V1_UX32_CR0,0,32,44_AL_.jpg\"\n            },\n            \"role\": \"Shatterstar\"\n        },\n        {\n            \"actor\": {\n                \"id\": \"66beb68b095bccb7ced248bc\",\n                \"name\": \"Sonita Henry\",\n                \"img\": \"https://m.media-amazon.com/images/M/MV5BMGM0MzZlZjUtOWM2YS00M2E3LWFjMDgtYjc4MjQ0ZmJjN2UxXkEyXkFqcGdeQXVyMjQwMDg0Ng@@._V1_UY44_CR1,0,32,44_AL_.jpg\"\n            },\n            \"role\": \"Mrs. Chipman\"\n        },\n        {\n            \"actor\": {\n                \"id\": \"66beb68b095bccb7ced248be\",\n                \"name\": \"Aaron W Reed\",\n                \"img\": \"https://m.media-amazon.com/images/M/MV5BYzk0NDUzMjgtYjgzOC00M2QyLTg5MWEtYWJkMTc1ZTZmMmZjXkEyXkFqcGdeQXVyMjQwMDg0Ng@@._V1_UY44_CR6,0,32,44_AL_.jpg\"\n            },\n            \"role\": \"Juggernaut\"\n        },\n        {\n            \"actor\": {\n                \"id\": \"66beb68b095bccb7ced248bd\",\n                \"name\": \"Peggy the Dog\",\n                \"img\": \"https://m.media-amazon.com/images/M/MV5BNzMwOWQzYWQtNjQwMi00MzQyLWJiYzItMGRlNDc0YjYyN2ViXkEyXkFqcGc@._V1_UX32_CR0,0,32,44_AL_.jpg\"\n            },\n            \"role\": \"Dogpool\"\n        }\n    ],\n    \"cinemas\": [\n        {\n            \"id\": \"66bee354619fcd120939766f\",\n            \"name\": \"Atrium Cinemas\",\n            \"location\": \"Staff Lines, Saddar, Karachi\",\n            \"img\": \"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQZVNTbb32CZs8Y2yO_eT5QzKx4ckUpDYja-aNPlufX-In7YSdDgrfmnR-UNgndo8v9RxQ&usqp=CAU\"\n        },\n        {\n            \"id\": \"66c0fccf619fcd12093976a4\",\n            \"name\": \"Nueplex\",\n            \"location\": \"Khayaban - e Shaheen, Dha Phase 8\",\n            \"img\": \"https://www.nueplex.com//assets/uploads/logo/black-logo.png\"\n        },\n        {\n            \"id\": \"66c0fd56619fcd12093976a5\",\n            \"name\": \"Violet Crown\",\n            \"location\": \"Floor G - e 2dn - Street District\",\n            \"img\": \"data:image/jpeg;base64,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\"\n        }\n    ]\n}"
+				}
+			]
+		}
+	]
+}

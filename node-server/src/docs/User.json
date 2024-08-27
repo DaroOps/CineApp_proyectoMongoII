@@ -1,0 +1,80 @@
+{
+	"info": {
+		"_postman_id": "fad361ef-1fef-4536-a2ef-c6bdc196adc2",
+		"name": "User",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_uid": "28971835-fad361ef-1fef-4536-a2ef-c6bdc196adc2"
+	},
+	"item": [
+		{
+			"name": "Update",
+			"id": "c7ce01ba-f251-47d2-9dc6-f19b1352be20",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "name",
+							"value": "Gonzalo Fernadez",
+							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "gonza@ejemplo.com",
+							"type": "text"
+						},
+						{
+							"key": "profileImage",
+							"type": "file",
+							"src": "postman-cloud:///1ef624b2-2cfd-45d0-b156-15000759d68f"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/users/66c28adf555f528336310f72",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"users",
+						"66c28adf555f528336310f72"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User",
+			"id": "853c55d9-a82c-4bed-8d1e-a9c26031b847",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/users/66c28adf555f528336310f72",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"users",
+						"66c28adf555f528336310f72"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
