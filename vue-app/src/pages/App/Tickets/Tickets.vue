@@ -38,7 +38,7 @@ const selectScreening = (index) => {
     <ul class="screening-list">
       <div class="no-tickets" v-if="!userTickets?.length">
         <EmptyThree />
-        <p>You don have any tickets yet </p>
+        <p>You don't have any tickets yet </p>
       </div>
       <li v-for="(screening, index) in userTickets" :key="screening.screening._id" class="screening-item" @click="selectScreening(index)">
         <div class="screening-info">
