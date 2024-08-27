@@ -25,7 +25,7 @@ const searchMovies = async (query) => {
     console.log('called searchMovies', query);
     await movieStore.searchMovies(query);
   } catch (err) {
-    error.value = 'Ha ocurrido un error en la búsqueda. Por favor, inténtelo de nuevo.';
+    error.value = 'An error occurred in the search. Please try again.';
     console.error('Error en la búsqueda:', err);
   } finally {
     isLoading.value = false;
@@ -49,7 +49,7 @@ watch(() => searchResults.value, (newResults) => {
       <div class="browse-results">
         <div class="empty-search" v-if="searchResults?.movies?.length === 0 && searchResults?.actorMovies?.length === 0 && searchResults?.actors?.length === 0 && searchResults?.cinemas?.length === 0 || searchResults.length === 0">
           <IconBookSearch/>
-          <p>The is nothing here yet</p>
+          <p>There's is nothing here yet</p>
         </div>
         <MovieList v-if="searchResults?.movies?.length" :movies="searchResults.movies"/>
         <ActorMovieList v-if="searchResults?.actorMovies?.length" :actorMovies="searchResults.actorMovies" :actors="searchResults.actors" />
