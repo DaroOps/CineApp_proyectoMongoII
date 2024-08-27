@@ -8,6 +8,7 @@
   import CinemaCard from './components/CinemaCard.vue';
   import { useRouter } from 'vue-router';
   import { onBeforeMount, ref } from 'vue';
+  import IconWait from '@icons/empty/IconWait.vue';
 
   
   onBeforeMount(() => {
@@ -61,8 +62,11 @@
         :isSelected="selectedCard === cinema.id"
          @select="selectCinema(cinema.id)"
         />
+        <div class="no-cinemas" v-if="!store?.selectedMovie?.cinemas?.length">
+          <p>No cinemas available for this movie</p>
+          <IconWait />
+        </div>
       </div>
-      
       <div class="book-now-container">
         <button class="book-now-button" @click="bookNowClicked" :disabled="!selectedCard">
           <span>Book Now</span>
@@ -99,6 +103,18 @@
     gap: 10px;
     padding: 0 0 10px 0;
     margin-bottom: 60px;
+
+    & .no-cinemas {
+      display: flex;
+      align-items: center;
+      
+      & p {
+        font-size: 20px;
+        margin: 0;
+        font-weight: 700;
+        color: var(--text-subtitle-color);
+      }
+    }
   }
 }
 

@@ -194,24 +194,25 @@ async function pay() {
         <div class="profile-header">
             <h1>My Profile</h1>
         </div>
-
-        <div class="profile-image-container">
-            <div class="profile-image">
-                <img :src="!profileImage? user.profileImage : profileImage" alt="Profile Image" />
-                <div class="image-overlay">
-                    <label for="imageUpload" class="upload-label">
-                        <IconProfile />
-                        Change Photo
-                    </label>
-                </div>
-            </div>
-            <input type="file" id="imageUpload" @change="onImageUpload" accept="image/*" class="file-input" />
+        <div class="profile-update-container">
+          <div class="profile-image-container">
+              <div class="profile-image">
+                  <img :src="!profileImage? user.profileImage : profileImage" alt="Profile Image" />
+                  <div class="image-overlay">
+                      <label for="imageUpload" class="upload-label">
+                          <IconProfile />
+                          Change Photo
+                      </label>
+                  </div>
+              </div>
+              <input type="file" id="imageUpload" @change="onImageUpload" accept="image/*" class="file-input" />
+          </div>
+  
+          <form @submit.prevent="updateProfile" class="profile-form">
+              <InputForm ref="inputForm" :fields="fields" :initial-values="form" @submit="handleSubmit" @error="handleError" @update:modelValue="(newValue) => form = newValue"/>
+              <button type="submit" class="btn btn-success" :disabled="!canUpdate || !inputForm?.isFormValid">Update</button>
+          </form>
         </div>
-
-        <form @submit.prevent="updateProfile" class="profile-form">
-            <InputForm ref="inputForm" :fields="fields" :initial-values="form" @submit="handleSubmit" @error="handleError" @update:modelValue="(newValue) => form = newValue"/>
-            <button type="submit" class="btn btn-success" :disabled="!canUpdate || !inputForm?.isFormValid">Update</button>
-        </form>
         <div class="paymets-container">
           <SeeAll title="VIP" alt="Secure Payment" />
           <div class="payment-card">
@@ -244,7 +245,7 @@ async function pay() {
     .profile-header {
         display: flex;
         flex-direction: column;
-        align-items: center;
+        align-items: flex-start;
         margin-bottom: 20px;
 
         h1 {
@@ -253,6 +254,13 @@ async function pay() {
             font-weight: 700;
             font-family: var(--font-inter);
         }
+    }
+
+    .profile-update-container{
+      outline: 1px solid rgb(from var(--text-color) r g b / 50%);
+      outline-offset: 10px;
+      padding:0px 10px;
+      border-radius: 10px;
     }
 
     .profile-image-container {

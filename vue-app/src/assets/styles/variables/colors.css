@@ -32,4 +32,14 @@
   --dark-subtitle-text-color: #787878;
   --text-color-rgb: 255, 255, 255;
   --link-color: var(--primary-color);
+
+  --vector-color1: var(--background-color2);
+  --vector-color2: #9c9c9c;
+
+  --vector-color-op: #5c5c5c;
+  --vector-color-op2: #1d1d1d;
+
+  --vector-color-ap: #5c5c5c ;
+  --vector-color-ap2: #1d1d1d;
+
 }
