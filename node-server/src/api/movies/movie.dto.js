@@ -20,8 +20,10 @@ export class MovieDetailDTO {
         this.screening_times = screening_times;
         this.img = image_url;
         this.trailer = trailer_url;
-        this.cast = cast.map(c => new CastMemberDTO(c));
-        this.cinemas = screenings.map(s => new CinemaDTO( new ScreeningCinemaDTO(s))) ;
+        // Una pelicula sin reparto, o una funcion sin cine, no deberia tumbar el
+        // detalle entero con un 500: se muestra lo que haya.
+        this.cast = (cast ?? []).filter(c => c?.actor_id).map(c => new CastMemberDTO(c));
+        this.cinemas = (screenings ?? []).filter(s => s?.cinema_id).map(s => new CinemaDTO(new ScreeningCinemaDTO(s)));
     }
 }
 

@@ -819,3 +819,130 @@ db.discounts.insertMany([
     end_date: ISODate("2024-08-31T00:00:00.000Z")
   }
 ])
+// ===========================================================================
+// Cines, sala norte, reparto y cartelera
+//
+// Lo de arriba deja las peliculas sin reparto y las funciones sin cine, y la
+// aplicacion los necesita: MovieDetailDTO construye el detalle a partir de
+// `cast` y de los cines de las funciones de la pelicula, asi que sin esto
+// GET /api/movies/:id revienta. Ademas solo dos de las cuatro peliculas tenian
+// funcion, y la cartelera solo muestra las que tienen.
+// ===========================================================================
+
+const CINE_CENTRAL = ObjectId("66a12aaa41165c14ebdd5001")
+const CINE_NORTE   = ObjectId("66a12aaa41165c14ebdd5002")
+
+db.cinemas.insertMany([
+  {
+    _id: CINE_CENTRAL,
+    id: "cinecampus-central",
+    name: "CineCampus Central",
+    location: "Bogota",
+    image_url: "https://images.unsplash.com/photo-1517604931442-7e0c8ed2963c?w=800"
+  },
+  {
+    _id: CINE_NORTE,
+    id: "cinecampus-norte",
+    name: "CineCampus Norte",
+    location: "Medellin",
+    image_url: "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=800"
+  }
+])
+
+// Segunda sala: 120 butacas, la ultima fila VIP. Se generan con un bucle en
+// lugar de escribir 120 documentos a mano.
+const SALA_NORTE = ObjectId("66a1294d41165c14ebdd4f71")
+const filasNorte = ["A", "B", "C", "D", "E", "F"]
+const asientosNorte = []
+filasNorte.forEach(fila => {
+  for (let n = 1; n <= 20; n++) {
+    asientosNorte.push({ number: n, row: fila, type: fila === "F" ? "VIP" : "standard" })
+  }
+})
+db.theaters.insertOne({
+  _id: SALA_NORTE,
+  name: "Sala Norte",
+  capacity: asientosNorte.length,
+  seats: asientosNorte
+})
+
+const ACTORES = [
+  { _id: ObjectId("66a12bbb41165c14ebdd5101"), name: "Elena Ríos",      image_url: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400" },
+  { _id: ObjectId("66a12bbb41165c14ebdd5102"), name: "Marcus Vidal",    image_url: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400" },
+  { _id: ObjectId("66a12bbb41165c14ebdd5103"), name: "Nadia Okonkwo",   image_url: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400" },
+  { _id: ObjectId("66a12bbb41165c14ebdd5104"), name: "Tomás Ferrer",    image_url: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400" },
+  { _id: ObjectId("66a12bbb41165c14ebdd5105"), name: "Ingrid Halvorsen", image_url: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400" },
+  { _id: ObjectId("66a12bbb41165c14ebdd5106"), name: "Julián Ospina",   image_url: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400" }
+]
+db.actors.insertMany(ACTORES)
+
+const MOVIE_ODYSSEY = ObjectId("66a1293e41165c14ebdd4f6d")
+const MOVIE_PARIS   = ObjectId("66a1293e41165c14ebdd4f6e")
+const MOVIE_STAND   = ObjectId("66a1293e41165c14ebdd4f6f")
+const MOVIE_QUANTUM = ObjectId("66a12bf041165c14ebdd4f7f")
+
+const REPARTO = [
+  { movie: MOVIE_ODYSSEY, cast: [
+    { actor_id: ACTORES[0]._id, role: "Comandante Vega" },
+    { actor_id: ACTORES[1]._id, role: "Doctor Aalto" },
+    { actor_id: ACTORES[2]._id, role: "Ingeniera Sol" }
+  ]},
+  { movie: MOVIE_PARIS, cast: [
+    { actor_id: ACTORES[2]._id, role: "Claire" },
+    { actor_id: ACTORES[3]._id, role: "Mathieu" }
+  ]},
+  { movie: MOVIE_STAND, cast: [
+    { actor_id: ACTORES[1]._id, role: "Sargento Vidal" },
+    { actor_id: ACTORES[4]._id, role: "Capitana Holm" },
+    { actor_id: ACTORES[5]._id, role: "El Cartografo" }
+  ]},
+  { movie: MOVIE_QUANTUM, cast: [
+    { actor_id: ACTORES[4]._id, role: "Doctora Halvorsen" },
+    { actor_id: ACTORES[5]._id, role: "Nilo" }
+  ]}
+]
+REPARTO.forEach(r => db.movies.updateOne({ _id: r.movie }, { $set: { cast: r.cast } }))
+
+// Las dos funciones que ya existian no tenian cine: pasan al central.
+db.screenings.updateMany({ cinema_id: { $exists: false } }, { $set: { cinema_id: CINE_CENTRAL } })
+
+// Cartelera de los proximos siete dias, para que las cuatro peliculas aparezcan
+// y las funciones no salgan siempre caducadas.
+const PELICULAS = [MOVIE_ODYSSEY, MOVIE_PARIS, MOVIE_STAND, MOVIE_QUANTUM]
+const HORAS = [16, 19, 22]
+const funciones = []
+const horariosPorPelicula = {}
+
+for (let dia = 0; dia < 7; dia++) {
+  PELICULAS.forEach((pelicula, i) => {
+    const enCentral = (dia + i) % 2 === 0
+    const hora = HORAS[(dia + i) % HORAS.length]
+    const fecha = new Date()
+    fecha.setDate(fecha.getDate() + dia)
+    fecha.setHours(hora, 0, 0, 0)
+
+    funciones.push({
+      movie_id: pelicula,
+      cinema_id: enCentral ? CINE_CENTRAL : CINE_NORTE,
+      theater_id: enCentral ? ObjectId("66a1294d41165c14ebdd4f70") : SALA_NORTE,
+      date_time: fecha,
+      base_price: enCentral ? 12.5 : 10,
+      available_seats: enCentral ? 200 : 120,
+      occupied_seats: []
+    })
+
+    horariosPorPelicula[pelicula.toString()] = horariosPorPelicula[pelicula.toString()] || []
+    horariosPorPelicula[pelicula.toString()].push(fecha)
+  })
+}
+db.screenings.insertMany(funciones)
+
+// screening_times de cada pelicula al dia, que es lo que pinta el detalle.
+Object.keys(horariosPorPelicula).forEach(id => {
+  db.movies.updateOne({ _id: ObjectId(id) }, { $set: { screening_times: horariosPorPelicula[id] } })
+})
+
+print("cines: " + db.cinemas.countDocuments({}))
+print("actores: " + db.actors.countDocuments({}))
+print("salas: " + db.theaters.countDocuments({}))
+print("funciones: " + db.screenings.countDocuments({}))
