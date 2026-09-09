@@ -69,7 +69,7 @@ export default {
         @swiper="onSwiper" 
         @slideChange="onSlideChange">
 
-        <swiper-slide v-show="moviesArray.length > 4" v-for="movie in moviesArray" 
+        <swiper-slide v-for="movie in moviesArray" 
         :key="movie.id"
         :lazy="true"
         @click="onSlideClick(movie.id)" 

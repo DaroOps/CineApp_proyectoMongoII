@@ -743,7 +743,7 @@ db.movies.insertMany([
       ISODate("2024-08-01T21:00:00.000Z"),
       ISODate("2024-08-02T18:00:00.000Z")
     ],
-    image_url: "https://wallpapers.com/images/featured/cool-profile-picture-87h46gcobjl5e4xu.jpg"
+    image_url: "/img/posters/space-odyssey.jpg"
   },
   {
     _id: ObjectId("66a1293e41165c14ebdd4f6e"),
@@ -755,7 +755,7 @@ db.movies.insertMany([
       ISODate("2024-08-01T19:30:00.000Z"),
       ISODate("2024-08-02T19:30:00.000Z")
     ],
-    image_url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT4dE6QfOiD4kuoEN9fYCFNonC7xf6cekSLpw&s"
+    image_url: "/img/posters/love-in-paris.jpg"
   },
   {
     _id: ObjectId("66a1293e41165c14ebdd4f6f"),
@@ -768,7 +768,7 @@ db.movies.insertMany([
       ISODate("2024-08-02T20:00:00.000Z"),
       ISODate("2024-08-03T20:00:00.000Z")
     ],
-    image_url: "https://images.fandango.com/ImageRenderer/200/0/redesign/static/img/default_poster.png/0/images/masterrepository/Fandango/234549/HaroldPurpleCrayon_2024.jpg"
+    image_url: "/img/posters/last-stand.jpg"
   },
   {
     _id: ObjectId("66a12bf041165c14ebdd4f7f"),
@@ -780,7 +780,7 @@ db.movies.insertMany([
       ISODate("2024-09-15T19:00:00.000Z"),
       ISODate("2024-09-16T20:30:00.000Z")
     ],
-    image_url: "https://images.fandango.com/ImageRenderer/200/0/redesign/static/img/default_poster.png/0/images/masterrepository/Fandango/234549/HaroldPurpleCrayon_2024.jpg"
+    image_url: "/img/posters/quantum-leap.jpg"
   }
 ])
 
@@ -838,14 +838,14 @@ db.cinemas.insertMany([
     id: "cinecampus-central",
     name: "CineCampus Central",
     location: "Bogota",
-    image_url: "https://images.unsplash.com/photo-1517604931442-7e0c8ed2963c?w=800"
+    image_url: "/img/cines/central.jpg"
   },
   {
     _id: CINE_NORTE,
     id: "cinecampus-norte",
     name: "CineCampus Norte",
     location: "Medellin",
-    image_url: "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=800"
+    image_url: "/img/cines/norte.jpg"
   }
 ])
 
@@ -867,12 +867,12 @@ db.theaters.insertOne({
 })
 
 const ACTORES = [
-  { _id: ObjectId("66a12bbb41165c14ebdd5101"), name: "Elena Ríos",      image_url: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400" },
-  { _id: ObjectId("66a12bbb41165c14ebdd5102"), name: "Marcus Vidal",    image_url: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400" },
-  { _id: ObjectId("66a12bbb41165c14ebdd5103"), name: "Nadia Okonkwo",   image_url: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400" },
-  { _id: ObjectId("66a12bbb41165c14ebdd5104"), name: "Tomás Ferrer",    image_url: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400" },
-  { _id: ObjectId("66a12bbb41165c14ebdd5105"), name: "Ingrid Halvorsen", image_url: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400" },
-  { _id: ObjectId("66a12bbb41165c14ebdd5106"), name: "Julián Ospina",   image_url: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400" }
+  { _id: ObjectId("66a12bbb41165c14ebdd5101"), name: "Elena Ríos",      image_url: "/img/reparto/elena-rios.jpg" },
+  { _id: ObjectId("66a12bbb41165c14ebdd5102"), name: "Marcus Vidal",    image_url: "/img/reparto/marcus-vidal.jpg" },
+  { _id: ObjectId("66a12bbb41165c14ebdd5103"), name: "Nadia Okonkwo",   image_url: "/img/reparto/nadia-okonkwo.jpg" },
+  { _id: ObjectId("66a12bbb41165c14ebdd5104"), name: "Tomás Ferrer",    image_url: "/img/reparto/tomas-ferrer.jpg" },
+  { _id: ObjectId("66a12bbb41165c14ebdd5105"), name: "Ingrid Halvorsen", image_url: "/img/reparto/ingrid-halvorsen.jpg" },
+  { _id: ObjectId("66a12bbb41165c14ebdd5106"), name: "Julián Ospina",   image_url: "/img/reparto/julian-ospina.jpg" }
 ]
 db.actors.insertMany(ACTORES)
 
@@ -968,7 +968,7 @@ db.movies.insertMany([
     duration: 108,
     synopsis: "Una revisora de tren descubre que el ultimo vagon no aparece en ningun plano de la linea.",
     screening_times: [],
-    image_url: "https://images.unsplash.com/photo-1502139214982-d0ad755818d8?w=600",
+    image_url: "/img/posters/ultimo-anden.jpg",
     cast: [
       { actor_id: ObjectId("66a12bbb41165c14ebdd5103"), role: "Irene" },
       { actor_id: ObjectId("66a12bbb41165c14ebdd5106"), role: "El maquinista" }
@@ -981,7 +981,7 @@ db.movies.insertMany([
     duration: 124,
     synopsis: "Dos hermanas heredan una mina agotada y la promesa de que bajo ella queda algo mas.",
     screening_times: [],
-    image_url: "https://images.unsplash.com/photo-1440404653325-ab127d49abc1?w=600",
+    image_url: "/img/posters/marea-de-cobre.jpg",
     cast: [
       { actor_id: ObjectId("66a12bbb41165c14ebdd5105"), role: "Ada" },
       { actor_id: ObjectId("66a12bbb41165c14ebdd5104"), role: "Bruno" }

@@ -72,7 +72,7 @@ export default class AuthService {
           type:  'standard',
           assignment_date: new Date()
         },
-        profileImage: {url:"https://wallpapers.com/images/featured/cool-profile-picture-87h46gcobjl5e4xu.jpg"}
+        profileImage: {url:"/img/avatar.jpg"}
       });
       const savedUser = await user.save();
       return savedUser.toObject();

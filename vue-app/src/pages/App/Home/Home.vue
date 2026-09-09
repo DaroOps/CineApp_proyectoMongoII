@@ -64,7 +64,8 @@ const searchMovies = async (query) => {
     }
     
     .botom{
-        padding: 10px 30px;
+        /* el ultimo hueco deja sitio a la barra de navegacion, que es fija */
+        padding: 10px 30px 120px;
         display: flex;
         flex-direction: column;
         gap: 10px;
