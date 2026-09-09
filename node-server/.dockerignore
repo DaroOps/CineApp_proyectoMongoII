@@ -1,0 +1,7 @@
+node_modules
+npm-debug.log
+.env
+.envTemplate
+.git
+.gitignore
+src/utils/datarebuild/tempScript.js

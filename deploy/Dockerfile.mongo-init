@@ -1,0 +1,9 @@
+# Imagen de un solo uso: inicia el replica set y siembra la base.
+# El script de datos se copia dentro para no depender de montajes del host.
+FROM mongo:7
+
+COPY node-server/src/utils/datarebuild/dbData.js /seed/dbData.js
+COPY deploy/mongo-init.sh /seed/mongo-init.sh
+RUN chmod +x /seed/mongo-init.sh
+
+ENTRYPOINT ["/seed/mongo-init.sh"]

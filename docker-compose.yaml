@@ -1,0 +1,75 @@
+# Despliegue de CineApp. Un unico dominio: nginx sirve el frontend y hace de
+# proxy a /api y /socket.io, asi no hay CORS entre subdominios y solo hay un
+# router que proteger en Traefik. Ningun servicio publica puertos al host.
+services:
+  mongo:
+    image: mongo:7
+    command: ["--replSet", "rs0", "--bind_ip_all"]
+    volumes:
+      - mongo-data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "--eval", "db.adminCommand({ping:1})"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 20s
+    restart: unless-stopped
+
+  mongo-init:
+    build:
+      context: .
+      dockerfile: deploy/Dockerfile.mongo-init
+    depends_on:
+      mongo:
+        condition: service_healthy
+    environment:
+      - MONGO_HOST=mongo
+      - DB_NAME=cinecampus
+      - REPLICA_SET_NAME=rs0
+    restart: "no"
+
+  api:
+    build:
+      context: ./node-server
+    depends_on:
+      mongo:
+        condition: service_healthy
+    expose:
+      - "3000"
+    environment:
+      - NODE_ENV=production
+      - MONGODB_URI=mongodb://mongo:27017/cinecampus?replicaSet=rs0
+      - DB_NAME=cinecampus
+      - ALLOWED_ORIGINS=${ALLOWED_ORIGINS}
+      - JWT_ACCESS_SECRET=${JWT_ACCESS_SECRET}
+      - JWT_REFRESH_SECRET=${JWT_REFRESH_SECRET}
+      - JWT_ACCESS_EXPIRES_IN=${JWT_ACCESS_EXPIRES_IN:-15m}
+      - JWT_REFRESH_EXPIRES_IN=${JWT_REFRESH_EXPIRES_IN:-1d}
+      - BCRYPT_SALT=${BCRYPT_SALT:-10}
+      - STRIPE_SECRET_KEY=${STRIPE_SECRET_KEY}
+      - CLOUDINARY_CLOUD_NAME=${CLOUDINARY_CLOUD_NAME}
+      - CLOUDINARY_API_KEY=${CLOUDINARY_API_KEY}
+      - CLOUDINARY_API_SECRET=${CLOUDINARY_API_SECRET}
+    healthcheck:
+      test: ["CMD-SHELL", "node -e \"fetch('http://127.0.0.1:3000/').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))\""]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+    restart: unless-stopped
+
+  web:
+    build:
+      context: ./vue-app
+      args:
+        - VITE_ENV=production
+        - VITE_BACKEND_URL=${VITE_BACKEND_URL}
+        - VITE_STRIPE_PUBLISHABLE_KEY=${VITE_STRIPE_PUBLISHABLE_KEY}
+    depends_on:
+      - api
+    expose:
+      - "80"
+    restart: unless-stopped
+
+volumes:
+  mongo-data:
