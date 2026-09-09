@@ -5,7 +5,12 @@ console.log('ENV:', import.meta.env.VITE_ENV);
 console.log('BACKEND_URL:', import.meta.env.VITE_BACKEND_URL);
 
 const axiosInstance = axios.create({
-  baseURL: import.meta.env.VITE_ENV === 'production' ?  import.meta.env.VITE_BACKEND_URL : 'http://localhost:3000',
+  // En produccion nginx sirve el SPA y hace de proxy de /api en el mismo origen,
+  // asi que sin VITE_BACKEND_URL las peticiones salen relativas y el bundle deja
+  // de depender del dominio en el que se despliegue.
+  baseURL: import.meta.env.VITE_ENV === 'production'
+    ? (import.meta.env.VITE_BACKEND_URL || '')
+    : 'http://localhost:3000',
   withCredentials: true,
 });
 

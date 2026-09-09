@@ -11,7 +11,10 @@ export const useSocketStore = defineStore('socket', {
   actions: {
     initSocket() {
       if (!this.socket) {
-        this.socket = io(`${import.meta.env.VITE_ENV === 'production' ? import.meta.env.VITE_BACKEND_URL : 'http://localhost:3000'}`, {
+        const url = import.meta.env.VITE_ENV === 'production'
+          ? (import.meta.env.VITE_BACKEND_URL || window.location.origin)
+          : 'http://localhost:3000'
+        this.socket = io(url, {
           reconnection: true,
           reconnectionAttempts: Infinity,
           reconnectionDelay: 1000,
