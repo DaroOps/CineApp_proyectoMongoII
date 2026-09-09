@@ -278,12 +278,15 @@ db.runCommand({
               bsonType: 'string',
               description: 'Must be a string'
             },
+            // En minuscula, que es lo que declara el enum del modelo de sala
+            // y lo que comparan el adaptador de butacas y el calculo de precios.
+            // Con 'VIP' aqui, ninguna butaca llegaba a ser VIP en la interfaz.
             type: {
               'enum': [
                 'standard',
-                'VIP'
+                'vip'
               ],
-              description: 'Must be either \'standard\' or \'VIP\''
+              description: 'Must be either \'standard\' or \'vip\''
             }
           }
         }
@@ -504,7 +507,7 @@ db.runCommand({
 // -.seat-map tiene min-width 364px, que es 10 x 31px + 9 huecos de 6px-, asi que
 // la sala se genera con esa forma en lugar de escribir las butacas a mano. La
 // numeracion sigue siendo corrida, como estaba.
-const FILAS_GRAND = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L"]
+const FILAS_GRAND = ["A", "B", "C", "D", "E", "F", "G", "H"]
 const BUTACAS_POR_FILA = 10
 const asientosGrand = []
 FILAS_GRAND.forEach((fila, i) => {
@@ -512,7 +515,10 @@ FILAS_GRAND.forEach((fila, i) => {
     asientosGrand.push({
       number: i * BUTACAS_POR_FILA + n,
       row: fila,
-      type: fila === FILAS_GRAND[FILAS_GRAND.length - 1] ? "VIP" : "standard"
+      // La ultima fila es la VIP. En minuscula: es lo que compara el adaptador
+      // (isVIP: seat.type === "vip"), lo que compara el calculo de precios y lo
+      // que admite el enum del modelo de sala.
+      type: fila === FILAS_GRAND[FILAS_GRAND.length - 1] ? "vip" : "standard"
     })
   }
 })
@@ -666,14 +672,14 @@ db.cinemas.insertMany([
 // Segunda sala: 120 butacas, la ultima fila VIP. Se generan con un bucle en
 // lugar de escribir 120 documentos a mano.
 const SALA_NORTE = ObjectId("66a1294d41165c14ebdd4f71")
-const filasNorte = ["A", "B", "C", "D", "E", "F", "G", "H"]
+const filasNorte = ["A", "B", "C", "D", "E", "F"]
 const asientosNorte = []
 filasNorte.forEach((fila, i) => {
   for (let n = 1; n <= BUTACAS_POR_FILA; n++) {
     asientosNorte.push({
       number: i * BUTACAS_POR_FILA + n,
       row: fila,
-      type: fila === "H" ? "VIP" : "standard"
+      type: fila === filasNorte[filasNorte.length - 1] ? "vip" : "standard"
     })
   }
 })

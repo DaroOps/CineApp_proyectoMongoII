@@ -301,7 +301,10 @@ export default class TicketService {
       const seatType = theatreSeat.type === 'vip' ? 'vip' : 'standard';
       const basePrice = screening.base_price;
       
-      let finalPrice = this.calculateFinalPrice(basePrice, seatType, user.role);
+      // El calculo espera el tipo de rol, no el subdocumento entero: pasarlo
+      // mal hacia que un socio VIP pagase el recargo del 1.5 en el ticket
+      // guardado aunque el cobro se hubiera calculado sin el.
+      let finalPrice = this.calculateFinalPrice(basePrice, seatType, user.role.type);
 
       const ticket = new Ticket({
         screening_id: screeningId,
