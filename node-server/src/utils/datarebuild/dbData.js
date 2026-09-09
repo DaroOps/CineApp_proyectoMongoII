@@ -165,20 +165,23 @@ db.runCommand({
         },
         seat: {
           bsonType: 'object',
+          // La butaca de un ticket es la que el usuario eligio: fila y numero.
+          // El theater_id no se repite aqui porque ya lo determina la funcion,
+          // y number acepta cualquier tipo numerico porque el driver escribe
+          // los numeros de JavaScript como double, no como int.
           required: [
-            'theater_id',
             'number',
             'row'
           ],
           properties: {
             theater_id: {
               bsonType: 'objectId',
-              description: 'Must be an ObjectId'
+              description: 'Optional: the theater the seat belongs to'
             },
             number: {
-              bsonType: 'int',
+              bsonType: ['int', 'long', 'double'],
               minimum: 1,
-              description: 'Must be an integer greater than 0'
+              description: 'Must be a number greater than 0'
             },
             row: {
               bsonType: 'string',
