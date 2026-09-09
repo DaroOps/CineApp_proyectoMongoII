@@ -497,218 +497,29 @@ db.runCommand({
 })
 
 // Theaters collection
-db.theaters.insertOne(
-  {
-    _id: ObjectId("66a1294d41165c14ebdd4f70"),
-    name: "Grand Theater",
-    capacity: 200,
-    seats: [
-      { number: 1, row: "A", type: "standard" },
-      { number: 2, row: "A", type: "standard" },
-      { number: 3, row: "A", type: "standard" },
-      { number: 4, row: "A", type: "standard" },
-      { number: 5, row: "A", type: "standard" },
-      { number: 6, row: "A", type: "standard" },
-      { number: 7, row: "A", type: "standard" },
-      { number: 8, row: "A", type: "standard" },
-      { number: 9, row: "A", type: "standard" },
-      { number: 10, row: "A", type: "standard" },
-      { number: 11, row: "A", type: "standard" },
-      { number: 12, row: "A", type: "standard" },
-      { number: 13, row: "A", type: "standard" },
-      { number: 14, row: "A", type: "standard" },
-      { number: 15, row: "A", type: "standard" },
-      { number: 16, row: "A", type: "standard" },
-      { number: 17, row: "A", type: "standard" },
-      { number: 18, row: "A", type: "standard" },
-      { number: 19, row: "A", type: "standard" },
-      { number: 20, row: "A", type: "standard" },
-      { number: 21, row: "B", type: "standard" },
-      { number: 22, row: "B", type: "standard" },
-      { number: 23, row: "B", type: "standard" },
-      { number: 24, row: "B", type: "standard" },
-      { number: 25, row: "B", type: "standard" },
-      { number: 26, row: "B", type: "standard" },
-      { number: 27, row: "B", type: "standard" },
-      { number: 28, row: "B", type: "standard" },
-      { number: 29, row: "B", type: "standard" },
-      { number: 30, row: "B", type: "standard" },
-      { number: 31, row: "B", type: "standard" },
-      { number: 32, row: "B", type: "standard" },
-      { number: 33, row: "B", type: "standard" },
-      { number: 34, row: "B", type: "standard" },
-      { number: 35, row: "B", type: "standard" },
-      { number: 36, row: "B", type: "standard" },
-      { number: 37, row: "B", type: "standard" },
-      { number: 38, row: "B", type: "standard" },
-      { number: 39, row: "B", type: "standard" },
-      { number: 40, row: "B", type: "standard" },
-      { number: 41, row: "C", type: "standard" },
-      { number: 42, row: "C", type: "standard" },
-      { number: 43, row: "C", type: "standard" },
-      { number: 44, row: "C", type: "standard" },
-      { number: 45, row: "C", type: "standard" },
-      { number: 46, row: "C", type: "standard" },
-      { number: 47, row: "C", type: "standard" },
-      { number: 48, row: "C", type: "standard" },
-      { number: 49, row: "C", type: "standard" },
-      { number: 50, row: "C", type: "standard" },
-      { number: 51, row: "C", type: "standard" },
-      { number: 52, row: "C", type: "standard" },
-      { number: 53, row: "C", type: "standard" },
-      { number: 54, row: "C", type: "standard" },
-      { number: 55, row: "C", type: "standard" },
-      { number: 56, row: "C", type: "standard" },
-      { number: 57, row: "C", type: "standard" },
-      { number: 58, row: "C", type: "standard" },
-      { number: 59, row: "C", type: "standard" },
-      { number: 60, row: "C", type: "standard" },
-      { number: 61, row: "D", type: "standard" },
-      { number: 62, row: "D", type: "standard" },
-      { number: 63, row: "D", type: "standard" },
-      { number: 64, row: "D", type: "standard" },
-      { number: 65, row: "D", type: "standard" },
-      { number: 66, row: "D", type: "standard" },
-      { number: 67, row: "D", type: "standard" },
-      { number: 68, row: "D", type: "standard" },
-      { number: 69, row: "D", type: "standard" },
-      { number: 70, row: "D", type: "standard" },
-      { number: 71, row: "D", type: "standard" },
-      { number: 72, row: "D", type: "standard" },
-      { number: 73, row: "D", type: "standard" },
-      { number: 74, row: "D", type: "standard" },
-      { number: 75, row: "D", type: "standard" },
-      { number: 76, row: "D", type: "standard" },
-      { number: 77, row: "D", type: "standard" },
-      { number: 78, row: "D", type: "standard" },
-      { number: 79, row: "D", type: "standard" },
-      { number: 80, row: "D", type: "standard" },
-      { number: 81, row: "E", type: "standard" },
-      { number: 82, row: "E", type: "standard" },
-      { number: 83, row: "E", type: "standard" },
-      { number: 84, row: "E", type: "standard" },
-      { number: 85, row: "E", type: "standard" },
-      { number: 86, row: "E", type: "standard" },
-      { number: 87, row: "E", type: "standard" },
-      { number: 88, row: "E", type: "standard" },
-      { number: 89, row: "E", type: "standard" },
-      { number: 90, row: "E", type: "standard" },
-      { number: 91, row: "E", type: "standard" },
-      { number: 92, row: "E", type: "standard" },
-      { number: 93, row: "E", type: "standard" },
-      { number: 94, row: "E", type: "standard" },
-      { number: 95, row: "E", type: "standard" },
-      { number: 96, row: "E", type: "standard" },
-      { number: 97, row: "E", type: "standard" },
-      { number: 98, row: "E", type: "standard" },
-      { number: 99, row: "E", type: "standard" },
-      { number: 100, row: "E", type: "standard" },
-      { number: 101, row: "F", type: "standard" },
-      { number: 102, row: "F", type: "standard" },
-      { number: 103, row: "F", type: "standard" },
-      { number: 104, row: "F", type: "standard" },
-      { number: 105, row: "F", type: "standard" },
-      { number: 106, row: "F", type: "standard" },
-      { number: 107, row: "F", type: "standard" },
-      { number: 108, row: "F", type: "standard" },
-      { number: 109, row: "F", type: "standard" },
-      { number: 110, row: "F", type: "standard" },
-      { number: 111, row: "F", type: "standard" },
-      { number: 112, row: "F", type: "standard" },
-      { number: 113, row: "F", type: "standard" },
-      { number: 114, row: "F", type: "standard" },
-      { number: 115, row: "F", type: "standard" },
-      { number: 116, row: "F", type: "standard" },
-      { number: 117, row: "F", type: "standard" },
-      { number: 118, row: "F", type: "standard" },
-      { number: 119, row: "F", type: "standard" },
-      { number: 120, row: "F", type: "standard" },
-      { number: 121, row: "G", type: "standard" },
-      { number: 122, row: "G", type: "standard" },
-      { number: 123, row: "G", type: "standard" },
-      { number: 124, row: "G", type: "standard" },
-      { number: 125, row: "G", type: "standard" },
-      { number: 126, row: "G", type: "standard" },
-      { number: 127, row: "G", type: "standard" },
-      { number: 128, row: "G", type: "standard" },
-      { number: 129, row: "G", type: "standard" },
-      { number: 130, row: "G", type: "standard" },
-      { number: 131, row: "G", type: "standard" },
-      { number: 132, row: "G", type: "standard" },
-      { number: 133, row: "G", type: "standard" },
-      { number: 134, row: "G", type: "standard" },
-      { number: 135, row: "G", type: "standard" },
-      { number: 136, row: "G", type: "standard" },
-      { number: 137, row: "G", type: "standard" },
-      { number: 138, row: "G", type: "standard" },
-      { number: 139, row: "G", type: "standard" },
-      { number: 140, row: "G", type: "standard" },
-      { number: 141, row: "H", type: "standard" },
-      { number: 142, row: "H", type: "standard" },
-      { number: 143, row: "H", type: "standard" },
-      { number: 144, row: "H", type: "standard" },
-      { number: 145, row: "H", type: "standard" },
-      { number: 146, row: "H", type: "standard" },
-      { number: 147, row: "H", type: "standard" },
-      { number: 148, row: "H", type: "standard" },
-      { number: 149, row: "H", type: "standard" },
-      { number: 150, row: "H", type: "standard" },
-      { number: 151, row: "H", type: "standard" },
-      { number: 152, row: "H", type: "standard" },
-      { number: 153, row: "H", type: "standard" },
-      { number: 154, row: "H", type: "standard" },
-      { number: 155, row: "H", type: "standard" },
-      { number: 156, row: "H", type: "standard" },
-      { number: 157, row: "H", type: "standard" },
-      { number: 158, row: "H", type: "standard" },
-      { number: 159, row: "H", type: "standard" },
-      { number: 160, row: "H", type: "standard" },
-      { number: 161, row: "I", type: "VIP" },
-      { number: 162, row: "I", type: "VIP" },
-      { number: 163, row: "I", type: "VIP" },
-      { number: 164, row: "I", type: "VIP" },
-      { number: 165, row: "I", type: "VIP" },
-      { number: 166, row: "I", type: "VIP" },
-      { number: 167, row: "I", type: "VIP" },
-      { number: 168, row: "I", type: "VIP" },
-      { number: 169, row: "I", type: "VIP" },
-      { number: 170, row: "I", type: "VIP" },
-      { number: 171, row: "I", type: "VIP" },
-      { number: 172, row: "I", type: "VIP" },
-      { number: 173, row: "I", type: "VIP" },
-      { number: 174, row: "I", type: "VIP" },
-      { number: 175, row: "I", type: "VIP" },
-      { number: 176, row: "I", type: "VIP" },
-      { number: 177, row: "I", type: "VIP" },
-      { number: 178, row: "I", type: "VIP" },
-      { number: 179, row: "I", type: "VIP" },
-      { number: 180, row: "I", type: "VIP" },
-      { number: 181, row: "J", type: "VIP" },
-      { number: 182, row: "J", type: "VIP" },
-      { number: 183, row: "J", type: "VIP" },
-      { number: 184, row: "J", type: "VIP" },
-      { number: 185, row: "J", type: "VIP" },
-      { number: 186, row: "J", type: "VIP" },
-      { number: 187, row: "J", type: "VIP" },
-      { number: 188, row: "J", type: "VIP" },
-      { number: 189, row: "J", type: "VIP" },
-      { number: 190, row: "J", type: "VIP" },
-      { number: 191, row: "J", type: "VIP" },
-      { number: 192, row: "J", type: "VIP" },
-      { number: 193, row: "J", type: "VIP" },
-      { number: 194, row: "J", type: "VIP" },
-      { number: 195, row: "J", type: "VIP" },
-      { number: 196, row: "J", type: "VIP" },
-      { number: 197, row: "J", type: "VIP" },
-      { number: 198, row: "J", type: "VIP" },
-      { number: 199, row: "J", type: "VIP" },
-      { number: 200, row: "J", type: "VIP" }
-    ]
+// El mapa de butacas del frontend esta dimensionado para diez por fila
+// -.seat-map tiene min-width 364px, que es 10 x 31px + 9 huecos de 6px-, asi que
+// la sala se genera con esa forma en lugar de escribir las butacas a mano. La
+// numeracion sigue siendo corrida, como estaba.
+const FILAS_GRAND = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L"]
+const BUTACAS_POR_FILA = 10
+const asientosGrand = []
+FILAS_GRAND.forEach((fila, i) => {
+  for (let n = 1; n <= BUTACAS_POR_FILA; n++) {
+    asientosGrand.push({
+      number: i * BUTACAS_POR_FILA + n,
+      row: fila,
+      type: fila === FILAS_GRAND[FILAS_GRAND.length - 1] ? "VIP" : "standard"
+    })
   }
- )
-    
+})
 
-// Screenings collection
+db.theaters.insertOne({
+  _id: ObjectId("66a1294d41165c14ebdd4f70"),
+  name: "Grand Theater",
+  capacity: asientosGrand.length,
+  seats: asientosGrand
+})
 db.screenings.insertMany([
   {
     _id: ObjectId("66a1295d41165c14ebdd4f72"),
@@ -716,7 +527,7 @@ db.screenings.insertMany([
     theater_id: ObjectId("66a1294d41165c14ebdd4f70"),
     date_time: ISODate("2024-08-01T18:00:00.000Z"),
     base_price: 12.5,
-    available_seats: 200,
+    available_seats: 120,
     occupied_seats: []
   },
   {
@@ -725,7 +536,7 @@ db.screenings.insertMany([
     theater_id: ObjectId("66a1294d41165c14ebdd4f70"),
     date_time: ISODate("2024-08-01T20:00:00.000Z"),
     base_price: 12.5,
-    available_seats: 200,
+    available_seats: 120,
     occupied_seats: []
   }
 ])
@@ -852,11 +663,15 @@ db.cinemas.insertMany([
 // Segunda sala: 120 butacas, la ultima fila VIP. Se generan con un bucle en
 // lugar de escribir 120 documentos a mano.
 const SALA_NORTE = ObjectId("66a1294d41165c14ebdd4f71")
-const filasNorte = ["A", "B", "C", "D", "E", "F"]
+const filasNorte = ["A", "B", "C", "D", "E", "F", "G", "H"]
 const asientosNorte = []
-filasNorte.forEach(fila => {
-  for (let n = 1; n <= 20; n++) {
-    asientosNorte.push({ number: n, row: fila, type: fila === "F" ? "VIP" : "standard" })
+filasNorte.forEach((fila, i) => {
+  for (let n = 1; n <= BUTACAS_POR_FILA; n++) {
+    asientosNorte.push({
+      number: i * BUTACAS_POR_FILA + n,
+      row: fila,
+      type: fila === "H" ? "VIP" : "standard"
+    })
   }
 })
 db.theaters.insertOne({
@@ -937,7 +752,7 @@ for (let dia = 0; dia < 7; dia++) {
       theater_id: enCentral ? ObjectId("66a1294d41165c14ebdd4f70") : SALA_NORTE,
       date_time: fecha,
       base_price: enCentral ? 12.5 : 10,
-      available_seats: enCentral ? 200 : 120,
+      available_seats: enCentral ? asientosGrand.length : asientosNorte.length,
       occupied_seats: []
     })
 
