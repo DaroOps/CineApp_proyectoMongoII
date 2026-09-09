@@ -26,7 +26,7 @@ const tagsArray = [
     </div>
     <div v-for="(row, letter) in seats" :key="letter" class="row">
       <span class="row-letter" :id="letter">{{ letter }}</span>
-      <div class="seats" :id="letter" :style="{ '--butacas-por-fila': row.length }">
+      <div class="seats" :id="letter">
         <button 
           v-for="seat in row" 
           :key="seat.id"
@@ -56,6 +56,7 @@ const tagsArray = [
   display: flex;
   flex-direction: column;
   gap: 10px;
+  min-width: 364px;
 }
 
 .screen {
@@ -80,23 +81,23 @@ const tagsArray = [
   text-align: center;
 }
 
+.row #B{
+ margin-bottom: 43px;
+}
+
+
 .seats {
-  /* Las butacas se reparten el ancho que haya: una sala de 20 por fila cabe en
-     un movil sin scroll horizontal, y una de 9 sigue viendose como antes. El
-     numero de columnas lo pone la propia fila. */
   width: 100%;
-  display: grid;
-  grid-template-columns: repeat(var(--butacas-por-fila, 10), 1fr);
-  gap: clamp(2px, 1vw, 6px);
+  gap: 6px;
+  display: flex;
+  justify-content: center;
   align-items: center;
 }
 
 .seat {
-  width: 100%;
-  max-width: 31px;
-  height: auto;
+  width: 31px;
+  height: 31px;
   aspect-ratio: 1/1;
-  justify-self: center;
   border: 0;
   background-color: var(--background-color2);
   cursor: pointer;
@@ -114,9 +115,7 @@ const tagsArray = [
   color: var(--text-color);
   font-weight: 700;
   font-family: poppins;
-  /* el numero tiene que caber dentro de la butaca, que ya no mide siempre 31px */
-  font-size: clamp(8px, 2.6vw, 18px);
-  line-height: 1;
+  font-size: 18px;
   transition: all 0.3s ease;
 }
 
