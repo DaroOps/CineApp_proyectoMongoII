@@ -903,8 +903,18 @@ const REPARTO = [
 ]
 REPARTO.forEach(r => db.movies.updateOne({ _id: r.movie }, { $set: { cast: r.cast } }))
 
-// Las dos funciones que ya existian no tenian cine: pasan al central.
-db.screenings.updateMany({ cinema_id: { $exists: false } }, { $set: { cinema_id: CINE_CENTRAL } })
+// Las dos funciones que ya existian no tenian cine: pasan al central. Y sus
+// fechas eran de agosto de 2024, asi que se mueven a los proximos dias: una
+// cartelera con funciones caducadas no se puede usar.
+db.screenings.find({ cinema_id: { $exists: false } }).toArray().forEach((f, i) => {
+  const fecha = new Date()
+  fecha.setDate(fecha.getDate() + i + 1)
+  fecha.setHours(i === 0 ? 18 : 20, 0, 0, 0)
+  db.screenings.updateOne(
+    { _id: f._id },
+    { $set: { cinema_id: CINE_CENTRAL, date_time: fecha } }
+  )
+})
 
 // Cartelera de los proximos siete dias, para que las cuatro peliculas aparezcan
 // y las funciones no salgan siempre caducadas.
