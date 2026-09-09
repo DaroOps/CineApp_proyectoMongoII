@@ -59,6 +59,11 @@ services:
     restart: unless-stopped
 
   web:
+    # Authelia por delante: Coolify lee esta etiqueta y anade el middleware a la
+    # cadena del router que el mismo genera, asi que sobrevive a que regenere
+    # las etiquetas en cada despliegue.
+    labels:
+      - "coolify.traefik.middlewares=protegido@docker"
     build:
       context: ./vue-app
       args:
