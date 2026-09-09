@@ -956,3 +956,37 @@ print("cines: " + db.cinemas.countDocuments({}))
 print("actores: " + db.actors.countDocuments({}))
 print("salas: " + db.theaters.countDocuments({}))
 print("funciones: " + db.screenings.countDocuments({}))
+
+// Dos estrenos sin funcion: son los que alimentan /api/movies/v1/coming-soon,
+// que lista precisamente las peliculas que todavia no tienen funcion. Sin
+// ninguna, la seccion "proximamente" de la portada sale vacia.
+db.movies.insertMany([
+  {
+    _id: ObjectId("66a12bf041165c14ebdd4f80"),
+    title: "El Ultimo Andén",
+    genre: "Thriller",
+    duration: 108,
+    synopsis: "Una revisora de tren descubre que el ultimo vagon no aparece en ningun plano de la linea.",
+    screening_times: [],
+    image_url: "https://images.unsplash.com/photo-1502139214982-d0ad755818d8?w=600",
+    cast: [
+      { actor_id: ObjectId("66a12bbb41165c14ebdd5103"), role: "Irene" },
+      { actor_id: ObjectId("66a12bbb41165c14ebdd5106"), role: "El maquinista" }
+    ]
+  },
+  {
+    _id: ObjectId("66a12bf041165c14ebdd4f81"),
+    title: "Marea de Cobre",
+    genre: "Drama",
+    duration: 124,
+    synopsis: "Dos hermanas heredan una mina agotada y la promesa de que bajo ella queda algo mas.",
+    screening_times: [],
+    image_url: "https://images.unsplash.com/photo-1440404653325-ab127d49abc1?w=600",
+    cast: [
+      { actor_id: ObjectId("66a12bbb41165c14ebdd5105"), role: "Ada" },
+      { actor_id: ObjectId("66a12bbb41165c14ebdd5104"), role: "Bruno" }
+    ]
+  }
+])
+
+print("peliculas totales: " + db.movies.countDocuments({}) + " (en cartelera: " + db.screenings.distinct("movie_id").length + ", proximamente: " + (db.movies.countDocuments({}) - db.screenings.distinct("movie_id").length) + ")")
