@@ -27,7 +27,7 @@
     },
     profilePicUrl: {
       type: String,
-      default: 'https://wallpapers.com/images/featured/cool-profile-picture-87h46gcobjl5e4xu.jpg',
+      default: '/img/avatar.jpg',
       required: true
     }
   })

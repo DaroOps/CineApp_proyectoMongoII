@@ -22,7 +22,7 @@ const props = defineProps({
 <template>
     <div class="movie-card">
         {{console.log(props.movie)}}
-        <img :src="props.movie.img? props.movie.img : 'https://m.media-amazon.com/images/M/MV5BNzRiMjg0MzUtNTQ1Mi00Y2Q5LWEwM2MtMzUwZDU5NmVjN2NkXkEyXkFqcGc@._V1_.jpg'" :alt=" props.movie.title ? movie.title : 'No title'" class="movie-poster">
+        <img :src="props.movie.img? props.movie.img : '/img/posters/generico.jpg'" :alt=" props.movie.title ? movie.title : 'No title'" class="movie-poster">
         <div class="movie-info">
             <div class="screening-info">
                 <h2 class="movie-title">{{ props.movie.title ? props.movie.title : "No title" }}</h2>
