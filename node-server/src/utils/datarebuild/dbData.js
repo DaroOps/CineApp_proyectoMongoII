@@ -737,7 +737,7 @@ db.movies.insertMany([
     title: "The Space Odyssey",
     genre: "Sci-Fi",
     duration: 142,
-    synopsis: "A journey through space and time that challenges the very nature of human existence.",
+    synopsis: "Eighteen months into a one-way survey of the outer system, the crew of the Meridian picks up a signal that repeats their own transmissions back at them, delayed by three days. Commander Vega wants to turn back; the ship's engineer wants to answer it. As the delay shortens, the crew realises the signal is not an echo but an invitation, and that whatever is sending it has been waiting a very long time for someone to arrive.",
     screening_times: [
       ISODate("2024-08-01T18:00:00.000Z"),
       ISODate("2024-08-01T21:00:00.000Z"),
@@ -750,7 +750,7 @@ db.movies.insertMany([
     title: "Love in Paris",
     genre: "Romance",
     duration: 118,
-    synopsis: "A heartwarming tale of two strangers who find love in the city of lights.",
+    synopsis: "Claire lands in Paris with a return ticket for Sunday and a folder of contracts that will close her family's last bookshop. Mathieu is the notary hired to sign them, and he has never once left the arrondissement he was born in. Over four days of missed appointments, arguments about paperwork and one very long walk along the Seine, both of them start negotiating something neither came to negotiate.",
     screening_times: [
       ISODate("2024-08-01T19:30:00.000Z"),
       ISODate("2024-08-02T19:30:00.000Z")
@@ -762,7 +762,7 @@ db.movies.insertMany([
     title: "The Last Stand",
     genre: "Action",
     duration: 135,
-    synopsis: "An elite team of heroes must make their last stand against an unstoppable alien invasion.",
+    synopsis: "The evacuation was supposed to take six hours. Fourteen hours in, Sergeant Vidal is holding a flooded metro station with nine soldiers, a broken radio and two hundred civilians who cannot be moved. The relief column is not coming, the tunnels are filling, and the only way out runs directly through what came down over the city three days ago. What began as a retreat becomes the line nobody is willing to give up.",
     screening_times: [
       ISODate("2024-08-01T20:00:00.000Z"),
       ISODate("2024-08-02T20:00:00.000Z"),
@@ -775,7 +775,7 @@ db.movies.insertMany([
     title: "Quantum Leap",
     genre: "Sci-Fi Thriller",
     duration: 128,
-    synopsis: "A physicist becomes entangled in a time-bending experiment that challenges the fabric of reality.",
+    synopsis: "Doctor Halvorsen's experiment was meant to move a single particle four seconds into the past. It moved her instead, and it keeps moving her, a few seconds at a time, always to the same corridor on the same evening. Each loop she learns one more thing about the accident she is walking towards, and each loop she has a little less time to stop it. The physics are sound. That is the worst part.",
     screening_times: [
       ISODate("2024-09-15T19:00:00.000Z"),
       ISODate("2024-09-16T20:30:00.000Z")
@@ -966,7 +966,7 @@ db.movies.insertMany([
     title: "El Ultimo Andén",
     genre: "Thriller",
     duration: 108,
-    synopsis: "Una revisora de tren descubre que el ultimo vagon no aparece en ningun plano de la linea.",
+    synopsis: "Irene has punched tickets on the northern line for eleven years and knows every carriage by the sound it makes. So when a twelfth carriage appears at the back of the 23:40 service, she is the only person on board who understands that it should not exist. The passengers who get on it are polite, ordinary and never get off, and the timetable insists the train has always been this long.",
     screening_times: [],
     image_url: "/img/posters/ultimo-anden.jpg",
     cast: [
@@ -979,7 +979,7 @@ db.movies.insertMany([
     title: "Marea de Cobre",
     genre: "Drama",
     duration: 124,
-    synopsis: "Dos hermanas heredan una mina agotada y la promesa de que bajo ella queda algo mas.",
+    synopsis: "When their father dies, Ada and her sister inherit a copper mine that stopped producing forty years ago and a town that never recovered from it. Ada wants to sell. Her sister has been going down the shaft every night for a month. Between the two of them lies a set of survey maps their father kept hidden, showing tunnels that were dug after the mine was officially sealed, heading somewhere the maps do not name.",
     screening_times: [],
     image_url: "/img/posters/marea-de-cobre.jpg",
     cast: [
